@@ -1,0 +1,3 @@
+src/InstagramTools.*/bin/*
+src/InstagramTools.*/obj/*
+src/*/project.lock.json
