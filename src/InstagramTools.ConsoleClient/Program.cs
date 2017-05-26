@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Api.Classes;
+using InstagramTools.Api.Classes.Android;
 using InstagramTools.ConsoleClient.Samples;
 
 namespace InstagramTools.ConsoleClient
@@ -17,17 +18,32 @@ namespace InstagramTools.ConsoleClient
         /// </summary>
         private static IInstaApi _instaApi;
 
+        private static readonly string kievLogin = "bad.kiev";
+        private static readonly string kievPassword = "fckdhadiach";
+
+
         private static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("Starting demo of InstaSharper project");
             // create user session data and provide login details
 
+            
+
+
             Console.WriteLine("Username:");
             var username = Console.ReadLine();
 
             Console.WriteLine("Password:");
             var password = Console.ReadLine();
+
+            if (username == "" || password == "")
+            {
+                username = kievLogin;
+                password = kievPassword;
+            }
+
+
 
             var userSession = new UserSessionData
             {
