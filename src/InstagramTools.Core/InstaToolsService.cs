@@ -32,6 +32,7 @@ namespace InstagramTools.Core
         {
             try
             {
+
                 _instaApi = _apiBuilder.SetUser(new UserSessionData
                     {
                         UserName = loginModel.Username, Password = loginModel.Password
@@ -72,7 +73,7 @@ namespace InstagramTools.Core
 
                 var unfollowedLikersIds = lastMedia.Likers.Where(x => !x.FriendshipStatus.IncomingRequest).Select(x => x.InstaIdentifier);
 
-                _logger.LogInformation($"FollowUsersWhichLikeLastPost success! [username:{username}]");
+                _logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
                 return new OperationResult(true);
             }
             catch (Exception ex)

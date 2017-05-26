@@ -27,19 +27,19 @@ namespace InstagramTools.Api.API
         private readonly AndroidDevice _deviceInfo;
         private readonly HttpClient _httpClient;
         private readonly HttpClientHandler _httpHandler;
-        private readonly ILogger<InstaApi> _logger;
+        //private readonly ILogger<InstaApi> _logger;
         private readonly ApiRequestMessage _requestMessage;
         private readonly UserSessionData _user;
 
         public InstaApi(UserSessionData user,
-            ILogger<InstaApi> logger,
+            //ILogger<InstaApi> logger,
             HttpClient httpClient,
             HttpClientHandler httpHandler,
             ApiRequestMessage requestMessage,
             AndroidDevice deviceInfo)
         {
             _user = user;
-            _logger = logger;
+            //_logger = logger;
             _httpClient = httpClient;
             _httpHandler = httpHandler;
             _requestMessage = requestMessage;
@@ -430,7 +430,7 @@ namespace InstagramTools.Api.API
                 if (mediaResponse.Medias?.Count != 1)
                 {
                     var errorMessage = $"Got wrong media count for request with media id={mediaId}";
-                    _logger.LogError(errorMessage);
+                    //_logger.LogError(errorMessage);
                     return Result.Fail<InstaMedia>(errorMessage);
                 }
                 var converter = ConvertersFabric.GetSingleMediaConverter(mediaResponse.Medias.FirstOrDefault());
@@ -458,7 +458,7 @@ namespace InstagramTools.Api.API
                 if (user == null)
                 {
                     var errorMessage = $"Can't find this user: {username}";
-                    _logger.LogError(errorMessage);
+                    //_logger.LogError(errorMessage);
                     return Result.Fail<InstaUser>(errorMessage);
                 }
                 var converter = ConvertersFabric.GetUserConverter(user);

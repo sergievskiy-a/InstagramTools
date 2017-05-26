@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Api.Common.Models;
@@ -30,7 +31,7 @@ namespace InstagramTools.ConsoleClient
                 var application = serviceProvider.GetService<App>();
 
                 // run application
-                application.StartApp();
+                Task.Run(async () => { await application.StartApp(); }).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -49,12 +50,12 @@ namespace InstagramTools.ConsoleClient
                 .AddDebug());
                 serviceCollection.AddLogging();
 
-                // add services
-                serviceCollection.AddTransient<IInstaToolsService, InstaToolsService>();
-                serviceCollection.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
+            //// add services
+            serviceCollection.AddTransient<IInstaToolsService, InstaToolsService>();
+            serviceCollection.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
 
-                // add app
-                serviceCollection.AddTransient<App>();
+            // add app
+            serviceCollection.AddTransient<App>();
         }
     }
 

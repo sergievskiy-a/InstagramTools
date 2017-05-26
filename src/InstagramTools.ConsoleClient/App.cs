@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InstagramTools.Api.API.Builder;
 using InstagramTools.Common.Interfaces;
 using InstagramTools.Common.Models;
+using InstagramTools.Core;
 using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient
@@ -17,15 +19,16 @@ namespace InstagramTools.ConsoleClient
         private readonly IInstaToolsService _instaToolsService;
         private readonly ILogger<App> _logger;
 
-        public App(IInstaToolsService instaToolsService, ILogger<App> logger)
+        public App(ILogger<App> logger, IInstaToolsService instaToolsService)
         {
-            _instaToolsService = instaToolsService;
+            
             _logger = logger;
+            _instaToolsService = instaToolsService;
         }
 
 
         //Main Code//
-        public async void StartApp()
+        public async Task<int> StartApp()
         {
             _logger.LogInformation("Application started! :)");
 
@@ -43,7 +46,8 @@ namespace InstagramTools.ConsoleClient
             
             var testUsername = "kotsemir.nazariy";
             var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(testUsername, 0);
-            
+
+            return 1;
         }
     }
 }

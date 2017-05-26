@@ -16,6 +16,7 @@ namespace InstagramTools.Api.API.Builder
         private ApiRequestMessage _requestMessage;
         private UserSessionData _user;
 
+
         public InstaApiBuilder(ILogger<InstaApiBuilder> logger)
         {
             _logger = logger;
@@ -42,7 +43,7 @@ namespace InstagramTools.Api.API.Builder
                     device_id = ApiRequestMessage.GenerateDeviceId()
                 };
             }
-            var instaApi = new InstaApi(_user, null, _httpClient, _httpHandler, _requestMessage, device);
+            var instaApi = new InstaApi(_user, _httpClient, _httpHandler, _requestMessage, device);
             return instaApi;
         }
 
