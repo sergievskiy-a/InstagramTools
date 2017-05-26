@@ -3,84 +3,74 @@ using System.Text;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Api.Common.Models;
+using InstagramTools.Common;
+using InstagramTools.Common.Interfaces;
+using InstagramTools.Common.Models;
 using InstagramTools.ConsoleClient.Samples;
+using InstagramTools.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient
 {
     public class Program
     {
-        /// <summary>
-        ///     Api instance (one instance per Instagram user)
-        /// </summary>
-        private static IInstaApi _instaApi;
+        private static IInstaToolsService _instaToolsService;
 
-        private static readonly string kievLogin = "bad.kiev";
-        private static readonly string kievPassword = "fckdhadiach";
+        private const string kievLogin = "bad.kiev";
+        private const string kievPassword = "fckdhadiach";
 
+        private static OperationResult ConfigureServices()
+        {
+            try
+            {
+                //setup our DI
+                var serviceProvider = new ServiceCollection()
+                    .AddLogging()
+                    .AddSingleton<IInstaToolsService, InstaToolsService>()
+                    .BuildServiceProvider();
+
+                //configure console logging
+                serviceProvider
+                    .GetService<ILoggerFactory>()
+                    .AddConsole(LogLevel.Debug);
+
+                var logger = serviceProvider.GetService<ILoggerFactory>()
+                    .CreateLogger<Program>();
+                logger.LogDebug("Starting application");
+                _instaToolsService = serviceProvider.GetService<IInstaToolsService>();
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, ex.Message);
+            }
+
+        }
 
         private static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("Starting demo of InstaSharper project");
-            // create user session data and provide login details
-
-            
-
-
-            Console.WriteLine("Username:");
-            var username = Console.ReadLine();
-
-            Console.WriteLine("Password:");
-            var password = Console.ReadLine();
-
-            if (username == "" || password == "")
+            var configResult = ConfigureServices();
+            if (!configResult.Success)
             {
-                username = kievLogin;
-                password = kievPassword;
+                Console.WriteLine($"ERROR: {configResult.Message}!!!!");
+                Console.ReadLine();
+                return;
             }
 
-
-
-            var userSession = new UserSessionData
+            var kievLoginModel = new LoginModel()
             {
-                UserName = username,
-                Password = password
+                Username = kievLogin,
+                Password = kievPassword
             };
-            // create new InstaApi instance using Builder
-            _instaApi = new InstaApiBuilder()
-                .SetUser(userSession)
-                .Build();
-            // login
-            var logInResult = _instaApi.Login();
-            if (!logInResult.Succeeded)
-            {
-                Console.WriteLine($"Unable to login: {logInResult.Info.Message}");
-            }
-            else
-            {
-                Console.WriteLine("Press 1 to start basic demo samples");
-                Console.WriteLine("Press 2 to start upload photo demo sample");
-                Console.WriteLine("Press 3 to start comment media demo sample");
+            
+            _instaToolsService.BuildApiManager(kievLoginModel);
 
-                var key = Console.ReadKey();
-                switch (key.Key)
-                {
-                    case ConsoleKey.D1:
-                        new Basics(_instaApi).DoShow();
-                        break;
-                    case ConsoleKey.D2:
-                        new UploadPhoto(_instaApi).DoShow();
-                        break;
-                    case ConsoleKey.D3:
-                        new CommentMedia(_instaApi).DoShow();
-                        break;
-                    default:
-                        break;
-                }
-                var logoutResult = _instaApi.Logout();
-                if (logoutResult.Value) Console.WriteLine("Logout succeed");
-            }
-            Console.ReadKey();
+            var testUsername = "kotsemir.nazariy";
+            _instaToolsService.FollowUsersWhichLikeLastPost(testUsername, 0);
+            
         }
     }
+
+
 }

@@ -1,6 +1,6 @@
 ﻿namespace InstagramTools.Common.Interfaces
 {
-    public interface ILogger
+    public interface IMyLogger
     {
         void Write(string logMessage);
     }
