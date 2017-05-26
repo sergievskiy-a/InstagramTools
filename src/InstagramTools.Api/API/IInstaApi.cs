@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using InstagramTools.Api.Classes;
-using InstagramTools.Api.Classes.Models;
+using InstagramTools.Api.Common.Models;
+using InstagramTools.Api.Common.Models.Models;
 
 namespace InstagramTools.Api.API
 {
@@ -562,12 +562,6 @@ namespace InstagramTools.Api.API
         /// <param name="mediaType">The type of the media</param>
         /// <returns>Return true if the media is deleted</returns>
         Task<IResult<bool>> DeleteMediaAsync(string mediaId, InstaMediaType mediaType);
-
-        #endregion
-
-        #region CustomMethods
-
-        
 
         #endregion
     }

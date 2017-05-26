@@ -2,6 +2,8 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "InstagramTools.Api.Common": "1.0.0-*",
+    "InstagramTools.Common": "1.0.0-*",
     "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "10.0.2"
   },
@@ -10,5 +12,9 @@
     "netstandard1.6": {
       "imports": "dnxcore50"
     }
+  },
+
+  "runtimes": {
+    "win10-x64": {}
   }
 }

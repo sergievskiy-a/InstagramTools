@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using InstagramTools.Api.Classes;
-using InstagramTools.Api.Classes.Android.DeviceInfo;
-using InstagramTools.Api.Logger;
+using InstagramTools.Api.Common;
+using InstagramTools.Api.Common.Models;
+using InstagramTools.Api.Common.Models.Android.DeviceInfo;
+using InstagramTools.Common.Interfaces;
 
 namespace InstagramTools.Api.API.Builder
 {

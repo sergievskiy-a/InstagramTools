@@ -5,18 +5,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using InstagramTools.Api.Classes;
-using InstagramTools.Api.Classes.Android.DeviceInfo;
-using InstagramTools.Api.Classes.Models;
-using InstagramTools.Api.Classes.ResponseWrappers;
-using InstagramTools.Api.Classes.ResponseWrappers.BaseResponse;
-using InstagramTools.Api.Converters;
-using InstagramTools.Api.Converters.Json;
-using InstagramTools.Api.Helpers;
-using InstagramTools.Api.Logger;
+using InstagramTools.Api.Common.Converters.Json;
+using InstagramTools.Api.Common.Models;
+using InstagramTools.Api.Common.Models.Android.DeviceInfo;
+using InstagramTools.Api.Common.Models.Models;
+using InstagramTools.Api.Common.Models.ResponseWrappers;
+using InstagramTools.Api.Common.Models.ResponseWrappers.BaseResponse;
+using InstagramTools.Common.Interfaces;
+using InstagramTools.Api.Common;
+using InstagramTools.Api.Common.Converters;
+using InstagramTools.Api.Common.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using InstaRecentActivityConverter = InstagramTools.Api.Converters.Json.InstaRecentActivityConverter;
+using InstaRecentActivityConverter = InstagramTools.Api.Common.Converters.Json.InstaRecentActivityConverter;
 
 namespace InstagramTools.Api.API
 {

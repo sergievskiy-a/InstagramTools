@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
-using InstagramTools.Api.Classes;
-using InstagramTools.Api.Classes.Android;
+using InstagramTools.Api.Common.Models;
 using InstagramTools.ConsoleClient.Samples;
 
 namespace InstagramTools.ConsoleClient

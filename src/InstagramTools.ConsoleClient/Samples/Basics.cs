@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using InstagramTools.Api.API;
-using InstagramTools.ConsoleClient.Utils;
+using InstagramTools.Common.Utils;
 
 namespace InstagramTools.ConsoleClient.Samples
 {
@@ -35,9 +35,9 @@ namespace InstagramTools.ConsoleClient.Samples
             {
                 Console.WriteLine($"Media count [{currentUser.UserName}]: {currentUserMedia.Value.Count}");
                 foreach (var media in currentUserMedia.Value)
-                    ConsoleUtils.PrintMedia("Self media", media, _maxDescriptionLength);
+                    ConsoleHelper.PrintMedia("Self media", media, _maxDescriptionLength);
             }
-
+            
             //get user time line feed, latest 5 pages
             var userFeed = _instaApi.GetUserTimelineFeed(5);
             if (userFeed.Succeeded)
@@ -45,7 +45,7 @@ namespace InstagramTools.ConsoleClient.Samples
                 Console.WriteLine(
                     $"Feed items (in {userFeed.Value.Pages} pages) [{currentUser.UserName}]: {userFeed.Value.Medias.Count}");
                 foreach (var media in userFeed.Value.Medias)
-                    ConsoleUtils.PrintMedia("Feed media", media, _maxDescriptionLength);
+                    ConsoleHelper.PrintMedia("Feed media", media, _maxDescriptionLength);
                 //like first 10 medias from user timeline feed
                 foreach (var media in userFeed.Value.Medias.Take(10))
                 {
@@ -62,7 +62,7 @@ namespace InstagramTools.ConsoleClient.Samples
                 Console.WriteLine(
                     $"Tag feed items (in {tagFeed.Value.Pages} pages) [{currentUser.UserName}]: {tagFeed.Value.Medias.Count}");
                 foreach (var media in tagFeed.Value.Medias)
-                    ConsoleUtils.PrintMedia("Tag feed", media, _maxDescriptionLength);
+                    ConsoleHelper.PrintMedia("Tag feed", media, _maxDescriptionLength);
             }
         }
     }

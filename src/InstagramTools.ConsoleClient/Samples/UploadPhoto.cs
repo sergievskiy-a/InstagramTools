@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using InstagramTools.Api.API;
-using InstagramTools.Api.Classes.Models;
+using InstagramTools.Api.Common.Models.Models;
 
 namespace InstagramTools.ConsoleClient.Samples
 {

@@ -14,6 +14,14 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.Api", "src\I
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.ConsoleClient", "src\InstagramTools.ConsoleClient\InstagramTools.ConsoleClient.xproj", "{D6009ABE-5A71-47A2-9C07-4CEDDAC91FB3}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.Common", "src\InstagramTools.Common\InstagramTools.Common.xproj", "{B37C55E4-5B86-4543-BA97-04B7B074E036}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.Core", "src\InstagramTools.Core\InstagramTools.Core.xproj", "{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.Logger", "src\InstagramTools.Logger\InstagramTools.Logger.xproj", "{FC2ACFC1-5929-43AF-96D0-1621372DF30A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.Api.Common", "src\InstagramTools.Api.Common\InstagramTools.Api.Common.xproj", "{A30FE27F-43A2-43F5-BF58-238A39429E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +36,22 @@ Global
 		{D6009ABE-5A71-47A2-9C07-4CEDDAC91FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6009ABE-5A71-47A2-9C07-4CEDDAC91FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6009ABE-5A71-47A2-9C07-4CEDDAC91FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B37C55E4-5B86-4543-BA97-04B7B074E036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B37C55E4-5B86-4543-BA97-04B7B074E036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B37C55E4-5B86-4543-BA97-04B7B074E036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B37C55E4-5B86-4543-BA97-04B7B074E036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2ACFC1-5929-43AF-96D0-1621372DF30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2ACFC1-5929-43AF-96D0-1621372DF30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2ACFC1-5929-43AF-96D0-1621372DF30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2ACFC1-5929-43AF-96D0-1621372DF30A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30FE27F-43A2-43F5-BF58-238A39429E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30FE27F-43A2-43F5-BF58-238A39429E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30FE27F-43A2-43F5-BF58-238A39429E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30FE27F-43A2-43F5-BF58-238A39429E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +59,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A8D7B740-E3B3-4AB0-933A-C32AF70639DC} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
 		{D6009ABE-5A71-47A2-9C07-4CEDDAC91FB3} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
+		{B37C55E4-5B86-4543-BA97-04B7B074E036} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
+		{15E4E947-BEF5-4915-8F4D-8ADAF7438BE7} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
+		{FC2ACFC1-5929-43AF-96D0-1621372DF30A} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
+		{A30FE27F-43A2-43F5-BF58-238A39429E2D} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
 	EndGlobalSection
 EndGlobal

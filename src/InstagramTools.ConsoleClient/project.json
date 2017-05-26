@@ -5,16 +5,18 @@
   },
 
   "dependencies": {
-    "InstagramTools.Api": "1.0.0-*",
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.1"
-    }
+    "InstagramTools.Common": "1.0.0-*",
+    "InstagramTools.Core": "1.0.0-*",
+    "Microsoft.NETCore.App": "1.1.2"
   },
 
   "frameworks": {
     "netcoreapp1.0": {
       "imports": "dnxcore50"
     }
+  },
+
+  "runtimes": {
+    "win10-x64": {}
   }
 }
