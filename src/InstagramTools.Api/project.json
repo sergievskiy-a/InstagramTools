@@ -5,6 +5,9 @@
     "InstagramTools.Api.Common": "1.0.0-*",
     "InstagramTools.Common": "1.0.0-*",
     "NETStandard.Library": "1.6.1",
+    "Microsoft.Extensions.Logging": "1.1.2",
+    "Microsoft.Extensions.Logging.Console": "1.1.2",
+    "Microsoft.Extensions.Logging.Debug": "1.1.2",
     "Newtonsoft.Json": "10.0.2"
   },
 

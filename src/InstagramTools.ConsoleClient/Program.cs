@@ -15,60 +15,46 @@ namespace InstagramTools.ConsoleClient
 {
     public class Program
     {
-        private static IInstaToolsService _instaToolsService;
-
-        private const string kievLogin = "bad.kiev";
-        private const string kievPassword = "fckdhadiach";
-
-        private static OperationResult ConfigureServices()
+        private static void Main(string[] args)
         {
             try
             {
-                //setup our DI
-                var serviceProvider = new ServiceCollection()
-                    .AddLogging()
-                    .AddSingleton<IInstaToolsService, InstaToolsService>()
-                    .BuildServiceProvider();
+                // create service collection
+                var serviceCollection = new ServiceCollection();
+                ConfigureServices(serviceCollection);
 
-                //configure console logging
-                serviceProvider
-                    .GetService<ILoggerFactory>()
-                    .AddConsole(LogLevel.Debug);
+                // create service provider
+                var serviceProvider = serviceCollection.BuildServiceProvider();
 
-                var logger = serviceProvider.GetService<ILoggerFactory>()
-                    .CreateLogger<Program>();
-                logger.LogDebug("Starting application");
-                _instaToolsService = serviceProvider.GetService<IInstaToolsService>();
-                return new OperationResult(true);
+                // entry to run app
+                var application = serviceProvider.GetService<App>();
+
+                // run application
+                application.StartApp();
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, ex.Message);
-            }
-
-        }
-
-        private static void Main(string[] args)
-        {
-            var configResult = ConfigureServices();
-            if (!configResult.Success)
-            {
-                Console.WriteLine($"ERROR: {configResult.Message}!!!!");
+                Console.WriteLine($"ERROR: {ex.Message}!!!!");
                 Console.ReadLine();
                 return;
             }
 
-            var kievLoginModel = new LoginModel()
-            {
-                Username = kievLogin,
-                Password = kievPassword
-            };
-            
-            _instaToolsService.BuildApiManager(kievLoginModel);
+        }
 
-            var testUsername = "kotsemir.nazariy";
-            _instaToolsService.FollowUsersWhichLikeLastPost(testUsername, 0);
-            
+        private static void ConfigureServices(IServiceCollection serviceCollection)
+        {
+                // add logging
+                serviceCollection.AddSingleton(new LoggerFactory()
+                .AddConsole()
+                .AddDebug());
+                serviceCollection.AddLogging();
+
+                // add services
+                serviceCollection.AddTransient<IInstaToolsService, InstaToolsService>();
+                serviceCollection.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
+
+                // add app
+                serviceCollection.AddTransient<App>();
         }
     }
 

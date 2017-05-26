@@ -15,6 +15,7 @@ using InstagramTools.Common.Interfaces;
 using InstagramTools.Api.Common;
 using InstagramTools.Api.Common.Converters;
 using InstagramTools.Api.Common.Helpers;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using InstaRecentActivityConverter = InstagramTools.Api.Common.Converters.Json.InstaRecentActivityConverter;
@@ -26,12 +27,12 @@ namespace InstagramTools.Api.API
         private readonly AndroidDevice _deviceInfo;
         private readonly HttpClient _httpClient;
         private readonly HttpClientHandler _httpHandler;
-        private readonly ILogger _logger;
+        private readonly ILogger<InstaApi> _logger;
         private readonly ApiRequestMessage _requestMessage;
         private readonly UserSessionData _user;
 
         public InstaApi(UserSessionData user,
-            ILogger logger,
+            ILogger<InstaApi> logger,
             HttpClient httpClient,
             HttpClientHandler httpHandler,
             ApiRequestMessage requestMessage,
@@ -429,7 +430,7 @@ namespace InstagramTools.Api.API
                 if (mediaResponse.Medias?.Count != 1)
                 {
                     var errorMessage = $"Got wrong media count for request with media id={mediaId}";
-                    _logger.Write(errorMessage);
+                    _logger.LogError(errorMessage);
                     return Result.Fail<InstaMedia>(errorMessage);
                 }
                 var converter = ConvertersFabric.GetSingleMediaConverter(mediaResponse.Medias.FirstOrDefault());
@@ -457,7 +458,7 @@ namespace InstagramTools.Api.API
                 if (user == null)
                 {
                     var errorMessage = $"Can't find this user: {username}";
-                    _logger.Write(errorMessage);
+                    _logger.LogError(errorMessage);
                     return Result.Fail<InstaUser>(errorMessage);
                 }
                 var converter = ConvertersFabric.GetUserConverter(user);
