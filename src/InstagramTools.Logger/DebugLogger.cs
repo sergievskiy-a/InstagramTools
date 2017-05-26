@@ -2,10 +2,10 @@
 
 namespace InstagramTools.Logger
 {
-    internal class DebugLogger : ILogger
-    {
-        public void Write(string logMessage)
-        {
-        }
-    }
+    //internal class DebugLogger : ILogger
+    //{
+    //    public void Write(string logMessage)
+    //    {
+    //    }
+    //}
 }

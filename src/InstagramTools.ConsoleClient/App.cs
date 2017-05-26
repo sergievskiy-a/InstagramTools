@@ -45,7 +45,7 @@ namespace InstagramTools.ConsoleClient
             }
             
             var testUsername = "kotsemir.nazariy";
-            var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(testUsername, 0);
+            var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(testUsername, 2);
 
             return 1;
         }

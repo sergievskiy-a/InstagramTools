@@ -28,6 +28,16 @@ namespace InstagramTools.Core
             _apiBuilder = apiBuilder;
         }
 
+        private Int32 GetDelay()
+        {
+            const int minDelaySec = 20;
+
+            var addToDelaySec = new Random().Next(1, 40);
+            var result = (minDelaySec + addToDelaySec) * 1000;
+            return result;
+
+        }
+
         public async Task<OperationResult> BuildApiManagerAsync(LoginModel loginModel)
         {
             try
@@ -67,11 +77,31 @@ namespace InstagramTools.Core
                 {
                     throw new Exception($"Can't get media [username:{username}]. Error:\t{getUserMediaResult.Info.Message }");
                 }
-
                 var userMedia = getUserMediaResult.Value;
-                var lastMedia = userMedia.OrderByDescending(x => x.DeviceTimeStap /*x.TakenAt*/).FirstOrDefault();
 
-                var unfollowedLikersIds = lastMedia.Likers.Where(x => !x.FriendshipStatus.IncomingRequest).Select(x => x.InstaIdentifier);
+
+                var lastMedia = userMedia.OrderByDescending(x => x.DeviceTimeStap /*x.TakenAt*/).FirstOrDefault();
+                var mediaId = lastMedia.InstaIdentifier;
+
+                var getLikersResult = await _instaApi.GetMediaLikersAsync(mediaId);
+                if (!getLikersResult.Succeeded)
+                {
+                    throw new Exception($"Can't get likers for media [mediaId :{mediaId}]. Error:\t {getLikersResult.Info.Message}");
+                }
+                var likersIds = getLikersResult.Value.Select(x=> Int64.Parse(x.Pk)).ToList();
+
+                //var unfollowResult = await _instaApi.UnFollowUserAsync(testId);
+
+                for (int i = 0; i < usersToFollow; i++)
+                {
+                    var followResult = await _instaApi.FollowUserAsync(likersIds[i]);
+                    if (!followResult.Succeeded)
+                    {
+                        throw new Exception($"Can't follow [userId :{likersIds[i]}]. Error:\t {followResult.Info.Message}");
+                    }
+                    _logger.LogInformation($"Now you follow user with id={likersIds[i]} ");
+                    await Task.Delay(GetDelay());
+                }
 
                 _logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
                 return new OperationResult(true);
