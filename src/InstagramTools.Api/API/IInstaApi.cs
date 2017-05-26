@@ -564,5 +564,11 @@ namespace InstagramTools.Api.API
         Task<IResult<bool>> DeleteMediaAsync(string mediaId, InstaMediaType mediaType);
 
         #endregion
+
+        #region CustomMethods
+
+        
+
+        #endregion
     }
 }
