@@ -18,5 +18,7 @@ namespace InstagramTools.Common.Interfaces
         /// <returns></returns>
         Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username);
 
+        Task<OperationResult> FollowSubscribersOfUser(string username);
+
     }
 }

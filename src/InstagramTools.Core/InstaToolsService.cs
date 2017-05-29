@@ -70,6 +70,7 @@ namespace InstagramTools.Core
 
         public async Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username)
         {
+
             try
             {
                 var getUserMediaResult = await _instaApi.GetUserMediaAsync(username);
@@ -88,7 +89,7 @@ namespace InstagramTools.Core
                 {
                     throw new Exception($"Can't get likers for media [mediaId :{mediaId}]. Error:\t {getLikersResult.Info.Message}");
                 }
-                var likersIds = getLikersResult.Value.Select(x=> Int64.Parse(x.Pk)).ToList();
+                var likersIds = getLikersResult.Value.Select(x=> long.Parse(x.Pk)).ToList();
 
                 //var unfollowResult = await _instaApi.UnFollowUserAsync(testId);
 
@@ -112,6 +113,40 @@ namespace InstagramTools.Core
                 return new OperationResult(false, ex.Message);
             }
             
+        }
+
+        public async Task<OperationResult> FollowSubscribersOfUser(string username)
+        {
+            try
+            {
+                var getFollowersResult = await _instaApi.GetUserFollowersAsync(username, _maxDescriptionLength);
+                if (!getFollowersResult.Succeeded)
+                {
+                    throw new Exception($"Can't get followers [username:{username}]. Error:\t{getFollowersResult.Info.Message }");
+                }
+
+
+                var followersIds = getFollowersResult.Value.Select(x => long.Parse(x.Pk)).ToList();
+
+                foreach (long id in followersIds)
+                {
+                    var followResult = await _instaApi.FollowUserAsync(id);
+                    if (!followResult.Succeeded)
+                    {
+                        throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
+                    }
+                    _logger.LogInformation($"Now you follow user with id={id} ");
+                    await Task.Delay(GetDelay());
+                }
+                return new OperationResult(true);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return new OperationResult(false, e.Message);
+            }
+            
+
         }
     }
 }
