@@ -68,7 +68,7 @@ namespace InstagramTools.Core
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username, int usersToFollow)
+        public async Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace InstagramTools.Core
 
                 //var unfollowResult = await _instaApi.UnFollowUserAsync(testId);
 
-                for (int i = 0; i < usersToFollow; i++)
+                for (int i = 0; i < likersIds.Count; i++)
                 {
                     var followResult = await _instaApi.FollowUserAsync(likersIds[i]);
                     if (!followResult.Succeeded)

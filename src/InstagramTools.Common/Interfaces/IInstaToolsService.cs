@@ -16,7 +16,7 @@ namespace InstagramTools.Common.Interfaces
         /// <param name="username"> User name</param>
         /// <param name="usersToFollow"> number of users to follow</param>
         /// <returns></returns>
-        Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username, int usersToFollow);
+        Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username);
 
     }
 }

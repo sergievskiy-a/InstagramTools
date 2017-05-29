@@ -44,9 +44,13 @@ namespace InstagramTools.ConsoleClient
                 throw new Exception(buildApiManagerResult.Message);
             }
             
-            var testUsername = "kotsemir.nazariy";
-            var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(testUsername, 2);
-
+            var kievphoto = "kievphoto";
+            var kievblog = "kievblog";
+            var kpi_live = "kpi_live";
+            var kievgram = "kievgram";
+            var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(kpi_live);
+            Console.WriteLine("Done!");
+            Console.ReadKey();
             return 1;
         }
     }
