@@ -148,5 +148,36 @@ namespace InstagramTools.Core
             
 
         }
+
+        public async Task<OperationResult> UnfollowUnreciprocalUsers()
+        {
+            try
+            {
+                var getFollowersResult = await _instaApi.GetCurrentUserFollowersAsync(_maxDescriptionLength);
+                if (!getFollowersResult.Succeeded)
+                {
+                    throw new Exception($"Can't get followers for current user. Error:\t{getFollowersResult.Info.Message }");
+                }
+
+                var followersIds = getFollowersResult.Value.Select(x=> long.Parse(x.Pk));
+                foreach (long id in followersIds)
+                {
+                    var followResult = await _instaApi.UnFollowUserAsync(id);
+                    if (!followResult.Succeeded)
+                    {
+                        throw new Exception($"Can't unfollow [userId :{id}]. Error:\t {followResult.Info.Message}");
+                    }
+                    _logger.LogInformation($"Now you unfollow user with id={id} ");
+                    await Task.Delay(GetDelay());
+                }
+                return new OperationResult(true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+        }
     }
 }
