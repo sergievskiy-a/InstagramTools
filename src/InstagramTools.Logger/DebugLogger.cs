@@ -1,6 +1,4 @@
-﻿using InstagramTools.Common.Interfaces;
-
-namespace InstagramTools.Logger
+﻿namespace InstagramTools.Logger
 {
     //internal class DebugLogger : ILogger
     //{

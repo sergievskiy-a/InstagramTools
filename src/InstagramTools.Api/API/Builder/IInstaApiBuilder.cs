@@ -1,7 +1,5 @@
 using System.Net.Http;
 using InstagramTools.Api.Common.Models;
-using InstagramTools.Common.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.Api.API.Builder
 {

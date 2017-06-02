@@ -11,11 +11,9 @@ using InstagramTools.Api.Common.Models.Android.DeviceInfo;
 using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Api.Common.Models.ResponseWrappers;
 using InstagramTools.Api.Common.Models.ResponseWrappers.BaseResponse;
-using InstagramTools.Common.Interfaces;
 using InstagramTools.Api.Common;
 using InstagramTools.Api.Common.Converters;
 using InstagramTools.Api.Common.Helpers;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using InstaRecentActivityConverter = InstagramTools.Api.Common.Converters.Json.InstaRecentActivityConverter;
@@ -155,12 +153,12 @@ namespace InstagramTools.Api.API
             return UnLikeMediaAsync(mediaId).Result;
         }
 
-        public IResult<InstaFriendshipStatus> FollowUser(long userId)
+        public IResult<InstaFriendshipStatus> FollowUser(string userId)
         {
             return FollowUserAsync(userId).Result;
         }
 
-        public IResult<InstaFriendshipStatus> UnFollowUser(long userId)
+        public IResult<InstaFriendshipStatus> UnFollowUser(string userId)
         {
             return UnFollowUserAsync(userId).Result;
         }
@@ -829,12 +827,12 @@ namespace InstagramTools.Api.API
             }
         }
 
-        public async Task<IResult<InstaFriendshipStatus>> FollowUserAsync(long userId)
+        public async Task<IResult<InstaFriendshipStatus>> FollowUserAsync(string userId)
         {
             return await FollowUnfollowUserInternal(userId, UriCreator.GetFollowUserUri(userId));
         }
 
-        public async Task<IResult<InstaFriendshipStatus>> UnFollowUserAsync(long userId)
+        public async Task<IResult<InstaFriendshipStatus>> UnFollowUserAsync(string userId)
         {
             return await FollowUnfollowUserInternal(userId, UriCreator.GetUnFollowUserUri(userId));
         }
@@ -1493,7 +1491,7 @@ namespace InstagramTools.Api.API
             return Result.Fail("", (InstaCommentListResponse) null);
         }
 
-        private async Task<IResult<InstaFriendshipStatus>> FollowUnfollowUserInternal(long userId, Uri instaUri)
+        private async Task<IResult<InstaFriendshipStatus>> FollowUnfollowUserInternal(string userId, Uri instaUri)
         {
             ValidateUser();
             ValidateLoggedIn();
@@ -1504,7 +1502,7 @@ namespace InstagramTools.Api.API
                     {"_uuid", _deviceInfo.DeviceGuid.ToString()},
                     {"_uid", _user.LoggedInUder.Pk},
                     {"_csrftoken", _user.CsrfToken},
-                    {"user_id", userId.ToString()},
+                    {"user_id", userId},
                     {"radio_type", "wifi-none"}
                 };
                 var request = HttpHelper.GetSignedRequest(HttpMethod.Post, instaUri, _deviceInfo, fields);

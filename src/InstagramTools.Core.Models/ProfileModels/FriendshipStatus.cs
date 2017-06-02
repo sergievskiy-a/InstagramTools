@@ -1,6 +1,6 @@
-﻿namespace InstagramTools.Api.Common.Models.Models
+﻿namespace InstagramTools.Core.Models.ProfileModels
 {
-    public class InstaFriendshipStatus
+    public class FriendshipStatus
     {
         public bool Following { get; set; }
         public bool IsPrivate { get; set; }

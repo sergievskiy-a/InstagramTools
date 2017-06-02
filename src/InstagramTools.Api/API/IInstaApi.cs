@@ -193,14 +193,14 @@ namespace InstagramTools.Api.API
         /// </summary>
         /// <param name="userId">User Id <see cref="InstaUser.Pk" /></param>
         /// <returns>True if success</returns>
-        IResult<InstaFriendshipStatus> FollowUser(long userId);
+        IResult<InstaFriendshipStatus> FollowUser(string userId);
 
         /// <summary>
         ///     Stop follow user by its by id
         /// </summary>
         /// <param name="userId">User Id <see cref="InstaUser.Pk" /></param>
         /// <returns>True if success</returns>
-        IResult<InstaFriendshipStatus> UnFollowUser(long userId);
+        IResult<InstaFriendshipStatus> UnFollowUser(string userId);
 
         /// <summary>
         ///     Set current account private
@@ -460,13 +460,13 @@ namespace InstagramTools.Api.API
         ///     Follow user
         /// </summary>
         /// <param name="userId">User id</param>
-        Task<IResult<InstaFriendshipStatus>> FollowUserAsync(long userId);
+        Task<IResult<InstaFriendshipStatus>> FollowUserAsync(string userId);
 
         /// <summary>
         ///     Stop follow user
         /// </summary>
         /// <param name="userId">User id</param>
-        Task<IResult<InstaFriendshipStatus>> UnFollowUserAsync(long userId);
+        Task<IResult<InstaFriendshipStatus>> UnFollowUserAsync(string userId);
 
         /// <summary>
         ///     Get media comments

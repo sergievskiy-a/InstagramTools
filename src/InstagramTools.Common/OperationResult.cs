@@ -21,6 +21,11 @@
     {
         public TModel Model { get; set; }
 
+        public OperationResult(bool success, string message)
+            : base(success, message)
+        {
+        }
+
         public OperationResult(TModel model) : base(true)
         {
             Model = model;

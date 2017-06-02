@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
-using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
-using InstagramTools.Api.Common.Models;
-using InstagramTools.Common;
-using InstagramTools.Common.Interfaces;
-using InstagramTools.Common.Models;
-using InstagramTools.ConsoleClient.Samples;
-using InstagramTools.Core;
+using InstagramTools.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using InstagramTools.Core;
 
 namespace InstagramTools.ConsoleClient
 {

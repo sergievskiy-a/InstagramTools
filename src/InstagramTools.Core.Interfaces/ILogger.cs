@@ -1,4 +1,4 @@
-﻿namespace InstagramTools.Common.Interfaces
+﻿namespace InstagramTools.Core.Interfaces
 {
     public interface IMyLogger
     {

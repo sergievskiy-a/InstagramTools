@@ -216,7 +216,7 @@ namespace InstagramTools.Api.Common.Helpers
             return instaUri;
         }
 
-        public static Uri GetFollowUserUri(long userId)
+        public static Uri GetFollowUserUri(string userId)
         {
             Uri instaUri;
             if (!Uri.TryCreate(BaseInstagramUri, string.Format(InstaApiConstants.FOLLOW_USER, userId), out instaUri))
@@ -224,7 +224,7 @@ namespace InstagramTools.Api.Common.Helpers
             return instaUri;
         }
 
-        public static Uri GetUnFollowUserUri(long userId)
+        public static Uri GetUnFollowUserUri(string userId)
         {
             Uri instaUri;
             if (!Uri.TryCreate(BaseInstagramUri, string.Format(InstaApiConstants.UNFOLLOW_USER, userId), out instaUri))

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using InstagramTools.Api.API.Builder;
-using InstagramTools.Common.Interfaces;
 using InstagramTools.Common.Models;
-using InstagramTools.Core;
+using InstagramTools.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient
@@ -49,7 +44,7 @@ namespace InstagramTools.ConsoleClient
             var kpi_live = "kpi_live";
             var kievgram = "kievgram";
 
-            var followingResult = await _instaToolsService.FollowSubscribersOfUser(kievphoto);
+            var followingResult = await _instaToolsService.FollowSubscribersOfUser(kievblog);
             //var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(kpi_live);
             Console.WriteLine("Done!");
             Console.ReadKey();
