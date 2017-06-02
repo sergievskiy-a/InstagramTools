@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Common;
-using InstagramTools.Core.Configurations;
+using InstagramTools.Core.Implemenations.Configurations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace InstagramTools.Core
+namespace InstagramTools.Core.Implemenations
 {
     public class MainService<TService> : BaseService
     {

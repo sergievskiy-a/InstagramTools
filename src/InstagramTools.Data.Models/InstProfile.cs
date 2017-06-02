@@ -1,4 +1,4 @@
-﻿namespace InstagramTools.Data
+﻿namespace InstagramTools.Data.Models
 {
     public class InstProfile
     {

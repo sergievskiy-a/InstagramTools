@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API;
@@ -9,21 +8,19 @@ using InstagramTools.Api.API.Builder;
 using InstagramTools.Api.Common.Models;
 using InstagramTools.Common;
 using InstagramTools.Common.Models;
-using InstagramTools.Common.Utils;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models.ProfileModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace InstagramTools.Core
+namespace InstagramTools.Core.Implemenations
 {
     public class InstaToolsService : MainService<InstaToolsService>, IInstaToolsService
     {
         //TODO: To config/constants
         private static readonly int _maxDescriptionLength = 20;
 
-        private readonly ILogger<InstaToolsService> _logger;
         private readonly IMapper _mapper;
         private readonly IInstaApiBuilder _apiBuilder;
         private IInstaApi _instaApi;
@@ -64,12 +61,12 @@ namespace InstagramTools.Core
                 if (!logInResult.Succeeded)
                     throw new Exception($"Unable to login: {logInResult.Info.Message}. [username:{loginModel.Username}]");
 
-                _logger.LogInformation($"Login success! [username:{loginModel.Username}]");
+                Logger.LogInformation($"Login success! [username:{loginModel.Username}]");
                 return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                Logger.LogError(ex.Message);
                 return new OperationResult(false, ex.Message);
             }
 
@@ -135,10 +132,10 @@ namespace InstagramTools.Core
                 var followResult = await _instaApi.FollowUserAsync(userInfo.Id);
                 if (!followResult.Succeeded)
                 {
-                    _logger.LogWarning($"Can't follow [username :{username}]. Error:\t {followResult.Info.Message}");
+                    Logger.LogWarning($"Can't follow [username :{username}]. Error:\t {followResult.Info.Message}");
                 }
                 //TODO: Insert to database
-                _logger.LogInformation($"Now you follow: {username} ");
+                Logger.LogInformation($"Now you follow: {username} ");
                 await Task.Delay(GetDelay());
                 return new OperationResult(true);
             });
@@ -152,7 +149,7 @@ namespace InstagramTools.Core
                 {
                     var followResult = await FollowUser(username);
                 }
-                _logger.LogInformation($"Following success!");
+                Logger.LogInformation($"Following success!");
                 return new OperationResult(true);
             });
         }
@@ -171,10 +168,10 @@ namespace InstagramTools.Core
                 var followResult = await _instaApi.UnFollowUserAsync(userInfo.Id);
                 if (!followResult.Succeeded)
                 {
-                    _logger.LogWarning($"Can't unfollow [username :{username}]. Error:\t {followResult.Info.Message}");
+                    Logger.LogWarning($"Can't unfollow [username :{username}]. Error:\t {followResult.Info.Message}");
                 }
                 //TODO: mark as unfollowed
-                _logger.LogInformation($"Now you unfollow: {username} ");
+                Logger.LogInformation($"Now you unfollow: {username} ");
                 await Task.Delay(GetDelay());
                 return new OperationResult(true);
             });
@@ -188,7 +185,7 @@ namespace InstagramTools.Core
                 {
                     var followResult = await UnFollowUser(username);
                 }
-                _logger.LogInformation($"Unfollowing success!");
+                Logger.LogInformation($"Unfollowing success!");
                 return new OperationResult(true);
             });
         }
@@ -226,16 +223,16 @@ namespace InstagramTools.Core
                     {
                         throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    _logger.LogInformation($"Now you follow user with id={id} ");
+                    Logger.LogInformation($"Now you follow user with id={id} ");
                     await Task.Delay(GetDelay());
                 }
 
-                _logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
+                Logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
                 return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                Logger.LogError(ex.Message);
                 return new OperationResult(false, ex.Message);
             }
 
@@ -261,14 +258,14 @@ namespace InstagramTools.Core
                     {
                         throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    _logger.LogInformation($"Now you follow user with id={id} ");
+                    Logger.LogInformation($"Now you follow user with id={id} ");
                     await Task.Delay(GetDelay());
                 }
                 return new OperationResult(true);
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message);
+                Logger.LogError(e.Message);
                 return new OperationResult(false, e.Message);
             }
 
@@ -293,7 +290,7 @@ namespace InstagramTools.Core
                     {
                         throw new Exception($"Can't unfollow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    _logger.LogInformation($"Now you unfollow user with id={id} ");
+                    Logger.LogInformation($"Now you unfollow user with id={id} ");
                     await Task.Delay(GetDelay());
                 }
                 return new OperationResult(true);

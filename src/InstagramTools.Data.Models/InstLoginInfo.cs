@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InstagramTools.Data
+namespace InstagramTools.Data.Models
 {
     public class InstLoginInfo : Entity
     {

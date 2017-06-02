@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InstagramTools.Data
+namespace InstagramTools.Data.Models
 {
     public class AppUserRow : Entity
     {
