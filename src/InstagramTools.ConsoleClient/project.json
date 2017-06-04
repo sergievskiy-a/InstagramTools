@@ -7,19 +7,19 @@
     "dependencies": {
         "InstagramTools.Common": "1.0.0-*",
         "Microsoft.Extensions.DependencyInjection": "1.1.1",
-        "Microsoft.Extensions.Configuration.Json": "1.1.0",
-        "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
-        "Microsoft.Extensions.Configuration": "1.1.0",
-        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
         "Microsoft.Extensions.Logging": "1.1.2",
         "Microsoft.Extensions.Logging.Console": "1.1.2",
         "Microsoft.Extensions.Logging.Debug": "1.1.2",
         "Microsoft.NETCore.App": "1.1.2",
-        "InstagramTools.Core.Implemenations": "1.0.0-*"
+        "InstagramTools.Core.Implemenations": "1.0.0-*",
+        "Microsoft.Extensions.Configuration": "1.1.2",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.1.2",
+        "Microsoft.Extensions.Configuration.Json": "1.1.2",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.2"
     },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "imports": "dnxcore50"
     }
   },

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+    "version": "1.0.0-*",
 
     "dependencies": {
         "InstagramTools.Api.Common": "1.0.0-*",
@@ -7,17 +7,17 @@
         "Microsoft.Extensions.Logging": "1.1.2",
         "Microsoft.Extensions.Logging.Console": "1.1.2",
         "Microsoft.Extensions.Logging.Debug": "1.1.2",
-        "NETStandard.Library": "1.6.1",
+        "Microsoft.NETCore.App": "1.1.2",
         "Newtonsoft.Json": "10.0.2"
     },
 
-  "frameworks": {
-    "netstandard1.6": {
-      "imports": "dnxcore50"
-    }
-  },
+    "frameworks": {
+        "netcoreapp1.1": {
+            "imports": "dnxcore50"
+        }
+    },
 
-  "runtimes": {
-    "win10-x64": {}
-  }
+    "runtimes": {
+        "win10-x64": {}
+    }
 }

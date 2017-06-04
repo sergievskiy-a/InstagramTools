@@ -1,6 +1,6 @@
 ﻿namespace InstagramTools.Data.Models
 {
-    public class InstProfile
+    public class InstProfileRow
     {
         // Pk value
         public string Id { get; set; }

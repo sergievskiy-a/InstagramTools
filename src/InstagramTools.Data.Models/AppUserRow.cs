@@ -10,6 +10,6 @@ namespace InstagramTools.Data.Models
 		public string Phone { get; set; }
 
         // List of Instagram profiles' credentionals
-	    public virtual List<InstLoginInfo> InstCredentionals { get; set; }
+	    public virtual List<InstLoginInfoRow> InstCredentionals { get; set; }
     }
 }

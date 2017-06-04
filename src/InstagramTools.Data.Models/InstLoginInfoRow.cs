@@ -2,14 +2,14 @@
 
 namespace InstagramTools.Data.Models
 {
-    public class InstLoginInfo : Entity
+    public class InstLoginInfoRow : Entity
     {
         public string Username { get; set; }
 		public string Password { get; set; }
 
         // Instagram profile of this credentionals
         public string ProfileId { get; set; }
-        public InstProfile Profile { get; set; }
+        public InstProfileRow Profile { get; set; }
 
         // InstagramTools user
         public Guid OwnerId { get; set; }

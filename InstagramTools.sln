@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{B73119AA-CAE4-4E26-BC67-45DED8B61227}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "InstagramTools.WebApi", "src\InstagramTools.WebApi\InstagramTools.WebApi.xproj", "{EBB53293-8A06-4909-BF6D-39790FEA8988}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{D65FD45D-D4E9-4616-B049-A827292CFC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D65FD45D-D4E9-4616-B049-A827292CFC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D65FD45D-D4E9-4616-B049-A827292CFC02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB53293-8A06-4909-BF6D-39790FEA8988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB53293-8A06-4909-BF6D-39790FEA8988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB53293-8A06-4909-BF6D-39790FEA8988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB53293-8A06-4909-BF6D-39790FEA8988}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +106,6 @@ Global
 		{CC2A9AB1-BDD1-4A3D-A3DB-E75070A33C88} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
 		{E29047AD-0FDB-4627-AC77-CA3C2031F542} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
 		{B73119AA-CAE4-4E26-BC67-45DED8B61227} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
+		{EBB53293-8A06-4909-BF6D-39790FEA8988} = {220CDDE3-97D5-4349-8C15-CF53B4AF1C54}
 	EndGlobalSection
 EndGlobal
