@@ -4,7 +4,6 @@ using InstagramTools.Api.API.Builder;
 using InstagramTools.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using InstagramTools.Core;
 using InstagramTools.Core.Implemenations;
 
 namespace InstagramTools.ConsoleClient

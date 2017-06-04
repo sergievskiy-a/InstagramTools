@@ -26,7 +26,7 @@ namespace InstagramTools.Core.Models.PostModels
 
         public string Height { get; set; }
 
-        public ProfileModel User { get; set; }
+        public InstProfile User { get; set; }
 
         public string TrakingToken { get; set; }
 
@@ -44,7 +44,7 @@ namespace InstagramTools.Core.Models.PostModels
 
         public List<PostUserTag> Tags { get; set; } = new List<PostUserTag>();
 
-        public List<ProfileModel> Likers { get; set; } = new List<ProfileModel>();
+        public List<InstProfile> Likers { get; set; } = new List<InstProfile>();
         
         public int ViewCount { get; set; }
 

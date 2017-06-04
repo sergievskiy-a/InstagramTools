@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using InstagramTools.Common;
+using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Models.ProfileModels;
 
@@ -13,9 +13,9 @@ namespace InstagramTools.Core.Interfaces
 
         Task<OperationResult> BuildApiManagerAsync(LoginModel loginModel);
 
-        Task<OperationResult<ProfileModel>> GetUserByUsername(string username);
-        Task<OperationResult<List<ProfileModel>>> GetMyFollowers(int maxPages = 50);
-        Task<OperationResult<List<ProfileModel>>> GetUserFollowers(string username, int maxPages = 50);
+        Task<OperationResult<InstProfile>> GetUserByUsername(string username);
+        Task<OperationResult<List<InstProfile>>> GetMyFollowers(int maxPages = 50);
+        Task<OperationResult<List<InstProfile>>> GetUserFollowers(string username, int maxPages = 50);
         Task<OperationResult> FollowUser(string username);
         Task<OperationResult> FollowUsers(IEnumerable<string> usersnames);
         Task<OperationResult> UnFollowUser(string username);

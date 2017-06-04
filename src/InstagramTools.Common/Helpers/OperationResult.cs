@@ -1,4 +1,4 @@
-﻿namespace InstagramTools.Common
+﻿namespace InstagramTools.Common.Helpers
 {
     public class OperationResult
     {

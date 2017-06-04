@@ -8,6 +8,6 @@ namespace InstagramTools.Core.Models.PostModels
 
         public string TimeInVideo { get; set; }
 
-        public ProfileModel User { get; set; }
+        public InstProfile User { get; set; }
     }
 }

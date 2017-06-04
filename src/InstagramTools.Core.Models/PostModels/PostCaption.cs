@@ -10,7 +10,7 @@ namespace InstagramTools.Core.Models.PostModels
 
         public DateTime CreatedAt { get; set; }
 
-        public ProfileModel User { get; set; }
+        public InstProfile User { get; set; }
 
         public string Text { get; set; }
 

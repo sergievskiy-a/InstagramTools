@@ -6,10 +6,12 @@ using AutoMapper;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Api.Common.Models;
-using InstagramTools.Common;
+using InstagramTools.Api.Common.Models.Models;
+using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models.ProfileModels;
+using InstagramTools.Data;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -20,18 +22,17 @@ namespace InstagramTools.Core.Implemenations
     {
         //TODO: To config/constants
         private static readonly int _maxDescriptionLength = 20;
-
-        private readonly IMapper _mapper;
         private readonly IInstaApiBuilder _apiBuilder;
         private IInstaApi _instaApi;
+
 
         #region Constructors
 
         public InstaToolsService(IConfigurationRoot root, ILogger<InstaToolsService> logger,
-            IMemoryCache memoryCache, IInstaApiBuilder apiBuilder, IMapper mapper)
-            : base(root, logger, memoryCache, apiBuilder)
+            IMemoryCache memoryCache, IMapper mapper, InstagramToolsContext context, IInstaApiBuilder apiBuilder)
+            : base(root, logger, memoryCache, mapper, context)
         {
-            _mapper = mapper;
+            _apiBuilder = apiBuilder;
         }
 
         #endregion
@@ -74,7 +75,7 @@ namespace InstagramTools.Core.Implemenations
 
         #region Main
 
-        public async Task<OperationResult<ProfileModel>> GetUserByUsername(string username)
+        public async Task<OperationResult<InstProfile>> GetUserByUsername(string username)
         {
             return await ProcessRequestAsync(async () =>
             {
@@ -83,12 +84,13 @@ namespace InstagramTools.Core.Implemenations
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getUserResult.Info.Message }");
                 }
-                //TODO: Mapping and return
-                return new OperationResult<Models.ProfileModels.ProfileModel>(new ProfileModel());
+                var profile = _mapper.Map<InstaUser, InstProfile>(getUserResult.Value);
+
+                return new OperationResult<InstProfile>(profile);
             });
         }
 
-        public async Task<OperationResult<List<ProfileModel>>> GetMyFollowers(int maxPages = 50)
+        public async Task<OperationResult<List<InstProfile>>> GetMyFollowers(int maxPages = 50)
         {
             return await ProcessRequestAsync(async () =>
             {
@@ -97,13 +99,14 @@ namespace InstagramTools.Core.Implemenations
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getFollowersResult.Info.Message }");
                 }
-                var userFollowers = getFollowersResult.Value;
-                //TODO: Mapping and return
-                return new OperationResult<List<ProfileModel>>(new List<ProfileModel>());
+                var followers =
+                    _mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
+
+                return new OperationResult<List<InstProfile>>(followers);
             });
         }
 
-        public async Task<OperationResult<List<ProfileModel>>> GetUserFollowers(string username, int maxPages = 50)
+        public async Task<OperationResult<List<InstProfile>>> GetUserFollowers(string username, int maxPages = 50)
         {
             return await ProcessRequestAsync(async () =>
             {
@@ -112,9 +115,10 @@ namespace InstagramTools.Core.Implemenations
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getFollowersResult.Info.Message }");
                 }
-                var userFollowers = getFollowersResult.Value;
-                //TODO: Mapping and return
-                return new OperationResult<List<ProfileModel>>(new List<ProfileModel>());
+                var followers =
+                    _mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
+
+                return new OperationResult<List<InstProfile>>(followers);
             });
         }
 
@@ -129,7 +133,7 @@ namespace InstagramTools.Core.Implemenations
                 var userInfo = getUserResult.Model;
 
                 //Follow user
-                var followResult = await _instaApi.FollowUserAsync(userInfo.Id);
+                var followResult = await _instaApi.FollowUserAsync(userInfo.ApiId);
                 if (!followResult.Succeeded)
                 {
                     Logger.LogWarning($"Can't follow [username :{username}]. Error:\t {followResult.Info.Message}");
@@ -165,7 +169,7 @@ namespace InstagramTools.Core.Implemenations
                 var userInfo = getUserResult.Model;
 
                 //Follow user
-                var followResult = await _instaApi.UnFollowUserAsync(userInfo.Id);
+                var followResult = await _instaApi.UnFollowUserAsync(userInfo.ApiId);
                 if (!followResult.Succeeded)
                 {
                     Logger.LogWarning($"Can't unfollow [username :{username}]. Error:\t {followResult.Info.Message}");

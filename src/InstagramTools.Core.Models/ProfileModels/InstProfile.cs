@@ -1,6 +1,6 @@
 ﻿namespace InstagramTools.Core.Models.ProfileModels
 {
-    public class ProfileModel
+    public class InstProfile : Entity
     {
         public string UserName { get; set; }
         public bool HasAnonymousProfilePicture { get; set; }
@@ -22,9 +22,9 @@
         public int FollowedByCount { get; set; }
         public int FollowerCount { get; set; }
 
-        public string Id { get; set; }
+        public string ApiId { get; set; }
 
         public string MutualFollowersCount { get; set; }
-        public static ProfileModel Empty => new ProfileModel { FullName = string.Empty, UserName = string.Empty };
+        public static InstProfile Empty => new InstProfile { FullName = string.Empty, UserName = string.Empty };
     }
 }

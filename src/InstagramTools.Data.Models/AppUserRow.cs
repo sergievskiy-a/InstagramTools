@@ -9,6 +9,9 @@ namespace InstagramTools.Data.Models
 		public string Email { get; set; }
 		public string Phone { get; set; }
 
+        public string RoleId { get; set; }
+        public RoleRow Role { get; set; }
+
         // List of Instagram profiles' credentionals
 	    public virtual List<InstLoginInfoRow> InstCredentionals { get; set; }
     }

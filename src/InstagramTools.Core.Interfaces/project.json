@@ -4,6 +4,7 @@
     "dependencies": {
         "InstagramTools.Common": "1.0.0-*",
         "InstagramTools.Core.Models": "1.0.0-*",
+        "InstagramTools.Data.Models": "1.0.0-*",
         "Microsoft.NETCore.App": "1.1.2"
     },
 

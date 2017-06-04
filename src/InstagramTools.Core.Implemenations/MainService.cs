@@ -1,7 +1,9 @@
 ﻿using System;
+using AutoMapper;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Common;
 using InstagramTools.Core.Implemenations.Configurations;
+using InstagramTools.Data;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,14 +14,16 @@ namespace InstagramTools.Core.Implemenations
     {
         public readonly ILogger<TService> Logger;
         private readonly IMemoryCache _memoryCache;
-        protected IInstaApiBuilder _apiBuilder;
+        protected readonly IMapper _mapper;
+        protected readonly InstagramToolsContext _context;
         protected InstagramToolsConfigurations Configurator;
 
-        public MainService(IConfigurationRoot root, ILogger<TService> logger, IMemoryCache memoryCache, IInstaApiBuilder apiBuilder)
+        public MainService(IConfigurationRoot root, ILogger<TService> logger, IMemoryCache memoryCache, IMapper mapper, InstagramToolsContext context)
         {
             Logger = logger;
             _memoryCache = memoryCache;
-            _apiBuilder = apiBuilder;
+            _mapper = mapper;
+            _context = context;
             Configurator = new InstagramToolsConfigurations(root);
         }
 

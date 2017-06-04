@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace InstagramTools.Data.Models
+namespace InstagramTools.Core.Models.ProfileModels
 {
-    public class FollowRequestRow: Entity
+    public class FollowRequest : Entity
     {
         public Guid InstProfileId { get; set; }
-        public InstProfileRow InstProfile { get; set; }
+        public InstProfile InstProfile { get; set; }
 
         public string ApiUserId { get; set; }
         public string ApiUserUsername { get; set; }
