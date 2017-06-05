@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
+using InstagramTools.Core.Models;
 using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient

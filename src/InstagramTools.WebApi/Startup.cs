@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using AutoMapper;
 using InstagramTools.Common.Helpers;
@@ -92,6 +93,21 @@ namespace InstagramTools.WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.Use(async (context, next) => {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value) &&
+                    !context.Request.Path.Value.StartsWith("/api/"))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+
+            app.UseMvcWithDefaultRoute();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             //Get JWT options
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));

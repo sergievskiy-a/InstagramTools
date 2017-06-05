@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <AssemblyName>InstagramTools.Core.Interfaces</AssemblyName>
+    <PackageId>InstagramTools.Core.Interfaces</PackageId>
+    <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InstagramTools.Common\InstagramTools.Common.csproj" />
+    <ProjectReference Include="..\InstagramTools.Core.Models\InstagramTools.Core.Models.csproj" />
+    <ProjectReference Include="..\InstagramTools.Data.Models\InstagramTools.Data.Models.csproj" />
+  </ItemGroup>
+
+</Project>

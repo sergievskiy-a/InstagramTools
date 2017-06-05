@@ -1,4 +1,4 @@
-﻿namespace InstagramTools.Common.Models
+﻿namespace InstagramTools.WebApi.Models
 {
 	public class LoginModel
 	{
@@ -10,5 +10,11 @@
         public string Role { get; set; }
 
         public string Token { get; set; }
+
+        //TODO: Other environment params
+        //OS
+        //Device
+        //Country
+        //IP
 	}
 }

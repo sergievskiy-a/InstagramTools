@@ -21,12 +21,13 @@ namespace InstagramTools.Core.Implemenations
             CreateMap<InstLoginInfoRow, LoginInfo>();
 
             CreateMap<AppUserRow, AppUser>();
-
+            CreateMap<RoleRow, Role>();
             CreateMap<FollowRequestRow, FollowRequest>();
 
             CreateMap<InstProfileRow, InstProfile>()
                 .ForMember(dst => dst.ApiId,
-                x => x.MapFrom(src => src.ApiId));
+                    x => x.MapFrom(src => src.ApiId))
+                .ForAllOtherMembers(m => m.Ignore());
 
             #endregion
 
@@ -35,7 +36,8 @@ namespace InstagramTools.Core.Implemenations
             //Profile
             CreateMap<InstaUser, InstProfile>()
                 .ForMember(dst => dst.ApiId,
-                x => x.MapFrom(src => src.Pk));
+                x => x.MapFrom(src => src.Pk))
+                .ForAllOtherMembers(m => m.Ignore());
 
             CreateMap<InstaUserList, List<InstProfile>>();
 

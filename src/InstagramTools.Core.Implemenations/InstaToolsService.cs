@@ -10,6 +10,7 @@ using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
+using InstagramTools.Core.Models;
 using InstagramTools.Core.Models.ProfileModels;
 using InstagramTools.Data;
 using Microsoft.Extensions.Caching.Memory;
