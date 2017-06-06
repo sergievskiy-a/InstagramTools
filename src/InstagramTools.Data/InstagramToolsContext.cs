@@ -17,7 +17,7 @@ namespace InstagramTools.Data
         public virtual DbSet<FollowRequestRow> FollowRequests { get; set; }
         public virtual DbSet<MessageRow> Messages { get; set; }
         public virtual DbSet<MessageTypeRow> MessageTypes { get; set; }
-        public virtual DbSet<TaskRow> Tasks { get; set; }
-        public virtual DbSet<TaskTypeRow> TaskTypes { get; set; }
+        public virtual DbSet<ToolsTaskRow> ToolsTasks { get; set; }
+        public virtual DbSet<ToolsTaskTypeRow> ToolsTaskTypes { get; set; }
     }
 }
