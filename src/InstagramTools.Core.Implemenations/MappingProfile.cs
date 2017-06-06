@@ -22,7 +22,12 @@ namespace InstagramTools.Core.Implemenations
 
             CreateMap<InstLoginInfoRow, LoginInfo>();
 
-            CreateMap<AppUserRow, AppUser>();
+            CreateMap<AppUserRow, AppUser>()
+                .ForMember(dst => dst.Password,
+                    x=> x.Ignore());
+
+            CreateMap<AppUser, AppUserRow>();
+
             CreateMap<RoleRow, Role>();
             CreateMap<FollowRequestRow, FollowRequest>();
 

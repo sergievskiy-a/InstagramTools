@@ -16,7 +16,6 @@ namespace InstagramTools.Core.Interfaces
         //Edit
         Task<OperationResult> AddRoleAsync(Role newRole);
         Task<OperationResult> EditRoleAsync(Role role);
-        Task<OperationResult> RemoveRoleAsync(string roleName);
 
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Common.Helpers;
+using InstagramTools.Common.Exceptions;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models;
 using InstagramTools.Data;
@@ -30,161 +31,140 @@ namespace InstagramTools.Core.Implemenations
 
         //One
 
-        public async Task<OperationResult<AppUser>> GetUserByIdAsync(Guid id)
+        public async Task<OperationResult<AppUser>> GetUserByIdAsync(string id)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var currUser =
-            //        await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
-            //    return new OperationResult<AppUser>(true, currUser);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult<AppUser>(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                var userRow =
+                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Id == Guid.Parse(id));
+
+                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+
+                return new OperationResult<AppUser>(user);
+            });
         }
 
         public async Task<OperationResult<AppUser>> GetUserByUsernameAsync(string username)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var currUser = await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Username.Equals(username));
-            //    return new OperationResult<AppUser>(true, currUser);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult<AppUser>(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                var userRow =
+                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Username.Equals(username));
+
+                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+
+                return new OperationResult<AppUser>(user);
+            });
         }
 
         public async Task<OperationResult<AppUser>> GetUserByPredicateAsync(Expression<Func<AppUserRow, bool>> predicate)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var currUser = await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(predicate);
-            //    return new OperationResult<AppUser>(true, currUser);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult<AppUser>(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                var userRow =
+                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(predicate);
 
+                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+
+                return new OperationResult<AppUser>(user);
+            });
         }
 
 
         //List
-
         public async Task<OperationResult<List<AppUser>>> GetUsersAsync(PagingOptions pagingOptions)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var currUser = await _context.AppUsers.AsNoTracking()
-            //        .OrderByDescending(x => x.CreateDateTime)
-            //        .Skip(pagingOptions.Skip)
-            //        .Take(pagingOptions.Take)
-            //        .ToListAsync();
-            //    return new OperationResult<List<AppUser>>(true, currUser);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult<List<AppUser>>(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                var usersRows = await _context.AppUsers.AsNoTracking()
+                   .OrderByDescending(x => x.Created)
+                   .Skip(pagingOptions.Skip)
+                   .Take(pagingOptions.Take)
+                   .ToListAsync();
+
+                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+
+                return new OperationResult<List<AppUser>>(users);
+            });
         }
 
         public async Task<OperationResult<List<AppUser>>> GetUsersByPredicateAsync(PagingOptions pagingOptions, Expression<Func<AppUserRow, bool>> predicate)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var currUser = await _context.AppUsers.AsNoTracking()
-            //        .Where(predicate)
-            //        .Skip(pagingOptions.Skip)
-            //        .Take(pagingOptions.Take)
-            //        .ToListAsync();
-            //    return new OperationResult<List<AppUser>>(true, currUser);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult<List<AppUser>>(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                var usersRows = await _context.AppUsers.AsNoTracking()
+                   .Where(predicate)
+                   .Skip(pagingOptions.Skip)
+                   .Take(pagingOptions.Take)
+                   .ToListAsync();
+
+                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+
+                return new OperationResult<List<AppUser>>(users);
+            });
         }
 
         #endregion
 
 
         #region Edit
-
         public async Task<OperationResult> AddUserAsync(AppUser newUser)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    if (newUser == null)
-            //        throw new ArgumentNullException(nameof(newUser));
-            //    if (string.IsNullOrWhiteSpace(newUser.Username))
-            //        throw new Exception("username is empty");
-            //    if (string.IsNullOrWhiteSpace(newUser.Password))
-            //        throw new Exception("password is empty");
-            //    if (_context.AppUsers.Any(x => x.Username.Equals(newUser.Username)))
-            //        throw new Exception($"user with username:{newUser.Id} is already exist");
-            //    if (!_context.Roles.Any(x => x.Name.Equals(newUser.RoleName)))
-            //        throw new Exception($"role {newUser.RoleName} is not exist");
-            //    _context.AppUsers.Add(newUser);
-            //    await _context.SaveChangesAsync();
-            //    return new OperationResult(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                if (newUser == null)
+                    throw new ArgumentNullException(nameof(newUser));
+                if (string.IsNullOrWhiteSpace(newUser.Username))
+                    throw new Exception("username is empty");
+                if (string.IsNullOrWhiteSpace(newUser.Password))
+                    throw new Exception("password is empty");
+                if (_context.AppUsers.Any(x => x.Username.Equals(newUser.Username)))
+                    throw new Exception($"user with username:{newUser.Id} is already exist");
+                if (!_context.Roles.Any(x => x.Name.Equals(newUser.RoleId)))
+                    throw new Exception($"role {newUser.RoleId} is not exist");
+
+                var userRow = _mapper.Map<AppUser, AppUserRow>(newUser);
+                _context.AppUsers.Add(userRow);
+                await _context.SaveChangesAsync();
+                return new OperationResult(true);
+            });
         }
 
         public async Task<OperationResult> EditUserAsync(AppUser user)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    if (user == null)
-            //        throw new ArgumentNullException(nameof(user));
-            //    if (string.IsNullOrWhiteSpace(user.Username))
-            //        throw new Exception("username is empty");
-            //    if (string.IsNullOrWhiteSpace(user.Password))
-            //        throw new Exception("password is empty");
-            //    if (!_context.Roles.Any(x => x.Name.Equals(user.RoleName)))
-            //        throw new Exception($"role {user.RoleName} is not exist");
-            //    _context.Entry(user).State = EntityState.Modified;
-            //    await _context.SaveChangesAsync();
-            //    return new OperationResult(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult(false, ex.Message);
-            //}
+            return await ProcessRequestAsync(async () =>
+            {
+                if (user == null)
+                    throw new ArgumentNullException(nameof(user));
+                if (string.IsNullOrWhiteSpace(user.Username))
+                    throw new Exception("username is empty");
+                if (string.IsNullOrWhiteSpace(user.Password))
+                    throw new Exception("password is empty");
+                if (!_context.Roles.Any(x => x.Name.Equals(user.RoleId)))
+                    throw new Exception($"role {user.RoleId} is not exist");
+                
+                var userRow = _mapper.Map<AppUser, AppUserRow>(user);
+                _context.Entry(userRow).State = EntityState.Modified;
+                
+                await _context.SaveChangesAsync();
+                return new OperationResult(true);
+            });
         }
 
-        public async Task<OperationResult> RemoveUserAsync(int id)
+        public async Task<OperationResult> RemoveUserAsync(string id)
         {
-            throw new NotImplementedException();
-            //try
-            //{
-            //    var userToDelete = await _context.AppUsers.FirstOrDefaultAsync(x => x.Id == id);
+            return await ProcessRequestAsync(async () =>
+            {
+                var userToDelete = await _context.AppUsers.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
-            //    if (userToDelete == null)
-            //        throw new UserNotFoundException(id);
+                if (userToDelete == null)
+                    throw new UserNotFoundException(id);
 
-            //    userToDelete.Deleted = DateTime.Now;
-            //    _context.Entry(userToDelete).State = EntityState.Modified;
-            //    await _context.SaveChangesAsync();
-            //    return new OperationResult(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new OperationResult(false, ex.Message);
-            //}
+                userToDelete.Deleted = DateTime.Now;
+                _context.Entry(userToDelete).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return new OperationResult(true);
+            });
         }
 
         #endregion
