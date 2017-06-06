@@ -2,13 +2,13 @@
 using System.IO;
 using System.Threading.Tasks;
 using InstagramTools.Api.API.Builder;
-using InstagramTools.Core.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using InstagramTools.Core.Implemenations;
+using InstagramTools.Core.Interfaces;
 using InstagramTools.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient
 {
@@ -20,9 +20,10 @@ namespace InstagramTools.ConsoleClient
         {
             try
             {
+                var path = Path.Combine(AppContext.BaseDirectory).Replace(@"bin\Debug\netcoreapp1.1", "");
                 var builder = new ConfigurationBuilder()
-                    .SetBasePath(Path.Combine(AppContext.BaseDirectory))
-                    .AddJsonFile("Settings/appsettings.dev.json", optional: true, reloadOnChange: true);
+                    .SetBasePath(path)
+                    .AddJsonFile("Settings/appsettings.dev.json", optional: false, reloadOnChange: true);
 
                 Configuration = builder.Build();
 
@@ -48,7 +49,6 @@ namespace InstagramTools.ConsoleClient
             {
                 Console.WriteLine($"ERROR: {ex.Message}!!!!");
                 Console.ReadLine();
-                return;
             }
 
         }

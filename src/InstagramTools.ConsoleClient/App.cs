@@ -47,7 +47,8 @@ namespace InstagramTools.ConsoleClient
             var kpi_live = "kpi_live";
             var kievgram = "kievgram";
 
-            var followingResult = await _instaToolsService.FollowSubscribersOfUser(kievblog);
+            //var followingResult = await _instaToolsService.FollowSubscribersOfUser(kievblog);
+            var test = await _instaToolsService.WriteToDbCurrentUserFollowers(10);
             //var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(kpi_live);
             Console.WriteLine("Done!");
             Console.ReadKey();
