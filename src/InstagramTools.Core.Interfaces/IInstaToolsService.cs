@@ -28,6 +28,7 @@ namespace InstagramTools.Core.Interfaces
         Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username);
         Task<OperationResult> FollowSubscribersOfUser(string username);
         Task<OperationResult> UnfollowUnreciprocalUsers();
+        Task<OperationResult> WriteToDbCurrentUserFollowers(int maxPages = 0);
 
     }
 }

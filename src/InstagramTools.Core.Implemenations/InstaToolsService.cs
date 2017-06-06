@@ -26,7 +26,6 @@ namespace InstagramTools.Core.Implemenations
         private readonly IInstaApiBuilder _apiBuilder;
         private IInstaApi _instaApi;
 
-
         #region Constructors
 
         public InstaToolsService(IConfigurationRoot root, ILogger<InstaToolsService> logger,
@@ -40,7 +39,7 @@ namespace InstagramTools.Core.Implemenations
 
         private Int32 GetDelay()
         {
-            const int minDelaySec = 20;
+            const int minDelaySec = 25;
 
             var addToDelaySec = new Random().Next(1, 40);
             var result = (minDelaySec + addToDelaySec) * 1000;
@@ -306,6 +305,23 @@ namespace InstagramTools.Core.Implemenations
                 throw;
             }
 
+        }
+
+        public async Task<OperationResult> WriteToDbCurrentUserFollowers(int maxPages = 0)
+        {
+            return await ProcessRequestAsync(async () =>
+            {
+                var currentFollowersResponse = await _instaApi.GetCurrentUserFollowersAsync(maxPages);
+                if (!currentFollowersResponse.Succeeded)
+                {
+                    return new OperationResult(false, currentFollowersResponse.Info.Message);
+                }
+
+                var followers = currentFollowersResponse.Value;
+
+
+                return new OperationResult(true);
+            });
         }
     }
 }

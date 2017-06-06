@@ -5,3 +5,4 @@ src/*/project.lock.json
 src/InstagramTools.WebApi/Settings/appsettings.prod.json
 src/InstagramTools.WebApi/wwwroot/*
 src/InstagramTools.WebApi/Settings/appsettings.*.json
+src/InstagramTools.ConsoleClient/Settings/appsettings.*.json

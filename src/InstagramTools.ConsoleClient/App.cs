@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.ConsoleClient
@@ -51,5 +53,7 @@ namespace InstagramTools.ConsoleClient
             Console.ReadKey();
             return 1;
         }
+
+        
     }
 }
