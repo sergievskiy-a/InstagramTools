@@ -2,3 +2,5 @@ src/InstagramTools.*/bin/*
 src/InstagramTools.*/obj/*
 src/*/project.lock.json
 .vs/*
+src/InstagramTools.WebApi/Settings/appsettings.prod.json
+src/InstagramTools.WebApi/wwwroot/*
