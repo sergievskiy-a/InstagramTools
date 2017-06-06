@@ -3,8 +3,10 @@ using AutoMapper;
 using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Core.Implemenations.Configurations;
 using InstagramTools.Core.Models;
+using InstagramTools.Core.Models.MessageModels;
 using InstagramTools.Core.Models.PostModels;
 using InstagramTools.Core.Models.ProfileModels;
+using InstagramTools.Core.Models.TaskModels;
 using InstagramTools.Data.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -28,6 +30,11 @@ namespace InstagramTools.Core.Implemenations
                 .ForMember(dst => dst.ApiId,
                     x => x.MapFrom(src => src.ApiId))
                 .ForAllOtherMembers(m => m.Ignore());
+
+            CreateMap<MessageRow, MessageModel>();
+            CreateMap<MessageTypeRow, MessageType>();
+            CreateMap<ToolsTaskRow, ToolsTask>();
+            CreateMap<ToolsTaskTypeRow, ToolsTaskType>();
 
             #endregion
 
