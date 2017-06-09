@@ -1,14 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using InstagramTools.ConsoleClient;
+using InstagramTools.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace InstagramTools.WebApi.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+
+        private const string KievLogin = "bad.kiev";
+        private const string KievPassword = "fckdhadiach";
+
+        private readonly IInstaToolsService _instaToolsService;
+        private readonly ILogger<App> _logger;
+
+        public ValuesController(ILogger<App> logger, IInstaToolsService instaToolsService)
+        {
+
+          _logger = logger;
+          _instaToolsService = instaToolsService;
+        }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
         }
@@ -25,6 +43,7 @@ namespace InstagramTools.WebApi.Controllers
         public void Post([FromBody]string value)
         {
         }
+
 
         // PUT api/values/5
         [HttpPut("{id}")]

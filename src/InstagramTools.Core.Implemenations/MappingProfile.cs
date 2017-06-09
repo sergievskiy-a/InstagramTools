@@ -20,53 +20,58 @@ namespace InstagramTools.Core.Implemenations
 
             #region DbContextModelsMaps
 
-            CreateMap<InstLoginInfoRow, LoginInfo>();
 
-            CreateMap<AppUserRow, AppUser>()
-                .ForMember(dst => dst.Password,
-                    x=> x.Ignore());
+            //CreateMap<RoleRow, Role>();
+            //CreateMap<InstLoginInfoRow, LoginInfo>();
 
-            CreateMap<AppUser, AppUserRow>();
 
-            CreateMap<RoleRow, Role>();
-            CreateMap<FollowRequestRow, FollowRequest>();
+            //CreateMap<AppUserRow, AppUser>()
+            //    .ForMember(dst => dst.Password,
+            //        x=> x.Ignore());
 
-            CreateMap<InstProfileRow, InstProfile>()
-                .ForMember(dst => dst.ApiId,
-                    x => x.MapFrom(src => src.ApiId))
-                .ForAllOtherMembers(m => m.Ignore());
+            //CreateMap<AppUser, AppUserRow>();
 
-            CreateMap<MessageRow, MessageModel>();
-            CreateMap<MessageTypeRow, MessageType>();
-            CreateMap<ToolsTaskRow, ToolsTask>();
-            CreateMap<ToolsTaskTypeRow, ToolsTaskType>();
+            ////CreateMap<List<AppUser>, List<AppUserRow>>();
 
-            #endregion
-
-            #region InstApiModelsMaps
             
-            //Profile
-            CreateMap<InstaUser, InstProfile>()
-                .ForMember(dst => dst.ApiId,
-                x => x.MapFrom(src => src.Pk))
-                .ForAllOtherMembers(m => m.Ignore());
+            //CreateMap<FollowRequestRow, FollowRequest>();
 
-            CreateMap<InstaUserList, List<InstProfile>>();
+            //CreateMap<InstProfileRow, InstProfile>()
+            //    .ForMember(dst => dst.ApiId,
+            //        x => x.MapFrom(src => src.ApiId))
+            //    .ForAllOtherMembers(m => m.Ignore());
 
-            CreateMap<InstaFriendshipStatus, FriendshipStatus>();
+            //CreateMap<MessageRow, MessageModel>();
+            //CreateMap<MessageTypeRow, MessageType>();
+            //CreateMap<ToolsTaskRow, ToolsTask>();
+            //CreateMap<ToolsTaskTypeRow, ToolsTaskType>();
 
-            //Media
-            CreateMap<InstaMedia, MediaPost>()
-                .ForMember(dst => dst.Likers,
-                x => x.MapFrom(src => src.Likers));
+            //#endregion
 
-            CreateMap<MediaImage, PostImage>();
+            //#region InstApiModelsMaps
+            
+            ////Profile
+            //CreateMap<InstaUser, InstProfile>()
+            //    .ForMember(dst => dst.ApiId,
+            //    x => x.MapFrom(src => src.Pk))
+            //    .ForAllOtherMembers(m => m.Ignore());
 
-            CreateMap<InstaCaption, PostCaption>();
+            //CreateMap<InstaUserList, List<InstProfile>>();
 
-            CreateMap<InstaUserTag, PostUserTag>();
+            //CreateMap<InstaFriendshipStatus, FriendshipStatus>();
 
-            CreateMap<InstaPosition, Position>();
+            ////Media
+            //CreateMap<InstaMedia, MediaPost>()
+            //    .ForMember(dst => dst.Likers,
+            //    x => x.MapFrom(src => src.Likers));
+
+            //CreateMap<MediaImage, PostImage>();
+
+            //CreateMap<InstaCaption, PostCaption>();
+
+            //CreateMap<InstaUserTag, PostUserTag>();
+
+            //CreateMap<InstaPosition, Position>();
 
             #endregion
 
