@@ -21,57 +21,10 @@ namespace InstagramTools.Core.Implemenations
             #region DbContextModelsMaps
 
 
-            //CreateMap<RoleRow, Role>();
-            //CreateMap<InstLoginInfoRow, LoginInfo>();
-
-
-            //CreateMap<AppUserRow, AppUser>()
-            //    .ForMember(dst => dst.Password,
-            //        x=> x.Ignore());
-
-            //CreateMap<AppUser, AppUserRow>();
-
-            ////CreateMap<List<AppUser>, List<AppUserRow>>();
-
-            
-            //CreateMap<FollowRequestRow, FollowRequest>();
-
-            //CreateMap<InstProfileRow, InstProfile>()
-            //    .ForMember(dst => dst.ApiId,
-            //        x => x.MapFrom(src => src.ApiId))
-            //    .ForAllOtherMembers(m => m.Ignore());
-
-            //CreateMap<MessageRow, MessageModel>();
-            //CreateMap<MessageTypeRow, MessageType>();
-            //CreateMap<ToolsTaskRow, ToolsTask>();
-            //CreateMap<ToolsTaskTypeRow, ToolsTaskType>();
-
-            //#endregion
-
-            //#region InstApiModelsMaps
-            
-            ////Profile
-            //CreateMap<InstaUser, InstProfile>()
-            //    .ForMember(dst => dst.ApiId,
-            //    x => x.MapFrom(src => src.Pk))
-            //    .ForAllOtherMembers(m => m.Ignore());
-
-            //CreateMap<InstaUserList, List<InstProfile>>();
-
-            //CreateMap<InstaFriendshipStatus, FriendshipStatus>();
-
-            ////Media
-            //CreateMap<InstaMedia, MediaPost>()
-            //    .ForMember(dst => dst.Likers,
-            //    x => x.MapFrom(src => src.Likers));
-
-            //CreateMap<MediaImage, PostImage>();
-
-            //CreateMap<InstaCaption, PostCaption>();
-
-            //CreateMap<InstaUserTag, PostUserTag>();
-
-            //CreateMap<InstaPosition, Position>();
+            CreateMap<Role, RoleRow>();
+            CreateMap<AppUser, AppUserRow>();
+            CreateMap<LoginInfo, InstLoginInfoRow>();
+            CreateMap<InstProfile, InstProfileRow>();
 
             #endregion
 
