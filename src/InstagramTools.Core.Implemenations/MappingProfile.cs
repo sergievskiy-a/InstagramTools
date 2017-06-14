@@ -21,10 +21,10 @@ namespace InstagramTools.Core.Implemenations
             #region DbContextModelsMaps
 
 
-            CreateMap<Role, RoleRow>();
-            CreateMap<AppUser, AppUserRow>();
-            CreateMap<LoginInfo, InstLoginInfoRow>();
-            CreateMap<InstProfile, InstProfileRow>();
+            CreateMap<Role, RoleRow>().ReverseMap();
+            CreateMap<AppUser, AppUserRow>().ReverseMap();
+            CreateMap<LoginInfo, InstLoginInfoRow>().ReverseMap();
+            CreateMap<InstProfile, InstProfileRow>().ReverseMap();
 
             #endregion
 
