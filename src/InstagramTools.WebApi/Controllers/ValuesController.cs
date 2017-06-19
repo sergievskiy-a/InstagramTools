@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using InstagramTools.Common.Models;
 using InstagramTools.ConsoleClient;
 using InstagramTools.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,12 @@ namespace InstagramTools.WebApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
+            await _instaToolsService.BuildApiManagerAsync(new LoginModel()
+            {
+                Password = KievPassword,
+                Username = KievLogin
+            });
+            await _instaToolsService.WriteToDbCurrentUserFollowers(7000);
             return new string[] { "value1", "value2" };
         }
 

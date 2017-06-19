@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using AutoMapper;
+using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Core.Implemenations;
@@ -166,6 +167,7 @@ namespace InstagramTools.WebApi
             
             services.AddScoped<IInstaToolsService, InstaToolsService>();
             services.AddScoped<IInstaApiBuilder, InstaApiBuilder>();
+            services.AddScoped<IInstaApi, InstaApi>();
             services.AddScoped<IAuthorizeService, AuthorizeService>();
             services.AddScoped<IAdminUserService, AdminUserService>();
             services.AddScoped<IUserService, UserService>();
