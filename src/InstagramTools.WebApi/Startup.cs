@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using AutoMapper;
+using InstagramTools.Api.API.Builder;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Core.Implemenations;
 using InstagramTools.Core.Interfaces;
@@ -30,7 +31,7 @@ namespace InstagramTools.WebApi
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("Settings/appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"Settings/appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"Settings/appsettings.{env.EnvironmentName}.json", optional: false);
 
             if (env.IsEnvironment("Development"))
             {
@@ -160,8 +161,11 @@ namespace InstagramTools.WebApi
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+            
+            
+            
             services.AddScoped<IInstaToolsService, InstaToolsService>();
+            services.AddScoped<IInstaApiBuilder, InstaApiBuilder>();
             services.AddScoped<IAuthorizeService, AuthorizeService>();
             services.AddScoped<IAdminUserService, AdminUserService>();
             services.AddScoped<IUserService, UserService>();
@@ -173,6 +177,10 @@ namespace InstagramTools.WebApi
         private string GetConnectionStringForMachine(IConfigurationRoot configuration)
         {
             if (Environment.MachineName.Equals("SERGIEVSKIY-DEV", StringComparison.OrdinalIgnoreCase))
+            {
+                return configuration.GetConnectionString("AzureTestDB");
+            }
+            if (Environment.MachineName.Equals("DESKTOP-PSG14TN", StringComparison.OrdinalIgnoreCase))
             {
                 return configuration.GetConnectionString("AzureTestDB");
             }

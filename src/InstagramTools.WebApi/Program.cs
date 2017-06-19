@@ -12,6 +12,7 @@ namespace InstagramTools.WebApi
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:8800/")
                 .Build();
 
             host.Run();
