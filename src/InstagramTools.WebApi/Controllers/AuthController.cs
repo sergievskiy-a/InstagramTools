@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Core.Interfaces;
-using InstagramTools.Core.Models;
 using InstagramTools.WebApi.Models;
 using InstagramTools.WebApi.Security;
 using Microsoft.AspNetCore.Authorization;

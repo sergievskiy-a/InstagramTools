@@ -28,18 +28,17 @@ namespace InstagramTools.Core.Implemenations
 
                 #region Get
 
-        //One
-
-        public async Task<OperationResult<AppUser>> GetUserByIdAsync(string id)
+        // One
+        public async Task<OperationResult<AppUser>> GetUserByIdAsync(int id)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers
+                   await this.Context.AppUsers
                    .AsNoTracking()
-                   .FirstOrDefaultAsync(s => s.Id == Guid.Parse(id) && s.Deleted == null);
+                   .FirstOrDefaultAsync(s => s.Id == id && s.Deleted == null);
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
@@ -47,14 +46,14 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<AppUser>> GetUserByUsernameAsync(string username)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers
+                   await this.Context.AppUsers
                    .AsNoTracking()
                    .FirstOrDefaultAsync(s => s.Username.Equals(username) && s.Deleted == null);
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
@@ -62,27 +61,27 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<AppUser>> GetUserByPredicateAsync(Expression<Func<AppUserRow, bool>> predicate)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers
+                   await this.Context.AppUsers
                    .AsNoTracking()
                    .Where(s => s.Deleted == null)
                    .FirstOrDefaultAsync(predicate);
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
         }
 
 
-        //List
+        // List
         public async Task<OperationResult<List<AppUser>>> GetUsersAsync(PagingOptions pagingOptions)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var usersRows = await _context.AppUsers
+                var usersRows = await this.Context.AppUsers
                     .AsNoTracking()
                    .OrderByDescending(x => x.Created)
                    .Where(s => s.Deleted == null)
@@ -90,7 +89,7 @@ namespace InstagramTools.Core.Implemenations
                    .Take(pagingOptions.Take)
                    .ToListAsync();
 
-                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+                var users = this.Mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
 
                 return new OperationResult<List<AppUser>>(users);
             });
@@ -98,16 +97,16 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<List<AppUser>>> GetUsersByPredicateAsync(PagingOptions pagingOptions, Expression<Func<AppUserRow, bool>> predicate)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var usersRows = await _context.AppUsers.AsNoTracking()
+                var usersRows = await this.Context.AppUsers.AsNoTracking()
                    .Where(s => s.Deleted == null)
                    .Where(predicate)
                    .Skip(pagingOptions.Skip)
                    .Take(pagingOptions.Take)
                    .ToListAsync();
 
-                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+                var users = this.Mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
 
                 return new OperationResult<List<AppUser>>(users);
             });

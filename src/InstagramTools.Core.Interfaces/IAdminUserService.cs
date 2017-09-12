@@ -16,7 +16,7 @@ namespace InstagramTools.Core.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<OperationResult<AppUser>> GetUserByIdAsync(string id);
+        Task<OperationResult<AppUser>> GetUserByIdAsync(int id);
 
         /// <summary>
         /// Return user by Email
@@ -50,6 +50,6 @@ namespace InstagramTools.Core.Interfaces
         //Edit
         Task<OperationResult> AddUserAsync(AppUser newUser);
         Task<OperationResult> EditUserAsync(AppUser user);
-        Task<OperationResult> RemoveUserAsync(string id);
+        Task<OperationResult> RemoveUserAsync(int id);
     }
 }

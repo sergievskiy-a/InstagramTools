@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
-using InstagramTools.Core.Models;
 using InstagramTools.Core.Models.ProfileModels;
 
 namespace InstagramTools.Core.Interfaces

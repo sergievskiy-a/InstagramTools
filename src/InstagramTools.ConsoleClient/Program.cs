@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+
+using AutoMapper;
+
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Core.Implemenations;
 using InstagramTools.Core.Interfaces;
@@ -20,13 +23,6 @@ namespace InstagramTools.ConsoleClient
         {
             try
             {
-                var path = Path.Combine(AppContext.BaseDirectory).Replace(@"bin\Debug\netcoreapp1.1", "");
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(path)
-                    .AddJsonFile("Settings/appsettings.dev.json", optional: false, reloadOnChange: true);
-
-                Configuration = builder.Build();
-
                 // create service collection
                 var serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
@@ -35,38 +31,52 @@ namespace InstagramTools.ConsoleClient
                 string connection = GetConnectionStringForMachine(Configuration);
                 serviceCollection.AddDbContext<InstagramToolsContext>(options => options.UseSqlServer(connection));
 
+                // Application application = new Application(serviceCollection);
+                IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-                // create service provider
-                var serviceProvider = serviceCollection.BuildServiceProvider();
-
-                // entry to run app
+                // Entry to run app
                 var application = serviceProvider.GetService<App>();
 
-                // run application
-                Task.Run(async () => { await application.StartApp(); }).GetAwaiter().GetResult();
+                // Run application
+                Task.Run(async () => { await application.StartApp(); }).Wait();
+                //Task.Run(async () => { await application.StartApp(); }).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"ERROR: {ex.Message}!!!!");
                 Console.ReadLine();
             }
-
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
         {
-                // add logging
-                serviceCollection.AddSingleton(new LoggerFactory()
+            //Add Logging
+            ILoggerFactory loggerFactory = new LoggerFactory()
                 .AddConsole()
-                .AddDebug());
-                serviceCollection.AddLogging();
+                .AddDebug();
+
+            serviceCollection.AddSingleton(loggerFactory); // Add first my already configured instance
+            serviceCollection.AddLogging(); // Allow ILogger<T>
+
+            //Add IConfigurationRoot
+            Configuration = GetConfiguration();
+            serviceCollection.AddSingleton<IConfigurationRoot>(Configuration);
 
             //// add services
             serviceCollection.AddTransient<IInstaToolsService, InstaToolsService>();
             serviceCollection.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
+            serviceCollection.AddAutoMapper();
 
             // add app
             serviceCollection.AddTransient<App>();
+        }
+
+        private static IConfigurationRoot GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"Settings/appsettings.dev.json", optional: true, reloadOnChange: true)
+                .Build();
         }
 
         //Return DbConnString based on Machine's name
@@ -80,7 +90,7 @@ namespace InstagramTools.ConsoleClient
             {
                 return configuration.GetConnectionString("lenovo-local");
             }
-            return configuration.GetConnectionString("AzureConnection");
+            return configuration.GetConnectionString("DefaultConnection");
         }
     }
 

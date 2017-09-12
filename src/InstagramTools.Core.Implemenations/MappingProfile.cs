@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+
 using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Core.Implemenations.Configurations;
 using InstagramTools.Core.Models;
-using InstagramTools.Core.Models.MessageModels;
-using InstagramTools.Core.Models.PostModels;
 using InstagramTools.Core.Models.ProfileModels;
-using InstagramTools.Core.Models.TaskModels;
 using InstagramTools.Data.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -14,20 +11,36 @@ namespace InstagramTools.Core.Implemenations
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile(IConfigurationRoot root)
+        public MappingProfile()
         {
-            var configurator = new InstagramToolsConfigurations(root);
+            this.CreateMap<Role, RoleRow>().ReverseMap();
+            this.CreateMap<AppUser, AppUserRow>().ReverseMap();
+            this.CreateMap<LoginInfo, InstLoginInfoRow>().ReverseMap();
+            this.CreateMap<InstProfile, InstProfileRow>().ReverseMap();
 
-            #region DbContextModelsMaps
+            this.CreateMap<InstProfile, FollowRequest>()
+                .ForMember(dest => dest.InstProfileId, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
+            this.CreateMap<InstProfile, FollowRequestRow>()
+                .ForMember(dest => dest.InstProfileId, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
-            CreateMap<Role, RoleRow>().ReverseMap();
-            CreateMap<AppUser, AppUserRow>().ReverseMap();
-            CreateMap<LoginInfo, InstLoginInfoRow>().ReverseMap();
-            CreateMap<InstProfile, InstProfileRow>().ReverseMap();
+            this.CreateMap<InstProfileRow, FollowRequestRow>()
+                .ForMember(dest => dest.InstProfileId, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
-            #endregion
+            this.CreateMap<InstProfileRow, FollowRequest>()
+                .ForMember(dest => dest.InstProfileId, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
+            this.CreateMap<InstaUser, InstProfile>()
+                .ForMember(dest => dest.ApiId, opt => opt.MapFrom(src => src.Pk))
+                .ForMember(dest => dest.FriendshipStatus, opt => opt.MapFrom(src => src.FriendshipStatus));
+
+            this.CreateMap<InstaFriendshipStatus, FriendshipStatus>();
+
+            this.CreateMap<FollowRequest, FollowRequestRow>();
         }
     }
 }

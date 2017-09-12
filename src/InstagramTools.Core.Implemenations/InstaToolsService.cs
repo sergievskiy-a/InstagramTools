@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using AutoMapper;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
@@ -10,10 +11,11 @@ using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
-using InstagramTools.Core.Models;
 using InstagramTools.Core.Models.ProfileModels;
 using InstagramTools.Data;
 using InstagramTools.Data.Models;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -22,10 +24,11 @@ namespace InstagramTools.Core.Implemenations
 {
     public class InstaToolsService : MainService<InstaToolsService>, IInstaToolsService
     {
-        //TODO: To config/constants
+        // TODO: To config/constants
         private static readonly int _maxDescriptionLength = 20;
-        private readonly IInstaApiBuilder _apiBuilder;
-        private IInstaApi _instaApi;
+
+        private readonly IInstaApiBuilder apiBuilder;
+        private IInstaApi instaApi;
 
         #region Constructors
 
@@ -33,43 +36,41 @@ namespace InstagramTools.Core.Implemenations
             IMemoryCache memoryCache, IMapper mapper, InstagramToolsContext context, IInstaApiBuilder apiBuilder)
             : base(root, logger, memoryCache, mapper, context)
         {
-            _apiBuilder = apiBuilder;
-
+            this.apiBuilder = apiBuilder;
         }
 
         #endregion
 
-        private Int32 GetDelay()
+        private int GetDelay()
         {
-            const int minDelaySec = 25;
+            // TODO: To settings file.
+            const int MinDelaySec = 25;
 
             var addToDelaySec = new Random().Next(1, 40);
-            var result = (minDelaySec + addToDelaySec) * 1000;
+            var result = (MinDelaySec + addToDelaySec) * 1000;
             return result;
-
         }
 
         public async Task<OperationResult> BuildApiManagerAsync(LoginModel loginModel)
         {
             try
             {
-
-                _instaApi = _apiBuilder.SetUser(new UserSessionData
+                this.instaApi = this.apiBuilder.SetUser(new UserSessionData
                 {
                     UserName = loginModel.Username,
                     Password = loginModel.Password
                 }).Build();
 
-                var logInResult = await _instaApi.LoginAsync();
+                var logInResult = await this.instaApi.LoginAsync();
                 if (!logInResult.Succeeded)
                     throw new Exception($"Unable to login: {logInResult.Info.Message}. [username:{loginModel.Username}]");
 
-                Logger.LogInformation($"Login success! [username:{loginModel.Username}]");
+                this.Logger.LogInformation($"Login success! [username:{loginModel.Username}]");
                 return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.Message);
+                this.Logger.LogError(ex.Message);
                 return new OperationResult(false, ex.Message);
             }
 
@@ -79,14 +80,15 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<InstProfile>> GetUserByUsername(string username)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var getUserResult = await _instaApi.GetUserAsync(username);
+                var getUserResult = await this.instaApi.GetUserAsync(username);
                 if (!getUserResult.Succeeded)
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getUserResult.Info.Message }");
                 }
-                var profile = _mapper.Map<InstaUser, InstProfile>(getUserResult.Value);
+
+                var profile = this.Mapper.Map<InstaUser, InstProfile>(getUserResult.Value);
 
                 return new OperationResult<InstProfile>(profile);
             });
@@ -94,15 +96,15 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<List<InstProfile>>> GetMyFollowers(int maxPages = 50)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var getFollowersResult = await _instaApi.GetCurrentUserFollowersAsync(maxPages);
+                var getFollowersResult = await this.instaApi.GetCurrentUserFollowersAsync(maxPages);
                 if (!getFollowersResult.Succeeded)
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getFollowersResult.Info.Message }");
                 }
-                var followers =
-                    _mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
+
+                var followers = this.Mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
 
                 return new OperationResult<List<InstProfile>>(followers);
             });
@@ -110,15 +112,15 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<List<InstProfile>>> GetUserFollowers(string username, int maxPages = 50)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var getFollowersResult = await _instaApi.GetUserFollowersAsync(username, maxPages);
+                var getFollowersResult = await this.instaApi.GetUserFollowersAsync(username, maxPages);
                 if (!getFollowersResult.Succeeded)
                 {
                     throw new Exception($"Can't get current user's followers. Error:\n{getFollowersResult.Info.Message }");
                 }
-                var followers =
-                    _mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
+
+                var followers = this.Mapper.Map<InstaUserList, List<InstProfile>>(getFollowersResult.Value);
 
                 return new OperationResult<List<InstProfile>>(followers);
             });
@@ -126,72 +128,107 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult> FollowUser(string username)
         {
-            return await ProcessRequestAsync(async () =>
-            {
-                //Get user info
-                var getUserResult = await GetUserByUsername(username);
-                if (!getUserResult.Success)
-                    throw new Exception(getUserResult.Message);
-                var userInfo = getUserResult.Model;
-
-                //Follow user
-                var followResult = await _instaApi.FollowUserAsync(userInfo.ApiId);
-                if (!followResult.Succeeded)
+            return await this.ProcessRequestAsync(async () =>
                 {
-                    Logger.LogWarning($"Can't follow [username :{username}]. Error:\t {followResult.Info.Message}");
-                }
-                //TODO: Insert to database
-                Logger.LogInformation($"Now you follow: {username} ");
-                await Task.Delay(GetDelay());
-                return new OperationResult(true);
-            });
+                    // Get user info
+                    var getUserResult = await this.GetUserByUsername(username);
+                    if (!getUserResult.Success) throw new Exception(getUserResult.Message);
+                    var userInfo = getUserResult.Model;
+
+                    // Follow user
+                    var followResult = await this.instaApi.FollowUserAsync(userInfo.ApiId);
+                    if (!followResult.Succeeded)
+                    {
+                        this.Logger.LogWarning(
+                            $"Can't follow [username :{username}]. Error:\t {followResult.Info.Message}");
+                    }
+
+                    // TODO: Insert to database
+                    this.Logger.LogInformation($"Now you follow: {username} ");
+                    await Task.Delay(this.GetDelay());
+                    return new OperationResult(true);
+                });
         }
 
         public async Task<OperationResult> FollowUsers(IEnumerable<string> usersnames)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 foreach (string username in usersnames)
                 {
-                    var followResult = await FollowUser(username);
+                    var followResult = await this.FollowUser(username);
                 }
-                Logger.LogInformation($"Following success!");
+
+                this.Logger.LogInformation($"Following success!");
                 return new OperationResult(true);
             });
         }
 
         public async Task<OperationResult> UnFollowUser(string username)
         {
-            return await ProcessRequestAsync(async () =>
-            {
-                //Get user info
-                var getUserResult = await GetUserByUsername(username);
-                if (!getUserResult.Success)
-                    throw new Exception(getUserResult.Message);
-                var userInfo = getUserResult.Model;
-
-                //Follow user
-                var followResult = await _instaApi.UnFollowUserAsync(userInfo.ApiId);
-                if (!followResult.Succeeded)
+            return await this.ProcessRequestAsync(async () =>
                 {
-                    Logger.LogWarning($"Can't unfollow [username :{username}]. Error:\t {followResult.Info.Message}");
-                }
-                //TODO: mark as unfollowed
-                Logger.LogInformation($"Now you unfollow: {username} ");
-                await Task.Delay(GetDelay());
-                return new OperationResult(true);
-            });
+                    // Get user info
+                    var getUserResult = await this.GetUserByUsername(username);
+                    if (!getUserResult.Success) throw new Exception(getUserResult.Message);
+                    var userInfo = getUserResult.Model;
+
+                    // Follow user
+                    var followResult = await this.instaApi.UnFollowUserAsync(userInfo.ApiId);
+                    if (!followResult.Succeeded)
+                    {
+                        this.Logger.LogWarning(
+                            $"Can't unfollow [username :{username}]. Error:\t {followResult.Info.Message}");
+                    }
+
+                    // Find Profile in Db
+                    var profileRow = await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
+                    if (profileRow == null)
+                    {
+                        // TODO: To Service or Repository
+                        // Add Profile to Db
+                        profileRow = this.Mapper.Map<InstProfileRow>(userInfo);
+                        this.Context.InstProfiles.Add(profileRow);
+
+                        await this.Context.SaveChangesAsync();
+
+                        profileRow = await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
+                    }
+                    // Find Follow request in Db
+                    var followRequestRow = this.Context.FollowRequests.FirstOrDefault(f => f.InstProfileId == profileRow.Id);
+                    if (followRequestRow == null)
+                    {
+                        // TODO: To Service or Repository
+                        var followRequest = this.Mapper.Map<FollowRequest>(profileRow);
+                        followRequest.IsUnfollowed = true;
+
+                        this.Context.FollowRequests.Add(this.Mapper.Map<FollowRequestRow>(followRequest));
+
+                        await this.Context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        followRequestRow.IsUnfollowed = true;
+
+                        await this.Context.SaveChangesAsync();
+                    }
+
+                    this.Logger.LogInformation($"Now you unfollow: {username} ");
+                    await Task.Delay(this.GetDelay());
+                    return new OperationResult(true);
+                });
         }
 
         public async Task<OperationResult> UnFollowUsers(IEnumerable<string> usersnames)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 foreach (string username in usersnames)
                 {
-                    var followResult = await UnFollowUser(username);
+                    var followResult = await this.UnFollowUser(username);
                 }
-                Logger.LogInformation($"Unfollowing success!");
+
+                this.Logger.LogInformation($"Unfollowing success!");
                 return new OperationResult(true);
             });
         }
@@ -202,43 +239,45 @@ namespace InstagramTools.Core.Implemenations
         {
             try
             {
-                var getUserMediaResult = await _instaApi.GetUserMediaAsync(username);
+                var getUserMediaResult = await this.instaApi.GetUserMediaAsync(username);
                 if (!getUserMediaResult.Succeeded)
                 {
                     throw new Exception($"Can't get media [username:{username}]. Error:\t{getUserMediaResult.Info.Message }");
                 }
+
                 var userMedia = getUserMediaResult.Value;
 
 
                 var lastMedia = userMedia.OrderByDescending(x => x.DeviceTimeStap /*x.TakenAt*/).FirstOrDefault();
                 var mediaId = lastMedia.InstaIdentifier;
 
-                var getLikersResult = await _instaApi.GetMediaLikersAsync(mediaId);
+                var getLikersResult = await this.instaApi.GetMediaLikersAsync(mediaId);
                 if (!getLikersResult.Succeeded)
                 {
                     throw new Exception($"Can't get likers for media [mediaId :{mediaId}]. Error:\t {getLikersResult.Info.Message}");
                 }
+
                 var likersIds = getLikersResult.Value.Select(x => x.Pk).ToList();
 
-                //var unfollowResult = await _instaApi.UnFollowUserAsync(testId);
-
+                // var unfollowResult = await instaApi.UnFollowUserAsync(testId);
                 foreach (string id in likersIds)
                 {
-                    var followResult = await _instaApi.FollowUserAsync(id);
+                    var followResult = await this.instaApi.FollowUserAsync(id);
                     if (!followResult.Succeeded)
                     {
                         throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    Logger.LogInformation($"Now you follow user with id={id} ");
-                    await Task.Delay(GetDelay());
+
+                    this.Logger.LogInformation($"Now you follow user with id={id} ");
+                    await Task.Delay(this.GetDelay());
                 }
 
-                Logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
+                this.Logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
                 return new OperationResult(true);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.Message);
+                this.Logger.LogError(ex.Message);
                 return new OperationResult(false, ex.Message);
             }
 
@@ -248,7 +287,7 @@ namespace InstagramTools.Core.Implemenations
         {
             try
             {
-                var getFollowersResult = await _instaApi.GetUserFollowersAsync(username, _maxDescriptionLength);
+                var getFollowersResult = await this.instaApi.GetUserFollowersAsync(username, _maxDescriptionLength);
                 if (!getFollowersResult.Succeeded)
                 {
                     throw new Exception($"Can't get followers [username:{username}]. Error:\t{getFollowersResult.Info.Message }");
@@ -259,19 +298,21 @@ namespace InstagramTools.Core.Implemenations
 
                 foreach (string id in followersIds)
                 {
-                    var followResult = await _instaApi.FollowUserAsync(id);
+                    var followResult = await this.instaApi.FollowUserAsync(id);
                     if (!followResult.Succeeded)
                     {
                         throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    Logger.LogInformation($"Now you follow user with id={id} ");
-                    await Task.Delay(GetDelay());
+
+                    this.Logger.LogInformation($"Now you follow user with id={id} ");
+                    await Task.Delay(this.GetDelay());
                 }
+
                 return new OperationResult(true);
             }
             catch (Exception e)
             {
-                Logger.LogError(e.Message);
+                this.Logger.LogError(e.Message);
                 return new OperationResult(false, e.Message);
             }
 
@@ -282,7 +323,7 @@ namespace InstagramTools.Core.Implemenations
         {
             try
             {
-                var getFollowersResult = await _instaApi.GetCurrentUserFollowersAsync(_maxDescriptionLength);
+                var getFollowersResult = await this.instaApi.GetCurrentUserFollowersAsync(_maxDescriptionLength);
                 if (!getFollowersResult.Succeeded)
                 {
                     throw new Exception($"Can't get followers for current user. Error:\t{getFollowersResult.Info.Message }");
@@ -291,14 +332,16 @@ namespace InstagramTools.Core.Implemenations
                 var followersIds = getFollowersResult.Value.Select(x => x.Pk);
                 foreach (string id in followersIds)
                 {
-                    var followResult = await _instaApi.UnFollowUserAsync(id);
+                    var followResult = await this.instaApi.UnFollowUserAsync(id);
                     if (!followResult.Succeeded)
                     {
                         throw new Exception($"Can't unfollow [userId :{id}]. Error:\t {followResult.Info.Message}");
                     }
-                    Logger.LogInformation($"Now you unfollow user with id={id} ");
-                    await Task.Delay(GetDelay());
+
+                    this.Logger.LogInformation($"Now you unfollow user with id={id} ");
+                    await Task.Delay(this.GetDelay());
                 }
+
                 return new OperationResult(true);
             }
             catch (Exception e)
@@ -311,29 +354,32 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult> WriteToDbCurrentUserFollowers(int maxPages = 0)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var currentFollowersResponse = await _instaApi.GetCurrentUserFollowersAsync(maxPages);
+                var currentFollowersResponse = await this.instaApi.GetCurrentUserFollowersAsync(maxPages);
                 if (!currentFollowersResponse.Succeeded)
                 {
                     return new OperationResult(false, currentFollowersResponse.Info.Message);
                 }
 
-                _context.AppUsers.Add(new AppUserRow()
+                this.Context.AppUsers.Add(new AppUserRow()
                 {
                     Created = DateTime.Now,
                     Deleted = DateTime.MinValue,
                     Email = "fckd.kiev@gmail.com",
                     Password = "fckdhadiach",
                     Username = "ADMIN",
-                    Phone = ""
+                    Phone = string.Empty
 
                 });
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
 
                 var followers = currentFollowersResponse.Value;
-
-
+                foreach (var follower in followers)
+                {
+                    await this.UnFollowUser(follower.UserName);
+                }
+                
                 return new OperationResult(true);
             });
         }

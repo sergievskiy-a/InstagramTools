@@ -11,12 +11,12 @@ namespace InstagramTools.Core.Implemenations.Configurations
 
         public InstagramToolsConfigurations(IConfigurationRoot root)
         {
-            _root = root;
+            this._root = root;
         }
 
         public string Get(string key)
         {
-            return _root[key];
+            return this._root[key];
         }
 
     }

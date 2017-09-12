@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using InstagramTools.Api.API.Builder;
-using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Exceptions;
+using InstagramTools.Common.Helpers;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models;
 using InstagramTools.Data;
 using InstagramTools.Data.Models;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -29,16 +32,15 @@ namespace InstagramTools.Core.Implemenations
 
         #region Get
 
-        //One
-
-        public async Task<OperationResult<AppUser>> GetUserByIdAsync(string id)
+        // One
+        public async Task<OperationResult<AppUser>> GetUserByIdAsync(int id)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Id == Guid.Parse(id));
+                   await this.Context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
@@ -46,12 +48,12 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<AppUser>> GetUserByUsernameAsync(string username)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Username.Equals(username));
+                   await this.Context.AppUsers.AsNoTracking().FirstOrDefaultAsync(s => s.Username.Equals(username));
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
@@ -59,30 +61,30 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<AppUser>> GetUserByPredicateAsync(Expression<Func<AppUserRow, bool>> predicate)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 var userRow =
-                   await _context.AppUsers.AsNoTracking().FirstOrDefaultAsync(predicate);
+                   await this.Context.AppUsers.AsNoTracking().FirstOrDefaultAsync(predicate);
 
-                var user = _mapper.Map<AppUserRow, AppUser>(userRow);
+                var user = this.Mapper.Map<AppUserRow, AppUser>(userRow);
 
                 return new OperationResult<AppUser>(user);
             });
         }
 
 
-        //List
+        // List
         public async Task<OperationResult<List<AppUser>>> GetUsersAsync(PagingOptions pagingOptions)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var usersRows = await _context.AppUsers.AsNoTracking()
+                var usersRows = await this.Context.AppUsers.AsNoTracking()
                    .OrderByDescending(x => x.Created)
                    .Skip(pagingOptions.Skip)
                    .Take(pagingOptions.Take)
                    .ToListAsync();
 
-                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+                var users = this.Mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
 
                 return new OperationResult<List<AppUser>>(users);
             });
@@ -90,15 +92,15 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult<List<AppUser>>> GetUsersByPredicateAsync(PagingOptions pagingOptions, Expression<Func<AppUserRow, bool>> predicate)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var usersRows = await _context.AppUsers.AsNoTracking()
+                var usersRows = await this.Context.AppUsers.AsNoTracking()
                    .Where(predicate)
                    .Skip(pagingOptions.Skip)
                    .Take(pagingOptions.Take)
                    .ToListAsync();
 
-                var users = _mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
+                var users = this.Mapper.Map<List<AppUserRow>, List<AppUser>>(usersRows);
 
                 return new OperationResult<List<AppUser>>(users);
             });
@@ -110,7 +112,7 @@ namespace InstagramTools.Core.Implemenations
         #region Edit
         public async Task<OperationResult> AddUserAsync(AppUser newUser)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 if (newUser == null)
                     throw new ArgumentNullException(nameof(newUser));
@@ -118,21 +120,21 @@ namespace InstagramTools.Core.Implemenations
                     throw new Exception("username is empty");
                 if (string.IsNullOrWhiteSpace(newUser.Password))
                     throw new Exception("password is empty");
-                if (_context.AppUsers.Any(x => x.Username.Equals(newUser.Username)))
+                if (this.Context.AppUsers.Any(x => x.Username.Equals(newUser.Username)))
                     throw new Exception($"user with username:{newUser.Id} is already exist");
-                if (!_context.Roles.Any(x => x.Name.Equals(newUser.RoleId)))
+                if (!this.Context.Roles.Any(x => x.Name.Equals(newUser.RoleId)))
                     throw new Exception($"role {newUser.RoleId} is not exist");
 
-                var userRow = _mapper.Map<AppUser, AppUserRow>(newUser);
-                _context.AppUsers.Add(userRow);
-                await _context.SaveChangesAsync();
+                var userRow = this.Mapper.Map<AppUser, AppUserRow>(newUser);
+                this.Context.AppUsers.Add(userRow);
+                await this.Context.SaveChangesAsync();
                 return new OperationResult(true);
             });
         }
 
         public async Task<OperationResult> EditUserAsync(AppUser user)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 if (user == null)
                     throw new ArgumentNullException(nameof(user));
@@ -140,29 +142,29 @@ namespace InstagramTools.Core.Implemenations
                     throw new Exception("username is empty");
                 if (string.IsNullOrWhiteSpace(user.Password))
                     throw new Exception("password is empty");
-                if (!_context.Roles.Any(x => x.Name.Equals(user.RoleId)))
+                if (!this.Context.Roles.Any(x => x.Name.Equals(user.RoleId)))
                     throw new Exception($"role {user.RoleId} is not exist");
                 
-                var userRow = _mapper.Map<AppUser, AppUserRow>(user);
-                _context.Entry(userRow).State = EntityState.Modified;
+                var userRow = this.Mapper.Map<AppUser, AppUserRow>(user);
+                this.Context.Entry(userRow).State = EntityState.Modified;
                 
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
                 return new OperationResult(true);
             });
         }
 
-        public async Task<OperationResult> RemoveUserAsync(string id)
+        public async Task<OperationResult> RemoveUserAsync(int id)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var userToDelete = await _context.AppUsers.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                var userToDelete = await this.Context.AppUsers.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (userToDelete == null)
                     throw new UserNotFoundException(id);
 
                 userToDelete.Deleted = DateTime.Now;
-                _context.Entry(userToDelete).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                this.Context.Entry(userToDelete).State = EntityState.Modified;
+                await this.Context.SaveChangesAsync();
                 return new OperationResult(true);
             });
         }

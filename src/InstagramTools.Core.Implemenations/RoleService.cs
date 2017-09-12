@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API.Builder;
@@ -25,31 +24,31 @@ namespace InstagramTools.Core.Implemenations
         {
         }
         
-        //One
+        // One
         public async Task<OperationResult<Role>> GetRoleAsync(string name)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var roleRow = await _context.Roles
+                var roleRow = await this.Context.Roles
                 .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.Name == name);
                 if (roleRow == null)
                     throw new Exception($"Role: {name} not found");
-                var role = _mapper.Map<RoleRow, Role>(roleRow);
+                var role = this.Mapper.Map<RoleRow, Role>(roleRow);
 
                 return new OperationResult<Role>(role);
             });
         }
 
 
-        //List
+        // List
         public async Task<OperationResult<List<Role>>> GetRolesAsync()
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
-                var rolesRows = await _context.Roles.AsNoTracking().ToListAsync();
+                var rolesRows = await this.Context.Roles.AsNoTracking().ToListAsync();
 
-                var roles = _mapper.Map<List<RoleRow>, List<Role>>(rolesRows);
+                var roles = this.Mapper.Map<List<RoleRow>, List<Role>>(rolesRows);
 
                 return new OperationResult<List<Role>>(roles);
             });

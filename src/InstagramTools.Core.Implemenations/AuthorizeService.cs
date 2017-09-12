@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API.Builder;
 using InstagramTools.Core.Interfaces;
@@ -20,13 +19,13 @@ namespace InstagramTools.Core.Implemenations
                     IInstaApiBuilder apiBuilder, IAdminUserService adminUserService)
             : base(root, logger, memoryCache, mapper, context)
         {
-            _adminUserService = adminUserService;
+            this._adminUserService = adminUserService;
         }
 
 
 		public async Task<AppUser> ValidateUser(string login, string password)
 		{
-			var userByEmailOperationResult = await _adminUserService.GetUserByUsernameAsync(login);
+			var userByEmailOperationResult = await this._adminUserService.GetUserByUsernameAsync(login);
 		    var userByEmail = userByEmailOperationResult.Model;
             return userByEmail.Password.Equals(password) ?
 					userByEmail :

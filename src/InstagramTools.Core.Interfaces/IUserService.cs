@@ -16,7 +16,7 @@ namespace InstagramTools.Core.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<OperationResult<AppUser>> GetUserByIdAsync(string id);
+        Task<OperationResult<AppUser>> GetUserByIdAsync(int id);
 
         /// <summary>
         /// Return NOT DELETED user by Email

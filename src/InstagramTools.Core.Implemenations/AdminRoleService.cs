@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API.Builder;
-using InstagramTools.Common;
 using InstagramTools.Common.Helpers;
-using InstagramTools.Common.Exceptions;
-using InstagramTools.Core.Implemenations.Configurations;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Core.Models;
 using InstagramTools.Data;
@@ -32,19 +28,19 @@ namespace InstagramTools.Core.Implemenations
         #region Edit
         public async Task<OperationResult> AddRoleAsync(Role newRole)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 if (newRole == null)
                     throw new ArgumentNullException(nameof(newRole));
                 if (string.IsNullOrWhiteSpace(newRole.Name))
                     throw new Exception("role name is empty");
-                if (_context.Roles.Any(x => x.Name.Equals(newRole.Name)))
+                if (this.Context.Roles.Any(x => x.Name.Equals(newRole.Name)))
                     throw new Exception($"role with id:{newRole.Name} is already exist");
 
-                var newRoleRow = _mapper.Map<Role, RoleRow>(newRole);
+                var newRoleRow = this.Mapper.Map<Role, RoleRow>(newRole);
 
-                _context.Roles.Add(newRoleRow);
-                await _context.SaveChangesAsync();
+                this.Context.Roles.Add(newRoleRow);
+                await this.Context.SaveChangesAsync();
 
                 return new OperationResult(true);
             });
@@ -52,17 +48,17 @@ namespace InstagramTools.Core.Implemenations
 
         public async Task<OperationResult> EditRoleAsync(Role role)
         {
-            return await ProcessRequestAsync(async () =>
+            return await this.ProcessRequestAsync(async () =>
             {
                 if (role == null)
                     throw new ArgumentNullException(nameof(role));
                 if (string.IsNullOrWhiteSpace(role.Name))
                     throw new Exception("Role name is empty");
 
-                var roleRow = _mapper.Map<Role, RoleRow>(role);
+                var roleRow = this.Mapper.Map<Role, RoleRow>(role);
 
-                _context.Entry(roleRow).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                this.Context.Entry(roleRow).State = EntityState.Modified;
+                await this.Context.SaveChangesAsync();
 
                 return new OperationResult(true);
             });
