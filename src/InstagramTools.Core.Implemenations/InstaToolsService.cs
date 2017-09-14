@@ -182,7 +182,8 @@ namespace InstagramTools.Core.Implemenations
                     }
 
                     // Find Profile in Db
-                    var profileRow = await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
+                    var profileRow =
+                        await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
                     if (profileRow == null)
                     {
                         // TODO: To Service or Repository
@@ -192,10 +193,13 @@ namespace InstagramTools.Core.Implemenations
 
                         await this.Context.SaveChangesAsync();
 
-                        profileRow = await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
+                        profileRow =
+                            await this.Context.InstProfiles.FirstOrDefaultAsync(x => x.ApiId == userInfo.ApiId);
                     }
+
                     // Find Follow request in Db
-                    var followRequestRow = this.Context.FollowRequests.FirstOrDefault(f => f.InstProfileId == profileRow.Id);
+                    var followRequestRow =
+                        this.Context.FollowRequests.FirstOrDefault(f => f.InstProfileId == profileRow.Id);
                     if (followRequestRow == null)
                     {
                         // TODO: To Service or Repository

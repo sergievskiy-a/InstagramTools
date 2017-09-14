@@ -12,14 +12,14 @@ namespace InstagramTools.Api.Common.Converters
         {
             var friendShip = new InstaFriendshipStatus
             {
-                Following = SourceObject.Following,
-                Blocking = SourceObject.Blocking,
-                FollowedBy = SourceObject.FollowedBy,
-                IncomingRequest = SourceObject.IncomingRequest,
-                OutgoingRequest = SourceObject.OutgoingRequest
+                Following = this.SourceObject.Following,
+                Blocking = this.SourceObject.Blocking,
+                FollowedBy = this.SourceObject.FollowedBy,
+                IncomingRequest = this.SourceObject.IncomingRequest,
+                OutgoingRequest = this.SourceObject.OutgoingRequest
             };
-            friendShip.IncomingRequest = SourceObject.IncomingRequest;
-            friendShip.IsPrivate = SourceObject.IsPrivate;
+            friendShip.IncomingRequest = this.SourceObject.IncomingRequest;
+            friendShip.IsPrivate = this.SourceObject.IsPrivate;
             return friendShip;
         }
     }

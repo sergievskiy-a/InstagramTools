@@ -27,7 +27,7 @@ namespace InstagramTools.ConsoleClient
                 var serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
-                //Configure DataBaseContext
+                // Configure DataBaseContext
                 string connection = GetConnectionStringForMachine(Configuration);
                 serviceCollection.AddDbContext<InstagramToolsContext>(options => options.UseSqlServer(connection));
 
@@ -39,7 +39,8 @@ namespace InstagramTools.ConsoleClient
 
                 // Run application
                 Task.Run(async () => { await application.StartApp(); }).Wait();
-                //Task.Run(async () => { await application.StartApp(); }).GetAwaiter().GetResult();
+
+                // Task.Run(async () => { await application.StartApp(); }).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -50,7 +51,7 @@ namespace InstagramTools.ConsoleClient
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
         {
-            //Add Logging
+            // Add Logging
             ILoggerFactory loggerFactory = new LoggerFactory()
                 .AddConsole()
                 .AddDebug();
@@ -58,7 +59,7 @@ namespace InstagramTools.ConsoleClient
             serviceCollection.AddSingleton(loggerFactory); // Add first my already configured instance
             serviceCollection.AddLogging(); // Allow ILogger<T>
 
-            //Add IConfigurationRoot
+            // Add IConfigurationRoot
             Configuration = GetConfiguration();
             serviceCollection.AddSingleton<IConfigurationRoot>(Configuration);
 
@@ -79,18 +80,9 @@ namespace InstagramTools.ConsoleClient
                 .Build();
         }
 
-        //Return DbConnString based on Machine's name
         private static string GetConnectionStringForMachine(IConfigurationRoot configuration)
         {
-            if (Environment.MachineName.Equals("SERGIEVSKIY-DEV", StringComparison.OrdinalIgnoreCase))
-            {
-                return configuration.GetConnectionString("AzureTestDB");
-            }
-            if (Environment.MachineName.Equals("SERGIEVSKIY-LENOVO", StringComparison.OrdinalIgnoreCase))
-            {
-                return configuration.GetConnectionString("lenovo-local");
-            }
-            return configuration.GetConnectionString("DefaultConnection");
+            return configuration.GetConnectionString("RemoteConnection");
         }
     }
 

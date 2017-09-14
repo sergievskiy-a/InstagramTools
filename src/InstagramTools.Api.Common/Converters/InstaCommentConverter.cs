@@ -14,17 +14,17 @@ namespace InstagramTools.Api.Common.Converters
         {
             var comment = new InstaComment
             {
-                BitFlags = SourceObject.BitFlags,
-                ContentType = (InstaContentType) Enum.Parse(typeof(InstaContentType), SourceObject.ContentType, true),
-                CreatedAt = DateTimeHelper.UnixTimestampToDateTime(SourceObject.CreatedAt),
-                CreatedAtUtc = DateTimeHelper.UnixTimestampToDateTime(SourceObject.CreatedAtUtc),
-                LikesCount = SourceObject.LikesCount,
-                Pk = SourceObject.Pk,
-                Status = SourceObject.Status,
-                Text = SourceObject.Text,
-                Type = SourceObject.Type,
-                UserId = SourceObject.UserId,
-                User = ConvertersFabric.GetUserConverter(SourceObject.User).Convert()
+                BitFlags = this.SourceObject.BitFlags,
+                ContentType = (InstaContentType) Enum.Parse(typeof(InstaContentType), this.SourceObject.ContentType, true),
+                CreatedAt = DateTimeHelper.UnixTimestampToDateTime(this.SourceObject.CreatedAt),
+                CreatedAtUtc = DateTimeHelper.UnixTimestampToDateTime(this.SourceObject.CreatedAtUtc),
+                LikesCount = this.SourceObject.LikesCount,
+                Pk = this.SourceObject.Pk,
+                Status = this.SourceObject.Status,
+                Text = this.SourceObject.Text,
+                Type = this.SourceObject.Type,
+                UserId = this.SourceObject.UserId,
+                User = ConvertersFabric.GetUserConverter(this.SourceObject.User).Convert()
             };
             return comment;
         }

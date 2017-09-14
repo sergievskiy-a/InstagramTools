@@ -13,15 +13,15 @@ namespace InstagramTools.Api.Common.Converters
         {
             var activityStory = new InstaRecentActivityFeed
             {
-                Pk = SourceObject.Pk,
-                Type = SourceObject.Type,
-                ProfileId = SourceObject.Args.ProfileId,
-                ProfileImage = SourceObject.Args.ProfileImage,
-                Text = SourceObject.Args.Text,
-                TimeStamp = DateTimeHelper.UnixTimestampToDateTime(SourceObject.Args.TimeStamp)
+                Pk = this.SourceObject.Pk,
+                Type = this.SourceObject.Type,
+                ProfileId = this.SourceObject.Args.ProfileId,
+                ProfileImage = this.SourceObject.Args.ProfileImage,
+                Text = this.SourceObject.Args.Text,
+                TimeStamp = DateTimeHelper.UnixTimestampToDateTime(this.SourceObject.Args.TimeStamp)
             };
-            if (SourceObject.Args.Links != null)
-                foreach (var instaLinkResponse in SourceObject.Args.Links)
+            if (this.SourceObject.Args.Links != null)
+                foreach (var instaLinkResponse in this.SourceObject.Args.Links)
                     activityStory.Links.Add(new InstaLink
                     {
                         Start = instaLinkResponse.Start,
@@ -29,17 +29,18 @@ namespace InstagramTools.Api.Common.Converters
                         Id = instaLinkResponse.Id,
                         Type = instaLinkResponse.Type
                     });
-            if (SourceObject.Args.InlineFollow != null)
+            if (this.SourceObject.Args.InlineFollow != null)
             {
                 activityStory.InlineFollow = new InstaInlineFollow
                 {
-                    IsFollowing = SourceObject.Args.InlineFollow.IsFollowing,
-                    IsOutgoingRequest = SourceObject.Args.InlineFollow.IsOutgoingRequest
+                    IsFollowing = this.SourceObject.Args.InlineFollow.IsFollowing,
+                    IsOutgoingRequest = this.SourceObject.Args.InlineFollow.IsOutgoingRequest
                 };
-                if (SourceObject.Args.InlineFollow.UserInfo != null)
+                if (this.SourceObject.Args.InlineFollow.UserInfo != null)
                     activityStory.InlineFollow.User =
-                        ConvertersFabric.GetUserConverter(SourceObject.Args.InlineFollow.UserInfo).Convert();
+                        ConvertersFabric.GetUserConverter(this.SourceObject.Args.InlineFollow.UserInfo).Convert();
             }
+
             return activityStory;
         }
     }

@@ -6,17 +6,17 @@ namespace InstagramTools.Api.Common.Models
     {
         public ResultInfo(string message)
         {
-            Message = message;
+            this.Message = message;
         }
 
         public ResultInfo(Exception exception)
         {
-            Exception = exception;
+            this.Exception = exception;
         }
 
         public ResultInfo(ResponseType responseType)
         {
-            ResponseType = responseType;
+            this.ResponseType = responseType;
         }
 
         public Exception Exception { get; }

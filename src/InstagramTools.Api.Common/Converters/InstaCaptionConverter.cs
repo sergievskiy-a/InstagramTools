@@ -12,13 +12,13 @@ namespace InstagramTools.Api.Common.Converters
         {
             var caption = new InstaCaption
             {
-                Pk = SourceObject.Pk,
-                CreatedAt = DateTimeHelper.UnixTimestampToDateTime(SourceObject.CreatedAtUnixLike),
-                CreatedAtUtc = DateTimeHelper.UnixTimestampToDateTime(SourceObject.CreatedAtUtcUnixLike),
-                MediaId = SourceObject.MediaId,
-                Text = SourceObject.Text,
-                User = ConvertersFabric.GetUserConverter(SourceObject.User).Convert(),
-                UserId = SourceObject.UserId
+                Pk = this.SourceObject.Pk,
+                CreatedAt = DateTimeHelper.UnixTimestampToDateTime(this.SourceObject.CreatedAtUnixLike),
+                CreatedAtUtc = DateTimeHelper.UnixTimestampToDateTime(this.SourceObject.CreatedAtUtcUnixLike),
+                MediaId = this.SourceObject.MediaId,
+                Text = this.SourceObject.Text,
+                User = ConvertersFabric.GetUserConverter(this.SourceObject.User).Convert(),
+                UserId = this.SourceObject.UserId
             };
             return caption;
         }

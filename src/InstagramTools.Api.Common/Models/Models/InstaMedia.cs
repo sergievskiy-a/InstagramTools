@@ -56,6 +56,6 @@ namespace InstagramTools.Api.Common.Models.Models
 
         public bool HasAudio { get; set; }
 
-        public bool IsMultiPost => Carousel != null;
+        public bool IsMultiPost => this.Carousel != null;
     }
 }

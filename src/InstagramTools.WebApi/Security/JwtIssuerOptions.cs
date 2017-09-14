@@ -1,6 +1,7 @@
 ﻿using System;
-using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
+
+using Microsoft.IdentityModel.Tokens;
 
 namespace InstagramTools.WebApi.Security
 {
@@ -79,7 +80,7 @@ namespace InstagramTools.WebApi.Security
         ///   Implementers MAY provide for some small leeway, usually no more than
         ///   a few minutes, to account for clock skew.  Its value MUST be a number
         ///   containing a NumericDate value.  Use of this claim is OPTIONAL.</remarks>
-        public DateTime Expiration => IssuedAt.Add(ValidFor);
+        public DateTime Expiration => this.IssuedAt.Add(this.ValidFor);
 
         /// <summary>
         /// "jti" (JWT ID) Claim (default ID is a GUID)

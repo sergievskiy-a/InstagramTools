@@ -7,10 +7,10 @@ namespace InstagramTools.Core.Interfaces
 {
 	public interface IRoleService
 	{
-        //One
+        // One
         Task<OperationResult<Role>> GetRoleAsync(string name);
 
-        //List
+        // List
         Task<OperationResult<List<Role>>> GetRolesAsync();
 
     }

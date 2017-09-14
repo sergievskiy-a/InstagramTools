@@ -10,7 +10,7 @@ namespace InstagramTools.Core.Interfaces
 {
 	public interface IUserService
 	{
-        //Single
+        // Single
         /// <summary>
         /// Return NOT DELETED user by ApiId
         /// </summary>
@@ -32,13 +32,14 @@ namespace InstagramTools.Core.Interfaces
         /// <returns></returns>
         Task<OperationResult<AppUser>> GetUserByPredicateAsync(Expression<Func<AppUserRow, bool>> predicate);
 
-        //List
+        // List
         /// <summary>
         /// Return NOT DELETED users
         /// </summary>
         /// <param name="pagingOptions"></param>
         /// <returns></returns>
         Task<OperationResult<List<AppUser>>> GetUsersAsync(PagingOptions pagingOptions);
+
         /// <summary>
         /// Return NOT DELETED Users by predicate
         /// </summary>

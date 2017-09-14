@@ -11,8 +11,7 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         [JsonProperty("story_ranking_token")]
         public string StoryRankingToken { get; set; }
 
-        //public List<InstaBroadcast> Broadcasts { get; set; } = new List<InstaBroadcast>(); //No info at this time... I'll check later with Fiddler
-
+        // public List<InstaBroadcast> Broadcasts { get; set; } = new List<InstaBroadcast>(); //No info at this time... I'll check later with Fiddler
         [JsonProperty("sticker_version")]
         public int StickerVersion { get; set; }
 

@@ -10,16 +10,16 @@ namespace InstagramTools.Api.Common.Converters
         
         public InstaStoryTray Convert()
         {
-            if (SourceObject == null) throw new ArgumentNullException($"Source object");
+            if (this.SourceObject == null) throw new ArgumentNullException($"Source object");
 
             var storyTray = new InstaStoryTray {
-                Status = SourceObject.Status,
-                StickerVersion = SourceObject.StickerVersion,
-                StoryRankingToken = SourceObject.StoryRankingToken
+                Status = this.SourceObject.Status,
+                StickerVersion = this.SourceObject.StickerVersion,
+                StoryRankingToken = this.SourceObject.StoryRankingToken
             };
 
-            if (SourceObject.Tray.Count > 0)
-                foreach (var story in SourceObject.Tray)
+            if (this.SourceObject.Tray.Count > 0)
+                foreach (var story in this.SourceObject.Tray)
                     storyTray.Tray.Add(ConvertersFabric.GetStoryConverter(story).Convert());
 
             return storyTray;

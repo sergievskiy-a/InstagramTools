@@ -34,8 +34,7 @@ namespace InstagramTools.Api.Common.Converters
             return new InstaCaptionConverter {SourceObject = captionResponse};
         }
 
-        public static IObjectConverter<InstaFriendshipStatus, InstaFriendshipStatusResponse>
-            GetFriendShipStatusConverter(InstaFriendshipStatusResponse friendshipStatusResponse)
+        public static IObjectConverter<InstaFriendshipStatus, InstaFriendshipStatusResponse> GetFriendShipStatusConverter(InstaFriendshipStatusResponse friendshipStatusResponse)
         {
             return new InstaFriendshipStatusConverter {SourceObject = friendshipStatusResponse};
         }
@@ -51,8 +50,7 @@ namespace InstagramTools.Api.Common.Converters
             return new InstaUserTagConverter {SourceObject = tag};
         }
 
-        public static IObjectConverter<InstaDirectInboxContainer, InstaDirectInboxContainerResponse>
-            GetDirectInboxConverter(InstaDirectInboxContainerResponse inbox)
+        public static IObjectConverter<InstaDirectInboxContainer, InstaDirectInboxContainerResponse> GetDirectInboxConverter(InstaDirectInboxContainerResponse inbox)
         {
             return new InstaDirectInboxConverter {SourceObject = inbox};
         }
@@ -69,14 +67,12 @@ namespace InstagramTools.Api.Common.Converters
             return new InstaDirectThreadItemConverter {SourceObject = threadItem};
         }
 
-        public static IObjectConverter<InstaDirectInboxSubscription, InstaDirectInboxSubscriptionResponse>
-            GetDirectSubscriptionConverter(InstaDirectInboxSubscriptionResponse subscription)
+        public static IObjectConverter<InstaDirectInboxSubscription, InstaDirectInboxSubscriptionResponse> GetDirectSubscriptionConverter(InstaDirectInboxSubscriptionResponse subscription)
         {
             return new InstaDirectInboxSubscriptionConverter {SourceObject = subscription};
         }
 
-        public static IObjectConverter<InstaRecentActivityFeed, InstaRecentActivityFeedResponse>
-            GetSingleRecentActivityConverter(InstaRecentActivityFeedResponse feedResponse)
+        public static IObjectConverter<InstaRecentActivityFeed, InstaRecentActivityFeedResponse> GetSingleRecentActivityConverter(InstaRecentActivityFeedResponse feedResponse)
         {
             return new InstaRecentActivityConverter {SourceObject = feedResponse};
         }

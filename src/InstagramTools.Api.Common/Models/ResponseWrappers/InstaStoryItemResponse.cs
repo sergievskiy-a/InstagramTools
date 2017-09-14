@@ -69,8 +69,7 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         [JsonProperty("max_num_visible_preview_comments")]
         public int MaxNumVisiblePreviewComments { get; set; }
 
-        //public InstaComment PreviewComments { get; set; }  --- ---  //I'll check what is.
-
+        // public InstaComment PreviewComments { get; set; }  --- ---  //I'll check what is.
         [JsonProperty("comment_count")]
         public int CommentCount { get; set; }
 
@@ -81,7 +80,7 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         public InstaCaptionResponse Caption { get; set; }
 
         [JsonProperty("caption_is_edited")]
-        public bool CaptionIsEdited { get; set; } //Visible only if the story is an image.
+        public bool CaptionIsEdited { get; set; } // Visible only if the story is an image.
 
         [JsonProperty("photo_of_you")]
         public bool PhotoOfYou { get; set; }
@@ -89,13 +88,13 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         #region Video
 
         [JsonProperty("video_versions")]
-        public InstaVideoCandidatesResponse VideoVersions { get; set; } //Visible only if the story is a video.
+        public InstaVideoCandidatesResponse VideoVersions { get; set; } // Visible only if the story is a video.
 
         [JsonProperty("has_audio")]
-        public bool HasAudio { get; set; } //Visible only if the story is a video.
+        public bool HasAudio { get; set; } // Visible only if the story is a video.
 
         [JsonProperty("video_duration")]
-        public double VideoDuration { get; set; } //Visible only if the story is a video.
+        public double VideoDuration { get; set; } // Visible only if the story is a video.
 
         #endregion
 
@@ -108,11 +107,11 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         [JsonProperty("is_reel_media")]
         public bool IsReelMedia { get; set; }
 
-        //public List<InstaReel> ReelMentions { get; set; }  --- ---  //I'll do a test via Fiddler
+        // public List<InstaReel> ReelMentions { get; set; }  --- ---  //I'll do a test via Fiddler
 
-        //[JsonProperty("story_locations")]
-        //public List<InstaLocation> StoryLocation { get; set; }
+        // [JsonProperty("story_locations")]
+        // public List<InstaLocation> StoryLocation { get; set; }
 
-        //public List<string> StoryHashtags { get; set; } //I'll do a test via Fiddler
+        // public List<string> StoryHashtags { get; set; } //I'll do a test via Fiddler
     }
 }

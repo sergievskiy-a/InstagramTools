@@ -27,11 +27,11 @@ namespace InstagramTools.WebApi.Controllers
         public AuthController(IAuthorizeService authService, IOptions<JwtIssuerOptions> jwtOptions,
             ILoggerFactory loggerFactory)
         {
-            _jwtOptions = jwtOptions.Value;
-            ThrowIfInvalidOptions(_jwtOptions);
-            _authService = authService;
-            _logger = loggerFactory.CreateLogger<AuthController>();
-            _serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+          this._jwtOptions = jwtOptions.Value;
+          this.ThrowIfInvalidOptions(this._jwtOptions);
+          this._authService = authService;
+          this._logger = loggerFactory.CreateLogger<AuthController>();
+          this._serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented };
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -43,7 +43,7 @@ namespace InstagramTools.WebApi.Controllers
         [AllowAnonymous]
         public async Task<OperationResult<JwtResultModel>> Get([FromBody] LoginModel applicationUser)
         {
-            var result = await GetToken(applicationUser);
+            var result = await this.GetToken(applicationUser);
             return result;
         }
 
@@ -58,19 +58,19 @@ namespace InstagramTools.WebApi.Controllers
                 var identity = jwt.Claims;
                 if (identity == null)
                 {
-                    _logger.LogInformation($"Invalid token.");
+                  this._logger.LogInformation($"Invalid token.");
                     return new OperationResult<JwtResultModel>(false, "Invalid token!");
                 }
 
                 string username = jwt.Claims.FirstOrDefault(x => x.Type == Constants.ClaimTypes.UserName).Value;
                 string password = jwt.Claims.FirstOrDefault(x => x.Type == Constants.ClaimTypes.Password).Value;
 
-                var result = await GetToken(new LoginModel() { Username = username, Password = password });
+                var result = await this.GetToken(new LoginModel() { Username = username, Password = password });
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"On Auth error: {ex.Message}");
+              this._logger.LogInformation($"On Auth error: {ex.Message}");
                 return new OperationResult<JwtResultModel>(false, ex.Message);
             }
         }
@@ -106,10 +106,10 @@ namespace InstagramTools.WebApi.Controllers
         {
             try
             {
-                var claims = await GetClaimsIdentity(applicationUser);
+                var claims = await this.GetClaimsIdentity(applicationUser);
                 if (claims == null)
                 {
-                    _logger.LogInformation($"Invalid username ({applicationUser.Username}) or password ({applicationUser.Password})");
+                  this._logger.LogInformation($"Invalid username ({applicationUser.Username}) or password ({applicationUser.Password})");
                     return new OperationResult<JwtResultModel>(false, "Invalid credentionals!");
                 }
 
@@ -119,20 +119,20 @@ namespace InstagramTools.WebApi.Controllers
                 claims.AddRange(new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Username),
-                    new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
+                    new Claim(JwtRegisteredClaimNames.Jti, await this._jwtOptions.JtiGenerator()),
                     new Claim(JwtRegisteredClaimNames.Iat,
-                              ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
+                      this.ToUnixEpochDate(this._jwtOptions.IssuedAt).ToString(),
                               ClaimValueTypes.Integer64),
                 });
 
                 // Create the JWT security token and encode it.
                 var jwt = new JwtSecurityToken(
-                    issuer: _jwtOptions.Issuer,
-                    audience: _jwtOptions.Audience,
+                    issuer: this._jwtOptions.Issuer,
+                    audience: this._jwtOptions.Audience,
                     claims: claims,
-                    notBefore: _jwtOptions.NotBefore,
-                    expires: _jwtOptions.Expiration,
-                    signingCredentials: _jwtOptions.SigningCredentials);
+                    notBefore: this._jwtOptions.NotBefore,
+                    expires: this._jwtOptions.Expiration,
+                    signingCredentials: this._jwtOptions.SigningCredentials);
 
                 var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -142,7 +142,7 @@ namespace InstagramTools.WebApi.Controllers
                     Username = applicationUser.Username,
                     Role = role,
                     AccessToken = encodedJwt,
-                    ExpiresIn = (int)_jwtOptions.ValidFor.TotalSeconds
+                    ExpiresIn = (int)this._jwtOptions.ValidFor.TotalSeconds
                 };
 
                 var result = new OperationResult<JwtResultModel>(response);
@@ -150,7 +150,7 @@ namespace InstagramTools.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"On Auth error: {ex.Message}");
+              this._logger.LogInformation($"On Auth error: {ex.Message}");
                 return new OperationResult<JwtResultModel>(false, ex.Message);
             }
         }
@@ -158,7 +158,7 @@ namespace InstagramTools.WebApi.Controllers
 
         private async Task<List<Claim>> GetClaimsIdentity(LoginModel user)
         {
-            var validatePeople = await _authService.ValidateUser(user.Username, user.Password);
+            var validatePeople = await this._authService.ValidateUser(user.Username, user.Password);
             if (validatePeople == null)
             {
                 // Credentials are invalid, or account doesn't exist
@@ -174,8 +174,8 @@ namespace InstagramTools.WebApi.Controllers
                     new Claim(Constants.ClaimTypes.RoleName, validatePeople.RoleId),
                 });
 
-            //TODO: Implement Permissions
-            //claimsIdentity.SetPermissions(_authService.GetPermissions(validatePeople.RoleId));
+            // TODO: Implement Permissions
+            // claimsIdentity.SetPermissions(_authService.GetPermissions(validatePeople.RoleId));
             return claims;
         }
     }

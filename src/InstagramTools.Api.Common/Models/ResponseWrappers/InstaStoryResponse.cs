@@ -18,7 +18,7 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
         public string SourceToken { get; set; }
 
         [JsonProperty("seen")]
-        public double Seen { get; set; } //Should be a DateTime
+        public double Seen { get; set; } // Should be a DateTime
 
         [JsonProperty("latest_reel_media")]
         public string LatestReelMedia { get; set; }

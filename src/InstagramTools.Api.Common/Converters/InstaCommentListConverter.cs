@@ -11,18 +11,19 @@ namespace InstagramTools.Api.Common.Converters
         {
             var commentList = new InstaCommentList
             {
-                Caption = ConvertersFabric.GetCaptionConverter(SourceObject.Caption).Convert(),
-                CaptionIsEdited = SourceObject.CaptionIsEdited,
-                CommentsCount = SourceObject.CommentsCount,
-                LikesEnabled = SourceObject.LikesEnabled,
-                MoreComentsAvailable = SourceObject.MoreComentsAvailable,
-                MoreHeadLoadAvailable = SourceObject.MoreHeadLoadAvailable
+                Caption = ConvertersFabric.GetCaptionConverter(this.SourceObject.Caption).Convert(),
+                CaptionIsEdited = this.SourceObject.CaptionIsEdited,
+                CommentsCount = this.SourceObject.CommentsCount,
+                LikesEnabled = this.SourceObject.LikesEnabled,
+                MoreComentsAvailable = this.SourceObject.MoreComentsAvailable,
+                MoreHeadLoadAvailable = this.SourceObject.MoreHeadLoadAvailable
             };
-            foreach (var commentResponse in SourceObject.Comments)
+            foreach (var commentResponse in this.SourceObject.Comments)
             {
                 var converter = ConvertersFabric.GetCommentConverter(commentResponse);
                 commentList.Comments.Add(converter.Convert());
             }
+
             return commentList;
         }
     }

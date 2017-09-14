@@ -26,9 +26,9 @@ namespace InstagramTools.Api.Common.Models.Android.DeviceInfo
 
         public bool IsEmpty()
         {
-            if (string.IsNullOrEmpty(phone_id)) return true;
-            if (string.IsNullOrEmpty(device_id)) return true;
-            if (Guid.Empty == guid) return true;
+            if (string.IsNullOrEmpty(this.phone_id)) return true;
+            if (string.IsNullOrEmpty(this.device_id)) return true;
+            if (Guid.Empty == this.guid) return true;
             return false;
         }
 

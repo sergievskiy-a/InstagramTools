@@ -13,41 +13,44 @@ namespace InstagramTools.Api.Common.Converters
         {
             var inbox = new InstaDirectInboxContainer
             {
-                PendingRequestsCount = SourceObject.PendingRequestsCount,
-                SeqId = SourceObject.SeqId
+                PendingRequestsCount = this.SourceObject.PendingRequestsCount,
+                SeqId = this.SourceObject.SeqId
             };
-            if (SourceObject.Subscription != null)
+            if (this.SourceObject.Subscription != null)
             {
-                var converter = ConvertersFabric.GetDirectSubscriptionConverter(SourceObject.Subscription);
+                var converter = ConvertersFabric.GetDirectSubscriptionConverter(this.SourceObject.Subscription);
                 inbox.Subscription = converter.Convert();
             }
-            if (SourceObject.Inbox != null)
+
+            if (this.SourceObject.Inbox != null)
             {
                 inbox.Inbox = new InstaDirectInbox
                 {
-                    HasOlder = SourceObject.Inbox.HasOlder,
-                    UnseenCount = SourceObject.Inbox.UnseenCount,
-                    UnseenCountTs = SourceObject.Inbox.UnseenCountTs
+                    HasOlder = this.SourceObject.Inbox.HasOlder,
+                    UnseenCount = this.SourceObject.Inbox.UnseenCount,
+                    UnseenCountTs = this.SourceObject.Inbox.UnseenCountTs
                 };
 
-                if (SourceObject.Inbox.Threads != null && SourceObject.Inbox.Threads.Count > 0)
+                if (this.SourceObject.Inbox.Threads != null && this.SourceObject.Inbox.Threads.Count > 0)
                 {
                     inbox.Inbox.Threads = new List<InstaDirectInboxThread>();
-                    foreach (var inboxThread in SourceObject.Inbox.Threads)
+                    foreach (var inboxThread in this.SourceObject.Inbox.Threads)
                     {
                         var converter = ConvertersFabric.GetDirectThreadConverter(inboxThread);
                         inbox.Inbox.Threads.Add(converter.Convert());
                     }
                 }
             }
-            if (SourceObject.PendingUsers == null || SourceObject.PendingUsers.Count <= 0) return inbox;
+
+            if (this.SourceObject.PendingUsers == null || this.SourceObject.PendingUsers.Count <= 0) return inbox;
             {
-                foreach (var user in SourceObject.PendingUsers)
+                foreach (var user in this.SourceObject.PendingUsers)
                 {
                     var converter = ConvertersFabric.GetUserConverter(user);
                     inbox.PendingUsers.Add(converter.Convert());
                 }
             }
+
             return inbox;
         }
     }

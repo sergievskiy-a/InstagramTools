@@ -11,7 +11,7 @@ namespace InstagramTools.Api.Common.Converters
         {
             var instaStoryMedia = new InstaStoryMedia
             {
-                Media = ConvertersFabric.GetStoryItemConverter(SourceObject.Media).Convert()
+                Media = ConvertersFabric.GetStoryItemConverter(this.SourceObject.Media).Convert()
             };
 
             return instaStoryMedia;

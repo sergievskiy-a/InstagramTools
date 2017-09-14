@@ -11,12 +11,12 @@ namespace InstagramTools.Api.Common.Converters
 
         public InstaMediaList Convert()
         {
-            if (SourceObject == null) throw new ArgumentNullException($"Source object");
+            if (this.SourceObject == null) throw new ArgumentNullException($"Source object");
             var mediaList = new InstaMediaList();
             mediaList.AddRange(
-                SourceObject.Medias.Select(ConvertersFabric.GetSingleMediaConverter)
+                this.SourceObject.Medias.Select(ConvertersFabric.GetSingleMediaConverter)
                     .Select(converter => converter.Convert()));
-            mediaList.PageSize = SourceObject.ResultsCount;
+            mediaList.PageSize = this.SourceObject.ResultsCount;
             return mediaList;
         }
     }

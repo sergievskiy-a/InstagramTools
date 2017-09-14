@@ -6,26 +6,26 @@ namespace InstagramTools.Api.Common.Models
     {
         public Result(bool succeeded, T value, ResultInfo info)
         {
-            Succeeded = succeeded;
-            Value = value;
-            Info = info;
+            this.Succeeded = succeeded;
+            this.Value = value;
+            this.Info = info;
         }
 
         public Result(bool succeeded, ResultInfo info)
         {
-            Succeeded = succeeded;
-            Info = info;
+            this.Succeeded = succeeded;
+            this.Info = info;
         }
 
         public Result(bool succeeded, T value)
         {
-            Succeeded = succeeded;
-            Value = value;
+            this.Succeeded = succeeded;
+            this.Value = value;
         }
 
         public bool Succeeded { get; }
         public T Value { get; }
-        public ResultInfo Info { get; } = new ResultInfo("");
+        public ResultInfo Info { get; } = new ResultInfo(string.Empty);
     }
 
     public static class Result

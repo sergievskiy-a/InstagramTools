@@ -4,8 +4,8 @@
     {
         public Position(double x, double y)
         {
-            X = x;
-            Y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         public double X { get; set; }

@@ -9,7 +9,7 @@ namespace InstagramTools.Api.Common.Helpers
     {
         public static string ByteToString(byte[] buff)
         {
-            return buff.Aggregate("", (current, item) => current + item.ToString("X2"));
+            return buff.Aggregate(string.Empty, (current, item) => current + item.ToString("X2"));
         }
 
         public static string Base64Encode(string plainText)
@@ -31,7 +31,7 @@ namespace InstagramTools.Api.Common.Helpers
             using (var md5 = MD5.Create())
             {
                 var hashed = md5.ComputeHash(encoding.GetBytes(message));
-                var hash = BitConverter.ToString(hashed).Replace("-", "").ToLower();
+                var hash = BitConverter.ToString(hashed).Replace("-", string.Empty).ToLower();
                 return hash;
             }
         }
@@ -40,8 +40,8 @@ namespace InstagramTools.Api.Common.Helpers
         {
             var encoding = Encoding.UTF8;
 
-            //Reference http://en.wikipedia.org/wiki/Secure_Hash_Algorithm
-            //SHA256 block size is 512 bits => 64 bytes.
+            // Reference http://en.wikipedia.org/wiki/Secure_Hash_Algorithm
+            // SHA256 block size is 512 bits => 64 bytes.
             const int HashBlockSize = 64;
 
             var keyBytes = encoding.GetBytes(key);

@@ -27,6 +27,7 @@ namespace InstagramTools.Api.Common.Converters.Json
                 if (media == null) media = item.ToObject<InstaMediaItemResponse>();
                 feed.Medias.Add(media);
             }
+
             if (storiesTray == null) return feed;
             foreach (var storyItem in storiesTray)
             {

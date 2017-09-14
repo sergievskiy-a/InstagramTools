@@ -11,12 +11,13 @@ namespace InstagramTools.Api.Common.Converters
         public InstaCarousel Convert()
         {
             var carousel = new InstaCarousel();
-            if (SourceObject == null) throw new ArgumentNullException($"Source object");
-            foreach (var item in SourceObject)
+            if (this.SourceObject == null) throw new ArgumentNullException($"Source object");
+            foreach (var item in this.SourceObject)
             {
                 var carouselItem = ConvertersFabric.GetCarouselItemConverter(item);
                 carousel.Add(carouselItem.Convert());
             }
+
             return carousel;
         }
     }

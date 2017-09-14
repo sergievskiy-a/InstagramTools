@@ -11,7 +11,7 @@ namespace InstagramTools.ConsoleClient.Samples
 
         public UploadPhoto(IInstaApi instaApi)
         {
-            _instaApi = instaApi;
+            this._instaApi = instaApi;
         }
 
         public void DoShow()
@@ -22,7 +22,7 @@ namespace InstagramTools.ConsoleClient.Samples
                 Width = 1080,
                 URI = new Uri(Path.GetFullPath(@"c:\someawesomepicture.jpg"), UriKind.Absolute).LocalPath
             };
-            var result = _instaApi.UploadPhoto(mediaImage, "someawesomepicture");
+            var result = this._instaApi.UploadPhoto(mediaImage, "someawesomepicture");
             Console.WriteLine(result.Succeeded
                 ? $"Media created: {result.Value.Pk}, {result.Value.Caption}"
                 : $"Unable to upload photo: {result.Info.Message}");

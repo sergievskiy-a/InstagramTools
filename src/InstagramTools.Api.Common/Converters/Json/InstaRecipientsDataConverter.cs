@@ -9,7 +9,7 @@ namespace InstagramTools.Api.Common.Converters.Json
     {
         public InstaRecipientsDataConverter(string recipientsArray)
         {
-            RecipientsArray = recipientsArray;
+            this.RecipientsArray = recipientsArray;
         }
 
         private string RecipientsArray { get; }
@@ -26,7 +26,7 @@ namespace InstagramTools.Api.Common.Converters.Json
             var recipients = root.ToObject<InstaRecipientsResponse>();
             recipients.Users.Clear();
             recipients.Threads.Clear();
-            var items = root.SelectToken(RecipientsArray);
+            var items = root.SelectToken(this.RecipientsArray);
             foreach (var item in items)
             {
                 var thread = item["thread"]?.ToObject<InstaDirectInboxThreadResponse>();
@@ -36,6 +36,7 @@ namespace InstagramTools.Api.Common.Converters.Json
                     recipients.Threads.Add(thread);
                     continue;
                 }
+
                 if (user != null)
                     recipients.Users.Add(user);
             }

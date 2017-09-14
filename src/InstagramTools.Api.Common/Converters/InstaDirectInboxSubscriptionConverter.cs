@@ -12,10 +12,10 @@ namespace InstagramTools.Api.Common.Converters
         {
             var subscription = new InstaDirectInboxSubscription
             {
-                Auth = SourceObject.Auth,
-                Sequence = SourceObject.Sequence,
-                Topic = SourceObject.Topic,
-                Url = SourceObject.Url
+                Auth = this.SourceObject.Auth,
+                Sequence = this.SourceObject.Sequence,
+                Topic = this.SourceObject.Topic,
+                Url = this.SourceObject.Url
             };
             return subscription;
         }

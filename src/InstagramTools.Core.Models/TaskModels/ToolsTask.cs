@@ -8,13 +8,13 @@ namespace InstagramTools.Core.Models.TaskModels
 {
     public class ToolsTask : Entity
     {
-        public Guid InstProfileId { get; set; }//для якого профіля ця таска
+        public Guid InstProfileId { get; set; }// для якого профіля ця таска
         public InstProfile InstProfile { get; set; }
 
         public Guid TaskTypeId { get; set; }
         public ToolsTaskType TaskTypeRow { get; set; }
 
-        public DateTime Completed { get; set; }//коли закінчена
+        public DateTime Completed { get; set; }// коли закінчена
 
         public virtual List<MessageModel> Messages { get; set; }
     }

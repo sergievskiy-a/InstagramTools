@@ -20,7 +20,7 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers
 
         public bool IsOK()
         {
-            return !string.IsNullOrEmpty(Status) && Status.ToLower() == "ok";
+            return !string.IsNullOrEmpty(this.Status) && this.Status.ToLower() == "ok";
         }
     }
 }

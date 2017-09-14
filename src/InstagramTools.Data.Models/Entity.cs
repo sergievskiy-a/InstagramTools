@@ -6,11 +6,11 @@ namespace InstagramTools.Data.Models
     {
         public int Id { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Deleted { get; set; }
+        public DateTime? Deleted { get; set; }
 
         protected Entity()
         {
-            Created = DateTime.Now;
+            this.Created = DateTime.Now;
         }
     }
 }

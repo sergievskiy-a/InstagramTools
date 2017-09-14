@@ -41,8 +41,7 @@ namespace InstagramTools.Api.Common.Models.Models
 
         public int MaxNumVisiblePreviewComments { get; set; }
 
-        //public InstaComment PreviewComments { get; set; }  --- ---  //I'll check what is.
-
+        // public InstaComment PreviewComments { get; set; }  --- ---  //I'll check what is.
         public int CommentCount { get; set; }
 
         public bool CommentsDisabled { get; set; }
@@ -53,17 +52,17 @@ namespace InstagramTools.Api.Common.Models.Models
 
         public InstaCarousel CarouselMedia { get; set; } = new InstaCarousel();
 
-        public bool CaptionIsEdited { get; set; } //Visible only if the story is an image.
+        public bool CaptionIsEdited { get; set; } // Visible only if the story is an image.
 
         public bool PhotoOfYou { get; set; }
 
         #region Video
 
-        public List<MediaVideo> VideoVersions { get; set; } = new List<MediaVideo>(); //Visible only if the story is a video.
+        public List<MediaVideo> VideoVersions { get; set; } = new List<MediaVideo>(); // Visible only if the story is a video.
 
-        public bool HasAudio { get; set; } //Visible only if the story is a video.
+        public bool HasAudio { get; set; } // Visible only if the story is a video.
 
-        public double VideoDuration { get; set; } //Visible only if the story is a video.
+        public double VideoDuration { get; set; } // Visible only if the story is a video.
 
         #endregion
 
@@ -73,10 +72,10 @@ namespace InstagramTools.Api.Common.Models.Models
 
         public bool IsReelMedia { get; set; } 
 
-        //public List<InstaReel> ReelMentions { get; set; }  --- ---  //I'll do a test via Fiddler
+        // public List<InstaReel> ReelMentions { get; set; }  --- ---  //I'll do a test via Fiddler
 
-        //public List<InstaLocation> StoryLocation { get; set; }
+        // public List<InstaLocation> StoryLocation { get; set; }
 
-        //public List<string> StoryHashtags { get; set; } //I'll do a test via Fiddler
+        // public List<string> StoryHashtags { get; set; } //I'll do a test via Fiddler
     }
 }

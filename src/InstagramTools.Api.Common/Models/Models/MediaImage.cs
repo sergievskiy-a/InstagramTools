@@ -4,9 +4,9 @@
     {
         public MediaImage(string uri, int width, int height)
         {
-            URI = uri;
-            Width = width;
-            Height = height;
+            this.URI = uri;
+            this.Width = width;
+            this.Height = height;
         }
 
         public MediaImage()

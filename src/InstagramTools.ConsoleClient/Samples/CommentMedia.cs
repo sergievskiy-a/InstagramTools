@@ -9,12 +9,12 @@ namespace InstagramTools.ConsoleClient.Samples
 
         public CommentMedia(IInstaApi instaApi)
         {
-            _instaApi = instaApi;
+            this._instaApi = instaApi;
         }
 
         public void DoShow()
         {
-            var commentResult = _instaApi.CommentMedia("", "Hi there!");
+            var commentResult = this._instaApi.CommentMedia(string.Empty, "Hi there!");
             Console.WriteLine(commentResult.Succeeded
                 ? $"Comment created: {commentResult.Value.Pk}, text: {commentResult.Value.Text}"
                 : $"Unable to create comment: {commentResult.Info.Message}");

@@ -11,12 +11,13 @@ namespace InstagramTools.Api.Common.Converters
         {
             var feed = new InstaFeed();
 
-            foreach (var instaUserFeedItemResponse in SourceObject.Items)
+            foreach (var instaUserFeedItemResponse in this.SourceObject.Items)
             {
                 if (instaUserFeedItemResponse?.Type != 0) continue;
                 var feedItem = ConvertersFabric.GetSingleMediaConverter(instaUserFeedItemResponse).Convert();
                 feed.Medias.Add(feedItem);
             }
+
             return feed;
         }
     }

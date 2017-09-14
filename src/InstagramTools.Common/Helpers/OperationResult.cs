@@ -7,13 +7,13 @@
 
         public OperationResult(bool success)
         {
-            Success = success;
+            this.Success = success;
         }
 
         public OperationResult(bool success, string message)
         {
-            Success = success;
-            Message = message;
+            this.Success = success;
+            this.Message = message;
         }
     }
 
@@ -28,7 +28,7 @@
 
         public OperationResult(TModel model) : base(true)
         {
-            Model = model;
+            this.Model = model;
         }
     }
 }

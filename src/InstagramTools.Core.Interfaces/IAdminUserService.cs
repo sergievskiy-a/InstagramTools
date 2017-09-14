@@ -10,7 +10,7 @@ namespace InstagramTools.Core.Interfaces
 {
 	public interface IAdminUserService
     {
-        //Single
+        // Single
         /// <summary>
         /// Return user by ApiId
         /// </summary>
@@ -32,13 +32,14 @@ namespace InstagramTools.Core.Interfaces
         /// <returns></returns>
         Task<OperationResult<AppUser>> GetUserByPredicateAsync(Expression<Func<AppUserRow, bool>> predicate);
 
-        //List
+        // List
         /// <summary>
         /// Return all users
         /// </summary>
         /// <param name="pagingOptions"></param>
         /// <returns></returns>
         Task<OperationResult<List<AppUser>>> GetUsersAsync(PagingOptions pagingOptions);
+
         /// <summary>
         /// Return Users by predicate
         /// </summary>
@@ -47,7 +48,7 @@ namespace InstagramTools.Core.Interfaces
         /// <returns></returns>
         Task<OperationResult<List<AppUser>>> GetUsersByPredicateAsync(PagingOptions pagingOptions, Expression<Func<AppUserRow, bool>> predicate);
 
-        //Edit
+        // Edit
         Task<OperationResult> AddUserAsync(AppUser newUser);
         Task<OperationResult> EditUserAsync(AppUser user);
         Task<OperationResult> RemoveUserAsync(int id);

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>InstagramTools.ConsoleClient</AssemblyName>
-    <OutputType>Exe</OutputType>
+    <OutputType>exe</OutputType>
     <PackageId>InstagramTools.ConsoleClient</PackageId>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
@@ -11,6 +11,9 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InstagramTools.Api\InstagramTools.Api.csproj" />
     <ProjectReference Include="..\InstagramTools.Common\InstagramTools.Common.csproj" />
     <ProjectReference Include="..\InstagramTools.Core.Implemenations\InstagramTools.Core.Implemenations.csproj" />
   </ItemGroup>

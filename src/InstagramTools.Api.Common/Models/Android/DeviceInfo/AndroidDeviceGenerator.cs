@@ -377,7 +377,6 @@ namespace InstagramTools.Api.Common.Models.Android.DeviceInfo
                     PhoneGuid = new Guid("7fb2eb38-04ab-4c51-bd0c-694c7da2187e")
                 }
             },
-
             {
                 "note3",
                 new AndroidDevice

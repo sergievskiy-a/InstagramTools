@@ -12,42 +12,45 @@ namespace InstagramTools.Api.Common.Converters
         public InstaDirectInboxThread Convert()
         {
             var thread = new InstaDirectInboxThread();
-            thread.Canonical = SourceObject.Canonical;
-            thread.HasNewer = SourceObject.HasNewer;
-            thread.HasOlder = SourceObject.HasOlder;
-            thread.IsSpam = SourceObject.IsSpam;
-            thread.Muted = SourceObject.Muted;
-            thread.Named = SourceObject.Named;
-            thread.Pending = SourceObject.Pending;
-            thread.VieweId = SourceObject.VieweId;
-            thread.LastActivity = DateTimeHelper.UnixTimestampMilisecondsToDateTime(SourceObject.LastActivity);
-            thread.ThreadId = SourceObject.ThreadId;
+            thread.Canonical = this.SourceObject.Canonical;
+            thread.HasNewer = this.SourceObject.HasNewer;
+            thread.HasOlder = this.SourceObject.HasOlder;
+            thread.IsSpam = this.SourceObject.IsSpam;
+            thread.Muted = this.SourceObject.Muted;
+            thread.Named = this.SourceObject.Named;
+            thread.Pending = this.SourceObject.Pending;
+            thread.VieweId = this.SourceObject.VieweId;
+            thread.LastActivity = DateTimeHelper.UnixTimestampMilisecondsToDateTime(this.SourceObject.LastActivity);
+            thread.ThreadId = this.SourceObject.ThreadId;
             thread.OldestCursor = thread.OldestCursor;
-            thread.ThreadType = SourceObject.ThreadType;
-            thread.Title = SourceObject.Title;
-            if (SourceObject.Inviter != null)
+            thread.ThreadType = this.SourceObject.ThreadType;
+            thread.Title = this.SourceObject.Title;
+            if (this.SourceObject.Inviter != null)
             {
-                var userConverter = ConvertersFabric.GetUserConverter(SourceObject.Inviter);
+                var userConverter = ConvertersFabric.GetUserConverter(this.SourceObject.Inviter);
                 thread.Inviter = userConverter.Convert();
             }
-            if (SourceObject.Items != null && SourceObject.Items.Count > 0)
+
+            if (this.SourceObject.Items != null && this.SourceObject.Items.Count > 0)
             {
                 thread.Items = new List<InstaDirectInboxItem>();
-                foreach (var item in SourceObject.Items)
+                foreach (var item in this.SourceObject.Items)
                 {
                     var converter = ConvertersFabric.GetDirectThreadItemConverter(item);
                     thread.Items.Add(converter.Convert());
                 }
             }
-            if (SourceObject.Users != null && SourceObject.Users.Count > 0)
+
+            if (this.SourceObject.Users != null && this.SourceObject.Users.Count > 0)
             {
                 thread.Users = new InstaUserList();
-                foreach (var user in SourceObject.Users)
+                foreach (var user in this.SourceObject.Users)
                 {
                     var converter = ConvertersFabric.GetUserConverter(user);
                     thread.Users.Add(converter.Convert());
                 }
             }
+
             return thread;
         }
     }

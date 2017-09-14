@@ -10,24 +10,24 @@ namespace InstagramTools.Api.Common.Converters
 
         public InstaUser Convert()
         {
-            if (SourceObject == null) throw new ArgumentNullException($"Source object");
+            if (this.SourceObject == null) throw new ArgumentNullException($"Source object");
             var user = new InstaUser
             {
-                InstaIdentifier = SourceObject.Id
+                InstaIdentifier = this.SourceObject.Id
             };
-            if (!string.IsNullOrEmpty(SourceObject.FullName)) user.FullName = SourceObject.FullName;
-            if (!string.IsNullOrEmpty(SourceObject.ProfilePicture)) user.ProfilePicture = SourceObject.ProfilePicture;
-            if (!string.IsNullOrEmpty(SourceObject.UserName)) user.UserName = SourceObject.UserName;
-            if (!string.IsNullOrEmpty(SourceObject.Pk)) user.Pk = SourceObject.Pk;
-            if (SourceObject.Friendship != null)
-                user.FriendshipStatus = ConvertersFabric.GetFriendShipStatusConverter(SourceObject.Friendship)
+            if (!string.IsNullOrEmpty(this.SourceObject.FullName)) user.FullName = this.SourceObject.FullName;
+            if (!string.IsNullOrEmpty(this.SourceObject.ProfilePicture)) user.ProfilePicture = this.SourceObject.ProfilePicture;
+            if (!string.IsNullOrEmpty(this.SourceObject.UserName)) user.UserName = this.SourceObject.UserName;
+            if (!string.IsNullOrEmpty(this.SourceObject.Pk)) user.Pk = this.SourceObject.Pk;
+            if (this.SourceObject.Friendship != null)
+                user.FriendshipStatus = ConvertersFabric.GetFriendShipStatusConverter(this.SourceObject.Friendship)
                     .Convert();
-            user.HasAnonymousProfilePicture = SourceObject.HasAnonymousProfilePicture;
-            user.ProfilePictureId = SourceObject.ProfilePictureId;
-            user.IsVerified = SourceObject.IsVerified;
-            user.IsPrivate = SourceObject.IsPrivate;
-            user.UnseenCount = SourceObject.UnseenCount;
-            user.MutualFollowersCount = SourceObject.MutualFollowersCount;
+            user.HasAnonymousProfilePicture = this.SourceObject.HasAnonymousProfilePicture;
+            user.ProfilePictureId = this.SourceObject.ProfilePictureId;
+            user.IsVerified = this.SourceObject.IsVerified;
+            user.IsPrivate = this.SourceObject.IsPrivate;
+            user.UnseenCount = this.SourceObject.UnseenCount;
+            user.MutualFollowersCount = this.SourceObject.MutualFollowersCount;
             return user;
         }
     }

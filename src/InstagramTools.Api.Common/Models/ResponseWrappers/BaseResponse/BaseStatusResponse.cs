@@ -9,12 +9,12 @@ namespace InstagramTools.Api.Common.Models.ResponseWrappers.BaseResponse
 
         public bool IsOk()
         {
-            return !string.IsNullOrEmpty(Status) && Status.ToLower() == "ok";
+            return !string.IsNullOrEmpty(this.Status) && this.Status.ToLower() == "ok";
         }
 
         public bool IsFail()
         {
-            return !string.IsNullOrEmpty(Status) && Status.ToLower() == "fail";
+            return !string.IsNullOrEmpty(this.Status) && this.Status.ToLower() == "fail";
         }
     }
 }

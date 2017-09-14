@@ -5,10 +5,10 @@
 
         public MediaVideo(string url, string width, string height, int type)
         {
-            Url = url;
-            Width = width;
-            Height = height;
-            Type = type;
+            this.Url = url;
+            this.Width = width;
+            this.Height = height;
+            this.Type = type;
         }
 
         public string Url { get; set; }

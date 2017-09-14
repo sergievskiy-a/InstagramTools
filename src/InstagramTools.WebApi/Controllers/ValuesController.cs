@@ -20,22 +20,21 @@ namespace InstagramTools.WebApi.Controllers
 
         public ValuesController(ILogger<App> logger, IInstaToolsService instaToolsService)
         {
-
-          _logger = logger;
-          _instaToolsService = instaToolsService;
+          this._logger = logger;
+          this._instaToolsService = instaToolsService;
         }
 
         // GET api/values
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
-            await _instaToolsService.BuildApiManagerAsync(new LoginModel()
+            await this._instaToolsService.BuildApiManagerAsync(new LoginModel()
             {
                 Password = KievPassword,
                 Username = KievLogin
             });
-            await _instaToolsService.WriteToDbCurrentUserFollowers(7000);
-            return new string[] { "value1", "value2" };
+            await this._instaToolsService.WriteToDbCurrentUserFollowers(7000);
+            return new[] { "value1", "value2" };
         }
 
         // GET api/values/5

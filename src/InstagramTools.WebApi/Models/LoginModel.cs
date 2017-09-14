@@ -11,10 +11,10 @@
 
         public string Token { get; set; }
 
-        //TODO: Other environment params
-        //OS
-        //Device
-        //Country
-        //IP
+        // TODO: Other environment params
+        // OS
+        // Device
+        // Country
+        // IP
 	}
 }

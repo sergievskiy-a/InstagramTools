@@ -10,14 +10,14 @@ namespace InstagramTools.Api.Common.Converters
 
         public InstaCarouselItem Convert()
         {
-            if (SourceObject == null) throw new ArgumentNullException($"Source object");
+            if (this.SourceObject == null) throw new ArgumentNullException($"Source object");
             var carouselItem = new InstaCarouselItem
             {
-                CarouselParentId = SourceObject.CarouselParentId,
-                Height = int.Parse(SourceObject.Height),
-                Width = int.Parse(SourceObject.Width)
+                CarouselParentId = this.SourceObject.CarouselParentId,
+                Height = int.Parse(this.SourceObject.Height),
+                Width = int.Parse(this.SourceObject.Width)
             };
-            foreach (var image in SourceObject.Images.Candidates)
+            foreach (var image in this.SourceObject.Images.Candidates)
                 carouselItem.Images.Add(new MediaImage(image.Url, int.Parse(image.Width), int.Parse(image.Height)));
             return carouselItem;
         }

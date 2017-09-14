@@ -12,10 +12,10 @@ namespace InstagramTools.Api.Common.Converters
         {
             var threadItem = new InstaDirectInboxItem
             {
-                ClientContext = SourceObject.ClientContext,
-                ItemId = SourceObject.ItemId
+                ClientContext = this.SourceObject.ClientContext,
+                ItemId = this.SourceObject.ItemId
             };
-            switch (SourceObject.ItemType)
+            switch (this.SourceObject.ItemType)
             {
                 case "text":
                     threadItem.ItemType = InstaDirectThreadItemType.Text;
@@ -24,11 +24,11 @@ namespace InstagramTools.Api.Common.Converters
                     threadItem.ItemType = InstaDirectThreadItemType.MediaShare;
                     break;
             }
-            threadItem.Text = SourceObject.Text;
-            threadItem.TimeStamp = DateTimeHelper.UnixTimestampMilisecondsToDateTime(SourceObject.TimeStamp);
-            threadItem.UserId = SourceObject.UserId;
-            if (SourceObject.MediaShare == null) return threadItem;
-            var converter = ConvertersFabric.GetSingleMediaConverter(SourceObject.MediaShare);
+            threadItem.Text = this.SourceObject.Text;
+            threadItem.TimeStamp = DateTimeHelper.UnixTimestampMilisecondsToDateTime(this.SourceObject.TimeStamp);
+            threadItem.UserId = this.SourceObject.UserId;
+            if (this.SourceObject.MediaShare == null) return threadItem;
+            var converter = ConvertersFabric.GetSingleMediaConverter(this.SourceObject.MediaShare);
             threadItem.MediaShare = converter.Convert();
             return threadItem;
         }
