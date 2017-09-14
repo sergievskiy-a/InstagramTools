@@ -78,7 +78,7 @@ namespace InstagramTools.Core.Implemenations
 
         #region Main
 
-        public async Task<OperationResult<InstProfile>> GetUserByUsername(string username)
+        public async Task<OperationResult<InstProfile>> GetProfileByUsername(string username)
         {
             return await this.ProcessRequestAsync(async () =>
             {
@@ -110,7 +110,7 @@ namespace InstagramTools.Core.Implemenations
             });
         }
 
-        public async Task<OperationResult<List<InstProfile>>> GetUserFollowers(string username, int maxPages = 50)
+        public async Task<OperationResult<List<InstProfile>>> GetFollowersByUsername(string username, int maxPages = 50)
         {
             return await this.ProcessRequestAsync(async () =>
             {
@@ -239,9 +239,9 @@ namespace InstagramTools.Core.Implemenations
 
         #endregion
 
-        public async Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username)
+        public async Task<OperationResult<List<string>>> GetLikersByUsernameAsync(string username, int postsCount = 1)
         {
-            try
+            return await this.ProcessRequestAsync(async () =>
             {
                 var getUserMediaResult = await this.instaApi.GetUserMediaAsync(username);
                 if (!getUserMediaResult.Succeeded)
@@ -250,142 +250,96 @@ namespace InstagramTools.Core.Implemenations
                 }
 
                 var userMedia = getUserMediaResult.Value;
-
+                if (userMedia.Count < 1)
+                {
+                    throw new Exception($"User {username} has not posts.");
+                }
 
                 var lastMedia = userMedia.OrderByDescending(x => x.DeviceTimeStap /*x.TakenAt*/).FirstOrDefault();
-                var mediaId = lastMedia.InstaIdentifier;
 
-                var getLikersResult = await this.instaApi.GetMediaLikersAsync(mediaId);
+                var getLikersResult = await this.instaApi.GetMediaLikersAsync(lastMedia.InstaIdentifier);
                 if (!getLikersResult.Succeeded)
                 {
-                    throw new Exception($"Can't get likers for media [mediaId :{mediaId}]. Error:\t {getLikersResult.Info.Message}");
+                    throw new Exception($"Can't get likers for media [mediaId :{lastMedia.InstaIdentifier}]. Error:\t {getLikersResult.Info.Message}");
                 }
 
                 var likersIds = getLikersResult.Value.Select(x => x.Pk).ToList();
 
-                // var unfollowResult = await instaApi.UnFollowUserAsync(testId);
-                foreach (string id in likersIds)
-                {
-                    var followResult = await this.instaApi.FollowUserAsync(id);
-                    if (!followResult.Succeeded)
-                    {
-                        throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
-                    }
-
-                    this.Logger.LogInformation($"Now you follow user with id={id} ");
-                    await Task.Delay(this.GetDelay());
-                }
-
-                this.Logger.LogInformation($"FollowUsersWhichLikeLastPost() success! [username:{username}]");
-                return new OperationResult(true);
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogError(ex.Message);
-                return new OperationResult(false, ex.Message);
-            }
-
-        }
-
-        public async Task<OperationResult> FollowSubscribersOfUser(string username)
-        {
-            try
-            {
-                var getFollowersResult = await this.instaApi.GetUserFollowersAsync(username, _maxDescriptionLength);
-                if (!getFollowersResult.Succeeded)
-                {
-                    throw new Exception($"Can't get followers [username:{username}]. Error:\t{getFollowersResult.Info.Message }");
-                }
-
-
-                var followersIds = getFollowersResult.Value.Select(x => x.Pk).ToList();
-
-                foreach (string id in followersIds)
-                {
-                    var followResult = await this.instaApi.FollowUserAsync(id);
-                    if (!followResult.Succeeded)
-                    {
-                        throw new Exception($"Can't follow [userId :{id}]. Error:\t {followResult.Info.Message}");
-                    }
-
-                    this.Logger.LogInformation($"Now you follow user with id={id} ");
-                    await Task.Delay(this.GetDelay());
-                }
-
-                return new OperationResult(true);
-            }
-            catch (Exception e)
-            {
-                this.Logger.LogError(e.Message);
-                return new OperationResult(false, e.Message);
-            }
-
-
-        }
-
-        public async Task<OperationResult> UnfollowUnreciprocalUsers()
-        {
-            try
-            {
-                var getFollowersResult = await this.instaApi.GetCurrentUserFollowersAsync(_maxDescriptionLength);
-                if (!getFollowersResult.Succeeded)
-                {
-                    throw new Exception($"Can't get followers for current user. Error:\t{getFollowersResult.Info.Message }");
-                }
-
-                var followersIds = getFollowersResult.Value.Select(x => x.Pk);
-                foreach (string id in followersIds)
-                {
-                    var followResult = await this.instaApi.UnFollowUserAsync(id);
-                    if (!followResult.Succeeded)
-                    {
-                        throw new Exception($"Can't unfollow [userId :{id}]. Error:\t {followResult.Info.Message}");
-                    }
-
-                    this.Logger.LogInformation($"Now you unfollow user with id={id} ");
-                    await Task.Delay(this.GetDelay());
-                }
-
-                return new OperationResult(true);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-        }
-
-        public async Task<OperationResult> WriteToDbCurrentUserFollowers(int maxPages = 0)
-        {
-            return await this.ProcessRequestAsync(async () =>
-            {
-                var currentFollowersResponse = await this.instaApi.GetCurrentUserFollowersAsync(maxPages);
-                if (!currentFollowersResponse.Succeeded)
-                {
-                    return new OperationResult(false, currentFollowersResponse.Info.Message);
-                }
-
-                this.Context.AppUsers.Add(new AppUserRow()
-                {
-                    Created = DateTime.Now,
-                    Deleted = DateTime.MinValue,
-                    Email = "fckd.kiev@gmail.com",
-                    Password = "fckdhadiach",
-                    Username = "ADMIN",
-                    Phone = string.Empty
-
-                });
-                await this.Context.SaveChangesAsync();
-
-                var followers = currentFollowersResponse.Value;
-                foreach (var follower in followers)
-                {
-                    await this.UnFollowUser(follower.UserName);
-                }
-                
-                return new OperationResult(true);
+                this.Logger.LogInformation($"Get {likersIds.Count} users, that liked last {username}'s post.");
+                return new OperationResult<List<string>>(likersIds);
             });
         }
+
+        public async Task<OperationResult> CleanMyFollowing(int maxPages = 0)
+        {
+            return await this.ProcessRequestAsync(async () =>
+                {
+                    var currentFollowersResponse = await this.instaApi.GetCurrentUserFollowersAsync(maxPages);
+                    if (!currentFollowersResponse.Succeeded)
+                    {
+                        return new OperationResult(false, currentFollowersResponse.Info.Message);
+                    }
+
+                    this.Context.AppUsers.Add(new AppUserRow()
+                                                  {
+                                                      Created = DateTime.Now,
+                                                      Deleted = DateTime.MinValue,
+                                                      Email = "fckd.kiev@gmail.com",
+                                                      Password = "fckdhadiach",
+                                                      Username = "ADMIN",
+                                                      Phone = string.Empty
+
+                                                  });
+                    await this.Context.SaveChangesAsync();
+
+                    var followers = currentFollowersResponse.Value;
+                    foreach (var follower in followers)
+                    {
+                        await this.UnFollowUser(follower.UserName);
+                    }
+
+                    return new OperationResult(true);
+                });
+        }
+
+        #region NotImplemented
+
+        public Task<OperationResult<List<string>>> GetCommentersByUsernameAsync(string username, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetLikersByHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetLikersByLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetCommentersByHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetCommentersByLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetHasPostWithHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetHasPostWithLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
     }
 }

@@ -13,21 +13,32 @@ namespace InstagramTools.Core.Interfaces
 
         Task<OperationResult> BuildApiManagerAsync(LoginModel loginModel);
 
-        Task<OperationResult<InstProfile>> GetUserByUsername(string username);
+        Task<OperationResult<InstProfile>> GetProfileByUsername(string username);
+
         Task<OperationResult<List<InstProfile>>> GetMyFollowers(int maxPages = 50);
-        Task<OperationResult<List<InstProfile>>> GetUserFollowers(string username, int maxPages = 50);
+        Task<OperationResult<List<InstProfile>>> GetFollowersByUsername(string username, int maxPages = 50);
+
         Task<OperationResult> FollowUser(string username);
         Task<OperationResult> FollowUsers(IEnumerable<string> usersnames);
+
         Task<OperationResult> UnFollowUser(string username);
         Task<OperationResult> UnFollowUsers(IEnumerable<string> usersnames);
 
         #endregion
 
+        Task<OperationResult<List<string>>> GetLikersByUsernameAsync(string username, int postsCount);
+        Task<OperationResult<List<string>>> GetCommentersByUsernameAsync(string username, int postsCount);
 
-        Task<OperationResult> FollowUsersWhichLikeLastPostAsync(string username);
-        Task<OperationResult> FollowSubscribersOfUser(string username);
-        Task<OperationResult> UnfollowUnreciprocalUsers();
-        Task<OperationResult> WriteToDbCurrentUserFollowers(int maxPages = 0);
+        Task<OperationResult<List<string>>> GetLikersByHashtagAsync(string hashtag, int postsCount);
+        Task<OperationResult<List<string>>> GetLikersByLocationAsync(string location, int postsCount);
+
+        Task<OperationResult<List<string>>> GetCommentersByHashtagAsync(string hashtag, int postsCount);
+        Task<OperationResult<List<string>>> GetCommentersByLocationAsync(string location, int postsCount);
+
+        Task<OperationResult<List<string>>> GetHasPostWithHashtagAsync(string hashtag, int postsCount);
+        Task<OperationResult<List<string>>> GetHasPostWithLocationAsync(string location, int postsCount);
+
+        Task<OperationResult> CleanMyFollowing(int maxPages = 0);
 
     }
 }
