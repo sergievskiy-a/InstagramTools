@@ -24,9 +24,6 @@ namespace InstagramTools.Core.Implemenations
 {
     public class InstaToolsService : MainService<InstaToolsService>, IInstaToolsService
     {
-        // TODO: To config/constants
-        private static readonly int _maxDescriptionLength = 20;
-
         private readonly IInstaApiBuilder apiBuilder;
         private IInstaApi instaApi;
 
@@ -131,7 +128,7 @@ namespace InstagramTools.Core.Implemenations
             return await this.ProcessRequestAsync(async () =>
                 {
                     // Get user info
-                    var getUserResult = await this.GetUserByUsername(username);
+                    var getUserResult = await this.GetProfileByUsername(username);
                     if (!getUserResult.Success) throw new Exception(getUserResult.Message);
                     var userInfo = getUserResult.Model;
 
@@ -169,7 +166,7 @@ namespace InstagramTools.Core.Implemenations
             return await this.ProcessRequestAsync(async () =>
                 {
                     // Get user info
-                    var getUserResult = await this.GetUserByUsername(username);
+                    var getUserResult = await this.GetProfileByUsername(username);
                     if (!getUserResult.Success) throw new Exception(getUserResult.Message);
                     var userInfo = getUserResult.Model;
 

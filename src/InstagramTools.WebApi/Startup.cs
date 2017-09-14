@@ -171,11 +171,6 @@ namespace InstagramTools.WebApi
             services.AddScoped<IInstaToolsService, InstaToolsService>();
             services.AddScoped<IInstaApiBuilder, InstaApiBuilder>();
             services.AddScoped<IInstaApi, InstaApi>();
-            services.AddScoped<IAuthorizeService, AuthorizeService>();
-            services.AddScoped<IAdminUserService, AdminUserService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAdminRoleService, AdminRoleService>();
-            services.AddScoped<IRoleService, RoleService>();
         }
 
         // Return DbConnString based on Machine's name

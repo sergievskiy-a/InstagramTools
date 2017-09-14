@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using InstagramTools.Common.Models;
-using InstagramTools.ConsoleClient;
 using InstagramTools.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,9 +15,9 @@ namespace InstagramTools.WebApi.Controllers
         private const string KievPassword = "fckdhadiach";
 
         private readonly IInstaToolsService _instaToolsService;
-        private readonly ILogger<App> _logger;
+        private readonly ILogger<ValuesController> _logger;
 
-        public ValuesController(ILogger<App> logger, IInstaToolsService instaToolsService)
+        public ValuesController(ILogger<ValuesController> logger, IInstaToolsService instaToolsService)
         {
           this._logger = logger;
           this._instaToolsService = instaToolsService;
@@ -33,7 +32,7 @@ namespace InstagramTools.WebApi.Controllers
                 Password = KievPassword,
                 Username = KievLogin
             });
-            await this._instaToolsService.WriteToDbCurrentUserFollowers(7000);
+            await this._instaToolsService.CleanMyFollowing(0);
             return new[] { "value1", "value2" };
         }
 
