@@ -271,10 +271,10 @@ namespace InstagramTools.Core.Implemenations
         {
             return await this.ProcessRequestAsync(async () =>
                 {
-                    var currentFollowersResponse = await this.instaApi.GetCurrentUserFollowersAsync(maxPages);
-                    if (!currentFollowersResponse.Succeeded)
+                    var currentFollowingsResponse = await this.instaApi.GetCurrentUserFollowingsAsync(maxPages);
+                    if (!currentFollowingsResponse.Succeeded)
                     {
-                        return new OperationResult(false, currentFollowersResponse.Info.Message);
+                        return new OperationResult(false, currentFollowingsResponse.Info.Message);
                     }
 
                     this.Context.AppUsers.Add(new AppUserRow()
@@ -289,10 +289,10 @@ namespace InstagramTools.Core.Implemenations
                                                   });
                     await this.Context.SaveChangesAsync();
 
-                    var followers = currentFollowersResponse.Value;
-                    foreach (var follower in followers)
+                    var followings = currentFollowingsResponse.Value;
+                    foreach (var following in followings)
                     {
-                        await this.UnFollowUser(follower.UserName);
+                        await this.UnFollowUser(following.UserName);
                     }
 
                     return new OperationResult(true);

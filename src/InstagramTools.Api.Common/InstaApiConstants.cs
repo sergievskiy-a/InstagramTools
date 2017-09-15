@@ -25,6 +25,7 @@
         public const string GET_USER_TAGS = API_SUFFIX + "/v1/usertags/{0}/feed/";
         public const string GET_MEDIA = API_SUFFIX + "/v1/media/{0}/info/";
         public const string GET_USER_FOLLOWERS = API_SUFFIX + "/v1/friendships/{0}/followers/?rank_token={1}";
+        public const string GET_USER_FOLLOWINGS = API_SUFFIX + "/v1/friendships/{0}/following/?ig_sig_key_version={1}&rank_token={2}";
         public const string GET_TAG_FEED = API_SUFFIX + "/v1/feed/tag/{0}";
         public const string GET_RANKED_RECIPIENTS = API_SUFFIX + "/v1/direct_v2/ranked_recipients";
         public const string GET_RECENT_RECIPIENTS = API_SUFFIX + "/v1/direct_share/recent_recipients/";

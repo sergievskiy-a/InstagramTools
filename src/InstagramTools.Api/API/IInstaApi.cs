@@ -110,7 +110,6 @@ namespace InstagramTools.Api.API
         /// </returns>
         IResult<InstaUserList> GetCurentUserFollowers(int maxPages = 0);
 
-
         /// <summary>
         ///     Get user tags by username
         ///     <remarks>Returns media list containing tags</remarks>
@@ -374,13 +373,32 @@ namespace InstagramTools.Api.API
         Task<IResult<InstaUserList>> GetUserFollowersAsync(string username, int maxPages = 0);
 
         /// <summary>
-        ///     Get followers list for currently logged in user asynchronously
+        ///     Get followers list by current user asynchronously
         /// </summary>
         /// <param name="maxPages">Maximum count of pages to retrieve</param>
         /// <returns>
         ///     <see cref="InstaUserList" />
         /// </returns>
         Task<IResult<InstaUserList>> GetCurrentUserFollowersAsync(int maxPages = 0);
+
+        /// <summary>
+        ///     Get followings list by username asynchronously
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="maxPages">Maximum count of pages to retrieve</param>
+        /// <returns>
+        ///     <see cref="InstaUserList" />
+        /// </returns>
+        Task<IResult<InstaUserList>> GetUserFollowingsAsync(string username, int maxPages = 0);
+
+        /// <summary>
+        ///     Get following list for currently logged in user asynchronously
+        /// </summary>
+        /// <param name="maxPages">Maximum count of pages to retrieve</param>
+        /// <returns>
+        ///     <see cref="InstaUserList" />
+        /// </returns>
+        Task<IResult<InstaUserList>> GetCurrentUserFollowingsAsync(int maxPages = 0);
 
         /// <summary>
         ///     Get user tags by username asynchronously

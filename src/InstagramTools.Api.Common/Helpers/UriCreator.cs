@@ -86,6 +86,17 @@ namespace InstagramTools.Api.Common.Helpers
             return uriBuilder.Uri;
         }
 
+        public static Uri GetUserFollowingsUri(string userPk, string SIG_KEY_VERSION, string rankToken, string maxId = "")
+        {
+            Uri instaUri;
+            if (
+                !Uri.TryCreate(BaseInstagramUri, string.Format(InstaApiConstants.GET_USER_FOLLOWINGS, userPk, SIG_KEY_VERSION, rankToken),
+                    out instaUri)) throw new Exception("Cant create URI for user followers");
+            if (string.IsNullOrEmpty(maxId)) return instaUri;
+            var uriBuilder = new UriBuilder(instaUri) { Query = $"max_id={maxId}" };
+            return uriBuilder.Uri;
+        }
+
         public static Uri GetTagFeedUri(string tag)
         {
             Uri instaUri;

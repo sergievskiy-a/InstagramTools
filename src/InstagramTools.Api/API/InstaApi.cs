@@ -609,6 +609,55 @@ namespace InstagramTools.Api.API
             return await this.GetUserFollowersAsync(this._user.UserName, maxPages);
         }
 
+        public async Task<IResult<InstaUserList>> GetUserFollowingsAsync(string username, int maxPages = 0)
+        {
+            this.ValidateUser();
+            this.ValidateLoggedIn();
+            try
+            {
+                if (maxPages == 0) maxPages = int.MaxValue;
+                var user = await this.GetUserAsync(username);
+                var userFeedUri = UriCreator.GetUserFollowingsUri(user.Value.Pk, InstaApiConstants.IG_SIGNATURE_KEY_VERSION, this._user.RankToken);
+                var request = HttpHelper.GetDefaultRequest(HttpMethod.Get, userFeedUri, this._deviceInfo);
+                var response = await this._httpClient.SendAsync(request);
+                var json = await response.Content.ReadAsStringAsync();
+                var followings = new InstaUserList();
+                if (response.StatusCode != HttpStatusCode.OK) return Result.Fail(string.Empty, (InstaUserList)null);
+                var followingsResponse = JsonConvert.DeserializeObject<InstaFollowersResponse>(json);
+                if (!followingsResponse.IsOK())
+                    Result.Fail(this.GetBadStatusFromJsonString(json).Message, (InstaUserList)null);
+                followings.AddRange(
+                    followingsResponse.Items.Select(ConvertersFabric.GetUserConverter)
+                        .Select(converter => converter.Convert()));
+                if (!followingsResponse.IsBigList) return Result.Success(followings);
+                var pages = 1;
+                while (!string.IsNullOrEmpty(followingsResponse.NextMaxId) && pages < maxPages)
+                {
+                    var nextFollowers = Result.Success(followingsResponse);
+                    nextFollowers = await this.GetUserFollowersWithMaxIdAsync(username, nextFollowers.Value.NextMaxId);
+                    if (!nextFollowers.Succeeded)
+                        return Result.Success($"Not all pages was downloaded: {nextFollowers.Info.Message}", followings);
+                    followingsResponse = nextFollowers.Value;
+                    followings.AddRange(
+                        nextFollowers.Value.Items.Select(ConvertersFabric.GetUserConverter)
+                            .Select(converter => converter.Convert()));
+                    pages++;
+                }
+
+                return Result.Success(followings);
+            }
+            catch (Exception exception)
+            {
+                return Result.Fail(exception.Message, (InstaUserList)null);
+            }
+        }
+
+        public async Task<IResult<InstaUserList>> GetCurrentUserFollowingsAsync(int maxPages = 0)
+        {
+            this.ValidateUser();
+            return await this.GetUserFollowingsAsync(this._user.UserName, maxPages);
+        }
+
         public async Task<IResult<InstaMediaList>> GetUserTagsAsync(string username, int maxPages = 0)
         {
             this.ValidateUser();
@@ -1480,6 +1529,34 @@ namespace InstagramTools.Api.API
                     var followersResponse = JsonConvert.DeserializeObject<InstaFollowersResponse>(json);
                     if (!followersResponse.IsOK()) Result.Fail(string.Empty, (InstaFollowersResponse)null);
                     return Result.Success(followersResponse);
+                }
+
+                return Result.Fail(this.GetBadStatusFromJsonString(json).Message, (InstaFollowersResponse)null);
+            }
+            catch (Exception exception)
+            {
+                return Result.Fail(exception.Message, (InstaFollowersResponse)null);
+            }
+        }
+
+        private async Task<IResult<InstaFollowersResponse>> GetUserFollowingsWithMaxIdAsync(
+            string username,
+            string maxId)
+        {
+            this.ValidateUser();
+            try
+            {
+                if (!this.IsUserAuthenticated) throw new ArgumentException("user must be authenticated");
+                var user = await this.GetUserAsync(username);
+                var userFeedUri = UriCreator.GetUserFollowingsUri(user.Value.Pk, InstaApiConstants.IG_SIGNATURE_KEY_VERSION, this._user.RankToken, maxId);
+                var request = HttpHelper.GetDefaultRequest(HttpMethod.Get, userFeedUri, this._deviceInfo);
+                var response = await this._httpClient.SendAsync(request);
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var followingsResponse = JsonConvert.DeserializeObject<InstaFollowersResponse>(json);
+                    if (!followingsResponse.IsOK()) Result.Fail(string.Empty, (InstaFollowersResponse)null);
+                    return Result.Success(followingsResponse);
                 }
 
                 return Result.Fail(this.GetBadStatusFromJsonString(json).Message, (InstaFollowersResponse)null);
