@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 
 using InstagramTools.Api.Common.Models.Models;
 using InstagramTools.Core.Implemenations.Configurations;
@@ -36,7 +37,11 @@ namespace InstagramTools.Core.Implemenations
 
             this.CreateMap<InstaUser, InstProfile>()
                 .ForMember(dest => dest.ApiId, opt => opt.MapFrom(src => src.Pk))
-                .ForMember(dest => dest.FriendshipStatus, opt => opt.MapFrom(src => src.FriendshipStatus));
+                .ForMember(dest => dest.FriendshipStatus, opt => opt.MapFrom(src => src.FriendshipStatus))
+
+                .ForMember(dest => dest.Created, opt => opt.Ignore())
+                .ForMember(dest => dest.Deleted, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             this.CreateMap<InstaFriendshipStatus, FriendshipStatus>();
 
