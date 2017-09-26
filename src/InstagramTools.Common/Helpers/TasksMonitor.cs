@@ -35,5 +35,16 @@ namespace InstagramTools.Common.Helpers
         {
             return Tasks[taskName];
         }
+
+        public void CancelTask(string taskName)
+        {
+            var taskCancellationToken = Tasks[taskName];
+            taskCancellationToken.Cancel();
+        }
+
+        public CancellationToken GetToken(string taskName)
+        {
+            return Tasks[taskName].Token;
+        }
     }
 }

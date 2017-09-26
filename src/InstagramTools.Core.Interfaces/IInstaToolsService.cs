@@ -41,5 +41,7 @@ namespace InstagramTools.Core.Interfaces
 
         Task<OperationResult> CleanMyFollowing(int maxPages = 0);
         Task<OperationResult> CleanMyFollowing(CancellationToken ct, int maxPages = 0);
+
+        Task<OperationResult> FollowUsersWhichLikeLastPostAsyncTask(string username, CancellationToken cancellationToken);
     }
 }

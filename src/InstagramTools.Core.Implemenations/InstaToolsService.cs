@@ -42,6 +42,7 @@ namespace InstagramTools.Core.Implemenations
             this.apiBuilder = apiBuilder;
             _monitor = monitor;
             _monitor.AddTask("CleanMyFollowing");
+            _monitor.AddTask("FollowUsersWhichLikeLastPostAsyncTask");
             // TODO: REPLACE TASK NAMES TO CONSTANT SERVICE
         }
 
@@ -310,43 +311,6 @@ namespace InstagramTools.Core.Implemenations
                 });
         }
 
-        #region NotImplemented
-
-        public Task<OperationResult<List<string>>> GetCommentersByUsernameAsync(string username, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetLikersByHashtagAsync(string hashtag, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetLikersByLocationAsync(string location, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetCommentersByHashtagAsync(string hashtag, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetCommentersByLocationAsync(string location, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetHasPostWithHashtagAsync(string hashtag, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResult<List<string>>> GetHasPostWithLocationAsync(string location, int postsCount = 1)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<OperationResult> CleanMyFollowing(CancellationToken ct, int maxPages = 0)
         {
             this.instaApi = this.apiBuilder.SetUser(new UserSessionData
@@ -390,7 +354,83 @@ namespace InstagramTools.Core.Implemenations
             return new OperationResult(true);
         }
 
-        
+        public async Task<OperationResult> FollowUsersWhichLikeLastPostAsyncTask(string username, CancellationToken cancellationToken)
+        {
+            this.instaApi = this.apiBuilder.SetUser(new UserSessionData
+            {
+                UserName = userName,
+                Password = password
+            }).Build();
+
+            var logInResult = await this.instaApi.LoginAsync();
+            //Kostil'
+            var result = await GetLikersByUsernameAsync(username);
+            if(!result.Success) 
+                throw new Exception();
+
+            var users = result.Model;
+            var dbUsers = Context.InstProfiles.AsQueryable();
+            foreach (var user in users)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return new OperationResult(true, "Canceled");
+                }
+                if (await dbUsers.AnyAsync(x => x.UserName == user)) continue;
+
+                var followResult = await FollowUser(user);
+                if (!followResult.Success)
+                {
+                    return new OperationResult(false);
+                }
+            }
+
+            return new OperationResult(true, "Done");
+
+
+        }
+
+        #region NotImplemented
+
+        public Task<OperationResult<List<string>>> GetCommentersByUsernameAsync(string username, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetLikersByHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetLikersByLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetCommentersByHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetCommentersByLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetHasPostWithHashtagAsync(string hashtag, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<string>>> GetHasPostWithLocationAsync(string location, int postsCount = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+
+
 
 
         #endregion

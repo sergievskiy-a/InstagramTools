@@ -47,18 +47,32 @@ namespace InstagramTools.ApiClient.Controllers
         [Route("clean-my-following")]
         public async Task<OperationResult> CleanMyFollowing()
         {
-            return await _instaToolsService.CleanMyFollowing(_monitor.GetTokenSource("CleanMyFollowing").Token);
+            return await _instaToolsService.CleanMyFollowing(_monitor.GetToken("CleanMyFollowing"));
         }
 
         [HttpGet]
         [Route("clean-my-following-cancel")]
-        public string Cancel()
+        public string CleanMyFollowingCancel()
         {
-            var taskToken = _monitor.GetTokenSource("CleanMyFollowing");
-            if (taskToken == null) return "token is null";
-            taskToken.Cancel();
+            _monitor.CancelTask("CleanMyFollowing");
             return "Canceled";
         }
+
+        [HttpGet]
+        [Route("follow-users-which-like-last-post")]
+        public async Task<OperationResult> FollowUsersWhichLikeLastPost(string username)
+        {
+            return await _instaToolsService.FollowUsersWhichLikeLastPostAsyncTask(username, _monitor.GetToken("FollowUsersWhichLikeLastPostAsyncTask"));
+        }
+
+        [HttpGet]
+        [Route("follow-users-which-like-last-post-cancel")]
+        public string FollowUsersWhichLikeLastPostCancel()
+        {
+            _monitor.CancelTask("FollowUsersWhichLikeLastPostAsyncTask");
+            return "Canceled";
+        }
+
 
 
         //[HttpGet]

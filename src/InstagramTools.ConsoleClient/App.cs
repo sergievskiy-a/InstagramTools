@@ -47,7 +47,7 @@ namespace InstagramTools.ConsoleClient
             // var followingResult = await _instaToolsService.FollowSubscribersOfUser(kievblog);
             var test = await this.instaToolsService.CleanMyFollowing();
 
-            // var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(kpi_live);
+            //var followUsersWhichLikeLastPostResult = await _instaToolsService.FollowUsersWhichLikeLastPostAsync(kpi_live);
             Console.WriteLine($"Done!\nSuccess: {test.Success}");
 
             if (!string.IsNullOrWhiteSpace(test.Message))
