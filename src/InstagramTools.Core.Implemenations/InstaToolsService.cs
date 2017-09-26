@@ -27,6 +27,7 @@ namespace InstagramTools.Core.Implemenations
     {
         private readonly IInstaApiBuilder apiBuilder;
         private IInstaApi instaApi;
+        private readonly TasksMonitor _monitor;
 
         //KOSTIL'
         private static string userName;
@@ -35,10 +36,13 @@ namespace InstagramTools.Core.Implemenations
         #region Constructors
 
         public InstaToolsService(IConfigurationRoot root, ILogger<InstaToolsService> logger,
-            IMemoryCache memoryCache, IMapper mapper, InstagramToolsContext context, IInstaApiBuilder apiBuilder)
+            IMemoryCache memoryCache, IMapper mapper, InstagramToolsContext context, IInstaApiBuilder apiBuilder, TasksMonitor monitor)
             : base(root, logger, memoryCache, mapper, context)
         {
             this.apiBuilder = apiBuilder;
+            _monitor = monitor;
+            _monitor.AddTask("CleanMyFollowing");
+            // TODO: REPLACE TASK NAMES TO CONSTANT SERVICE
         }
 
         #endregion
@@ -50,7 +54,6 @@ namespace InstagramTools.Core.Implemenations
 
             var addToDelaySec = new Random().Next(1, 40);
             var result = (MinDelaySec + addToDelaySec) * 1000;
-            return 5000;
             return result;
         }
 
@@ -371,7 +374,7 @@ namespace InstagramTools.Core.Implemenations
                 Phone = string.Empty
 
             });
-            await this.Context.SaveChangesAsync(ct);
+            await this.Context.SaveChangesAsync();
 
             var followings = currentFollowingsResponse.Value;
             foreach (var following in followings)
@@ -379,6 +382,7 @@ namespace InstagramTools.Core.Implemenations
                 if (ct.IsCancellationRequested)
                 {
                     Logger.LogTrace("TASK CANCELED");
+                    return new OperationResult(true);
                 }
                 await this.UnFollowUser(following.UserName);
             }

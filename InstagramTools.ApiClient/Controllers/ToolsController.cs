@@ -26,7 +26,7 @@ namespace InstagramTools.ApiClient.Controllers
             this._logger = logger;
             this._instaToolsService = instaToolsService;
             this._monitor = monitor;
-            _monitor.AddTask("LongTask", new CancellationTokenSource());
+            
         }
 
         //TODO : CHANGE TO POST
@@ -45,45 +45,43 @@ namespace InstagramTools.ApiClient.Controllers
 
         [HttpGet]
         [Route("clean-my-following")]
-        public string CleanMyFollowing()
+        public async Task<OperationResult> CleanMyFollowing()
         {
-            //var t = Task.Factory.StartNew(()=> _instaToolsService.CleanMyFollowing(cts.Token, 0), cts.Token);
-            //cts.Cancel();
-            return "Started";
+            return await _instaToolsService.CleanMyFollowing(_monitor.GetTokenSource("CleanMyFollowing").Token);
         }
 
         [HttpGet]
-        [Route("cancel")]
+        [Route("clean-my-following-cancel")]
         public string Cancel()
         {
-            var taskToken = _monitor.GetTokenSource("LongTask");
+            var taskToken = _monitor.GetTokenSource("CleanMyFollowing");
             if (taskToken == null) return "token is null";
             taskToken.Cancel();
             return "Canceled";
         }
 
 
-        [HttpGet]
-        [Route("start-long-task")]
-        public async Task<int> StartLongTask()
-        {
-            return await LongTask(_monitor.GetTokenSource("LongTask").Token);
-        }
+        //[HttpGet]
+        //[Route("start-long-task")]
+        //public async Task<int> StartLongTask()
+        //{
+        //    return await LongTask(_monitor.GetTokenSource("LongTask").Token);
+        //}
 
-        private async Task<int> LongTask(CancellationToken token)
-        {
-            var counter = 1;         
-            for (var i = 0; i < 1000; i++)
-            {
-                if (token.IsCancellationRequested)
-                {
-                    _logger.LogDebug("CANCELED");
-                    return counter;
-                }
-                await Task.Delay(2000);
-                counter++;
-            }
-            return counter;
-        }
+        //private async Task<int> LongTask(CancellationToken token)
+        //{
+        //    var counter = 1;         
+        //    for (var i = 0; i < 1000; i++)
+        //    {
+        //        if (token.IsCancellationRequested)
+        //        {
+        //            _logger.LogDebug("CANCELED");
+        //            return counter;
+        //        }
+        //        await Task.Delay(2000);
+        //        counter++;
+        //    }
+        //    return counter;
+        //}
     }
 }

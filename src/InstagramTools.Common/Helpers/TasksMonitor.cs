@@ -23,6 +23,14 @@ namespace InstagramTools.Common.Helpers
             }
         }
 
+        public void AddTask(string taskName)
+        {
+            if (!Tasks.ContainsKey(taskName))
+            {
+                Tasks.Add(taskName, new CancellationTokenSource());
+            }
+        }
+
         public CancellationTokenSource GetTokenSource(string taskName)
         {
             return Tasks[taskName];
