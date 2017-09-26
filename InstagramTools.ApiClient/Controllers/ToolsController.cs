@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
 using InstagramTools.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,63 +19,71 @@ namespace InstagramTools.ApiClient.Controllers
 
         private readonly IInstaToolsService _instaToolsService;
         private readonly ILogger<ToolsController> _logger;
+        private readonly TasksMonitor _monitor;
 
-        public ToolsController(ILogger<ToolsController> logger, IInstaToolsService instaToolsService)
+        public ToolsController(ILogger<ToolsController> logger, IInstaToolsService instaToolsService, TasksMonitor monitor)
         {
             this._logger = logger;
             this._instaToolsService = instaToolsService;
+            this._monitor = monitor;
+            _monitor.AddTask("LongTask", new CancellationTokenSource());
+        }
+
+        //TODO : CHANGE TO POST
+        [HttpGet]
+        [Route("login")]
+        public async Task<OperationResult> Login()
+        {
+            var result = await _instaToolsService.BuildApiManagerAsync(new LoginModel()
+            {
+                Password = KievPassword,
+                Username = KievLogin
+            });
+            return result;
         }
 
 
         [HttpGet]
         [Route("clean-my-following")]
-        public async Task CleanMyFollowing()
+        public string CleanMyFollowing()
         {
-            await _instaToolsService.BuildApiManagerAsync(new LoginModel()
-            {
-                Password = KievPassword,
-                Username = KievLogin
-            });
-            await _instaToolsService.CleanMyFollowing(0);
+            //var t = Task.Factory.StartNew(()=> _instaToolsService.CleanMyFollowing(cts.Token, 0), cts.Token);
+            //cts.Cancel();
+            return "Started";
         }
 
-
-        // GET api/values
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        [Route("cancel")]
+        public string Cancel()
         {
-            await this._instaToolsService.BuildApiManagerAsync(new LoginModel()
+            var taskToken = _monitor.GetTokenSource("LongTask");
+            if (taskToken == null) return "token is null";
+            taskToken.Cancel();
+            return "Canceled";
+        }
+
+
+        [HttpGet]
+        [Route("start-long-task")]
+        public async Task<int> StartLongTask()
+        {
+            return await LongTask(_monitor.GetTokenSource("LongTask").Token);
+        }
+
+        private async Task<int> LongTask(CancellationToken token)
+        {
+            var counter = 1;         
+            for (var i = 0; i < 1000; i++)
             {
-                Password = KievPassword,
-                Username = KievLogin
-            });
-            await this._instaToolsService.CleanMyFollowing(0);
-            return new[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+                if (token.IsCancellationRequested)
+                {
+                    _logger.LogDebug("CANCELED");
+                    return counter;
+                }
+                await Task.Delay(2000);
+                counter++;
+            }
+            return counter;
         }
     }
 }

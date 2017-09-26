@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using InstagramTools.Api.API;
 using InstagramTools.Api.API.Builder;
+using InstagramTools.Common.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,11 +21,6 @@ namespace InstagramTools.ApiClient
 {
     public class Startup
     {
-        //public Startup(IConfigurationRoot configuration)
-        //{
-        //    Configuration = configuration;
-        //}
-
 
         public Startup(IHostingEnvironment env)
         {
@@ -54,9 +50,9 @@ namespace InstagramTools.ApiClient
             
             services.AddSingleton<IConfigurationRoot>(Configuration);
 
-
-            string connection = this.GetConnectionStringForMachine(Configuration);
+            var connection = this.GetConnectionStringForMachine(Configuration);
             services.AddDbContext<InstagramToolsContext>(options => options.UseSqlServer(connection));
+            services.AddSingleton<InstagramToolsContext>();
 
             var config = new MapperConfiguration(cfg => { cfg.AddProfile(new MappingProfile()); });
             config.AssertConfigurationIsValid();
@@ -65,10 +61,9 @@ namespace InstagramTools.ApiClient
             services.AddMvc();
 
 
-
-            services.AddScoped<IInstaToolsService, InstaToolsService>();
-            services.AddScoped<IInstaApiBuilder, InstaApiBuilder>();
-            services.AddScoped<IInstaApi, InstaApi>();
+            services.AddSingleton<TasksMonitor>();
+            services.AddTransient<IInstaToolsService, InstaToolsService>();
+            services.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

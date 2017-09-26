@@ -18,6 +18,7 @@ namespace InstagramTools.Common
                 this.HandleError(ex);
                 return new OperationResult(false, ex.Message);
             }
+            //TODO: maybe we should refactor it to the attribute like: "exceptionHandler"
         }
 
         public async Task<OperationResult<TModel>> ProcessRequestAsync<TModel>(Func<Task<OperationResult<TModel>>> func)

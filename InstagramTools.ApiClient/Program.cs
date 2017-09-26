@@ -23,13 +23,5 @@ namespace InstagramTools.ApiClient
 
             host.Run();
         }
-
-        //public static IWebHost BuildWebHost(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //        .UseStartup<Startup>()
-        //        .UseIISIntegration()
-        //        .UseStartup<Startup>()
-        //        .UseUrls("http://localhost:8800/")
-        //        .Build();
     }
 }

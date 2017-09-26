@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using InstagramTools.Common.Helpers;
 using InstagramTools.Common.Models;
@@ -39,6 +40,6 @@ namespace InstagramTools.Core.Interfaces
         Task<OperationResult<List<string>>> GetHasPostWithLocationAsync(string location, int postsCount);
 
         Task<OperationResult> CleanMyFollowing(int maxPages = 0);
-
+        Task<OperationResult> CleanMyFollowing(CancellationToken ct, int maxPages = 0);
     }
 }

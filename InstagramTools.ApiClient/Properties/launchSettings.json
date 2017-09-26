@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/tools/clean-my-following",
+      "launchUrl": "api/tools/login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +19,7 @@
     "InstagramTools.ApiClient": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/tools/clean-my-following",
+      "launchUrl": "api/tools/login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

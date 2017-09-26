@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -27,6 +28,10 @@ namespace InstagramTools.Core.Implemenations
         private readonly IInstaApiBuilder apiBuilder;
         private IInstaApi instaApi;
 
+        //KOSTIL'
+        private static string userName;
+        private static string password;
+
         #region Constructors
 
         public InstaToolsService(IConfigurationRoot root, ILogger<InstaToolsService> logger,
@@ -45,6 +50,7 @@ namespace InstagramTools.Core.Implemenations
 
             var addToDelaySec = new Random().Next(1, 40);
             var result = (MinDelaySec + addToDelaySec) * 1000;
+            return 5000;
             return result;
         }
 
@@ -52,6 +58,8 @@ namespace InstagramTools.Core.Implemenations
         {
             try
             {
+                userName = loginModel.Username;
+                password = loginModel.Password;
                 this.instaApi = this.apiBuilder.SetUser(new UserSessionData
                 {
                     UserName = loginModel.Username,
@@ -277,16 +285,16 @@ namespace InstagramTools.Core.Implemenations
                         return new OperationResult(false, currentFollowingsResponse.Info.Message);
                     }
 
-                    this.Context.AppUsers.Add(new AppUserRow()
-                                                  {
-                                                      Created = DateTime.Now,
-                                                      Deleted = DateTime.MinValue,
-                                                      Email = "fckd.kiev@gmail.com",
-                                                      Password = "fckdhadiach",
-                                                      Username = "ADMIN",
-                                                      Phone = string.Empty
+                    Context.AppUsers.Add(new AppUserRow()
+                    {
+                        Created = DateTime.Now,
+                        Deleted = DateTime.MinValue,
+                        Email = "fckd.kiev@gmail.com",
+                        Password = "fckdhadiach",
+                        Username = "ADMIN",
+                        Phone = string.Empty
 
-                                                  });
+                    });
                     await this.Context.SaveChangesAsync();
 
                     var followings = currentFollowingsResponse.Value;
@@ -335,6 +343,51 @@ namespace InstagramTools.Core.Implemenations
         {
             throw new NotImplementedException();
         }
+
+        public async Task<OperationResult> CleanMyFollowing(CancellationToken ct, int maxPages = 0)
+        {
+            this.instaApi = this.apiBuilder.SetUser(new UserSessionData
+            {
+                UserName = userName,
+                Password = password
+            }).Build();
+
+            var logInResult = await this.instaApi.LoginAsync();
+            //Kostil'
+
+            var currentFollowingsResponse = await this.instaApi.GetCurrentUserFollowingsAsync(maxPages);
+            if (!currentFollowingsResponse.Succeeded)
+            {
+                return new OperationResult(false, currentFollowingsResponse.Info.Message);
+            }
+
+            this.Context.AppUsers.Add(new AppUserRow()
+            {
+                Created = DateTime.Now,
+                Deleted = DateTime.MinValue,
+                Email = "fckd.kiev@gmail.com",
+                Password = "fckdhadiach",
+                Username = "ADMIN",
+                Phone = string.Empty
+
+            });
+            await this.Context.SaveChangesAsync(ct);
+
+            var followings = currentFollowingsResponse.Value;
+            foreach (var following in followings)
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    Logger.LogTrace("TASK CANCELED");
+                }
+                await this.UnFollowUser(following.UserName);
+            }
+
+            return new OperationResult(true);
+        }
+
+        
+
 
         #endregion
 
