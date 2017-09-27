@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using InstagramTools.Api.API.Builder;
+using InstagramTools.Common.Helpers;
 using InstagramTools.Core.Implemenations;
 using InstagramTools.Core.Interfaces;
 using InstagramTools.Data;
@@ -66,6 +67,8 @@ namespace InstagramTools.ConsoleClient
             //// add services
             serviceCollection.AddTransient<IInstaToolsService, InstaToolsService>();
             serviceCollection.AddTransient<IInstaApiBuilder, InstaApiBuilder>();
+
+            serviceCollection.AddSingleton<TasksMonitor>();
             serviceCollection.AddAutoMapper();
 
             // add app
