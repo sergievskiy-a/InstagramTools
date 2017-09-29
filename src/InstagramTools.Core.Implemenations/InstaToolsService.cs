@@ -272,7 +272,7 @@ namespace InstagramTools.Core.Implemenations
                     throw new Exception($"Can't get likers for media [mediaId :{lastMedia.InstaIdentifier}]. Error:\t {getLikersResult.Info.Message}");
                 }
 
-                var likersIds = getLikersResult.Value.Select(x => x.Pk).ToList();
+                var likersIds = getLikersResult.Value.Select(x => x.UserName).ToList();
 
                 this.Logger.LogInformation($"Get {likersIds.Count} users, that liked last {username}'s post.");
                 return new OperationResult<List<string>>(likersIds);
